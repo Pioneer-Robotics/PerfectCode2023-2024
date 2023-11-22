@@ -36,7 +36,7 @@ public class SelfDriving extends HardwareHelper {
      * @return returns a double array. 0=y, 1=x, 2=rotation of robot calculated by odometry
      */
 
-    public double[] updateOdometry(){
+    public double[] updateOdometryJ(){
         int[] ticks = new int[3];
         for (int i=0; i<3; i++) ticks[i] = bot.encoders()[i].getCurrentPosition(); //get encoder positions
         ticks[1] = -ticks[1]; //correct for backwards odometer
@@ -46,7 +46,7 @@ public class SelfDriving extends HardwareHelper {
         prevTicks = ticks;
         double rightDist = newRightTicks * (Config.goBuildaOdoTicksToCm); //convert from ticks to cm
         double leftDist = newLeftTicks * (Config.goBuildaOdoTicksToCm); //convert from ticks to cm
-        double backDist = newXTicks * (Config.odoTicksToCm); //convert from ticks to cm
+        double backDist = newXTicks * (Config.goBuildaOdoTicksToCm); //convert from ticks to cm
         double dyR = 0.5 * (rightDist + leftDist); //average of left/right odometer delta
         //double headingChangeRadians = (rightDist - leftDist) / Config.goBuildaOdoDiameter; //incorrect formula
         double headingChangeRadians = (rightDist - leftDist) / (Config.odoXOffset * 2);
@@ -67,6 +67,27 @@ public class SelfDriving extends HardwareHelper {
         pose[0] += -backDist*sin + dyR*cos;
         pose[1] += backDist*cos + dyR*sin;
         pose[2] = bMath.regularizeAngleRad(pose[2] + headingChangeRadians);*/
+        return pose;
+    }
+
+    public double[] updateOdometry(){
+        int[] ticks = new int[3];
+        for (int i=0; i<3; i++) ticks[i] = bot.encoders()[i].getCurrentPosition();
+        int newRightTicks = ticks[0] - prevTicks[0];
+        int newLeftTicks = ticks[1] - prevTicks[1];
+        int newXTicks = ticks[2] - prevTicks[2];
+        prevTicks = ticks;
+        double rightDist = newRightTicks * (Config.goBuildaOdoTicksToCm);
+        double leftDist = newLeftTicks * (Config.goBuildaOdoTicksToCm);
+        double dyR = 0.5 * (rightDist + leftDist);
+        double headingChangeRadians = (rightDist - leftDist) / Config.goBuildaOdoDiameter;
+        double dxR = newXTicks * (Config.goBuildaOdoTicksToCm);
+//        double avgHeadingRadians = pose[2] + headingChangeRadians / 2.0;
+        double cos = Math.cos(bot.angleRAD());
+        double sin = Math.sin(bot.angleRAD());
+        pose[0] += -dxR*sin + dyR*cos;//y
+        pose[1] += dxR*cos + dyR*sin;//x
+//        pose[2] = AngleUtils.normalizeRadians(pose[2] + headingChangeRadians);
         return pose;
     }
 

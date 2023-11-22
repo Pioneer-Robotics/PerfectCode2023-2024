@@ -18,6 +18,14 @@ public class Drivers extends HardwareHelper {
     public void Driver1(Gamepad gamepad){
         mecanumToggle.toggle(gamepad.y);//toggles between regular and coordinate lock mecanum
 
+//        if(gamepad.a){
+//            bot.setPowers(.15,.15,.15,.15);
+//        } else if(gamepad.b){
+//            bot.setPowers(-0.1,-0.1,-0.1,-0.1);
+//        } else{
+//            bot.setPowers(0,0,0,0);
+//        }
+
         if(mecanumToggle.getBool()){bot.regularMecanum(scalePower);}
         else{bot.coordinateLock(scalePower);}
 
@@ -25,10 +33,10 @@ public class Drivers extends HardwareHelper {
             bot.pixelDropOpen();
         }
 
-        if(gamepad.x){
+        if(gamepad.x){//resets IMU/Odometry just in case robot is not facing directly north
             bot.resetIMU();
             bot.resetOdometers();
-        }//resets IMU/Odometry just in case robot is not facing directly north
+        }
     }
 
     public void Driver2(Gamepad gamepad){
@@ -60,9 +68,9 @@ public class Drivers extends HardwareHelper {
         telemetry.addData("odo Left Raw", bot.getOdos()[0]);
         telemetry.addData("odo Right Raw", -bot.getOdos()[1]);
         telemetry.addData("odo Back Raw", bot.getOdos()[2]);
-        telemetry.addData("odo Left Cm", bot.getOdos()[0]* (Config.goBuildaOdoTicksToCm));
-        telemetry.addData("odo Right Cm", -bot.getOdos()[1] * (Config.goBuildaOdoTicksToCm));
-        telemetry.addData("odo Back Cm", bot.getOdos()[2] * Config.odoTicksToCm);
+        telemetry.addData("odo Back Cm", bot.getOdos()[0]* (Config.goBuildaOdoTicksToCm));
+        telemetry.addData("odo Right Cm", bot.getOdos()[1] * (Config.goBuildaOdoTicksToCm));
+        telemetry.addData("odo Left Cm", bot.getOdos()[2] * Config.goBuildaOdoTicksToCm);
 
         telemetry.addData("arm pos", bot.getSlideLevel());
     }

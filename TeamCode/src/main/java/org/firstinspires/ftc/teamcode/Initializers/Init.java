@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.Hardware.PixelDropServo;
 import org.firstinspires.ftc.teamcode.Hardware.SlideArm;
 import org.firstinspires.ftc.teamcode.Helpers.BulkReader;
 import org.firstinspires.ftc.teamcode.OpModes.OpScript;
+import org.firstinspires.ftc.teamcode.SelfDriving.Pose;
 import org.firstinspires.ftc.teamcode.SelfDriving.SelfDriving;
 
 public abstract class Init {
@@ -33,6 +34,7 @@ public abstract class Init {
     public static Voltage voltage;
     public static SelfDriving selfDriving;
     public static SlideArm slideArm;
+    public static Pose pose;
 
     protected void init(OpScript opMode) {
         opmode              = opMode;
@@ -42,17 +44,17 @@ public abstract class Init {
         runAuto             = opMode.runAuto;
         imu = opMode.hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.DOWN,
-                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT)));
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD)));
         imu.resetYaw();
         Motors.setMotors(
                 opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
                 opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF),
                 opMode.hardwareMap.get(DcMotorEx.class, Config.motorLB),
                 opMode.hardwareMap.get(DcMotorEx.class, Config.motorRB),
-                opMode.hardwareMap.get(DcMotorEx.class, Config.odoLeft),
+                opMode.hardwareMap.get(DcMotorEx.class, Config.odoMiddle),
                 opMode.hardwareMap.get(DcMotorEx.class, Config.odoRight),
-                opMode.hardwareMap.get(DcMotorEx.class, Config.odoMiddle)
+                opMode.hardwareMap.get(DcMotorEx.class, Config.odoLeft)
         );
         slideArm            = new SlideArm(opMode.hardwareMap.get(DcMotorEx.class, Config.slideArm));
         pixelDropServo      = new PixelDropServo(opMode.hardwareMap.get(Servo.class, Config.pixelDropServo));
@@ -62,6 +64,7 @@ public abstract class Init {
         drivers             = new Drivers();
         voltage             = new Voltage();
         selfDriving         = new SelfDriving();
+        pose                = new Pose(0,0,0);
     }
 
     public static class Motors {
@@ -76,9 +79,9 @@ public abstract class Init {
             rightFront = rFront;
             leftBack = lBack;
             rightBack = rBack;
-            Motors.encoders[0] = odoLeft;
+            Motors.encoders[0] = odoMiddle;
             Motors.encoders[1] = odoRight;
-            Motors.encoders[2] = odoMiddle;
+            Motors.encoders[2] = odoLeft;
         }
     }
 }

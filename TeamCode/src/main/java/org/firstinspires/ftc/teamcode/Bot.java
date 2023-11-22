@@ -18,7 +18,8 @@ public class Bot extends Init {
     public boolean isAuto() {return opmode.getClass().isAnnotationPresent(Autonomous.class);}
 
     //Motors
-    public void setPowers(double LFspeed, double LBspeed, double RFspeed, double RBspeed) {motorData.setPower(LFspeed, LBspeed, RFspeed, RBspeed);}
+    public void setVels(double LFspeed, double LBspeed, double RFspeed, double RBspeed) {motorData.setVel(LFspeed, LBspeed, RFspeed, RBspeed);}
+    public void setPowers(double LFspeed, double LBspeed, double RFspeed, double RBspeed) {motorData.setPowers(LFspeed, LBspeed, RFspeed, RBspeed);}
     public void setMotorPower(double power) {motorData.setMotorPower(power);}
     public void setMotorPowerRight(double power) {motorData.setMotorPowerRight(power);}
     public void setMotorPowerLeft(double power) {motorData.setMotorPowerLeft(power);}

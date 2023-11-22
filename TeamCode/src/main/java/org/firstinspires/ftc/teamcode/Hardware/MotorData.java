@@ -63,11 +63,18 @@ public class MotorData extends HardwareHelper {
         Motors.rightFront.setVelocity(right * Config.encoderRatio);
     }
 
-    public void setPower(double LFspeed, double LBspeed, double RFspeed, double RBspeed){
-        Motors.leftFront.setVelocity(LFspeed * Config.encoderRatio);
-        Motors.leftBack.setVelocity(LBspeed * Config.encoderRatio);
-        Motors.rightBack.setVelocity(RBspeed * Config.encoderRatio);
-        Motors.rightFront.setVelocity(RFspeed * Config.encoderRatio);
+    public void setVel(double LFvel, double LBvel, double RFvel, double RBvel){
+        Motors.leftFront.setVelocity(LFvel * Config.encoderRatio);
+        Motors.leftBack.setVelocity(LBvel * Config.encoderRatio);
+        Motors.rightBack.setVelocity(RBvel * Config.encoderRatio);
+        Motors.rightFront.setVelocity(RFvel * Config.encoderRatio);
+    }
+
+    public void setPowers(double LFpower, double LBpower, double Rfpower, double RBpower){
+        Motors.leftFront.setPower(LFpower);
+        Motors.leftBack.setPower(LBpower);
+        Motors.rightBack.setPower(RBpower);
+        Motors.rightFront.setPower(Rfpower);
     }
 
     public void brake(){
@@ -106,15 +113,20 @@ public class MotorData extends HardwareHelper {
     public static double odoTicksToCm(int ticks){return ticks * Config.odoTicksToCm;}
 
     public MotorData() {
-        Motors.rightFront.setDirection(DcMotor.Direction.REVERSE);
-        Motors.rightBack.setDirection(DcMotor.Direction.REVERSE);
+        Motors.rightFront.setDirection(DcMotor.Direction.FORWARD);
+        Motors.rightBack.setDirection(DcMotor.Direction.FORWARD);
         Motors.leftFront.setDirection(DcMotor.Direction.REVERSE);
-        Motors.leftBack.setDirection(DcMotor.Direction.FORWARD);
+        Motors.leftBack.setDirection(DcMotor.Direction.REVERSE);
 
-        Motors.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motors.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motors.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motors.rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Motors.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Motors.rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Motors.leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Motors.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        Motors.leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Motors.leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Motors.rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Motors.rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         Motors.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Motors.leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -122,12 +134,13 @@ public class MotorData extends HardwareHelper {
         Motors.rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         for (DcMotorEx odo: Motors.encoders){
-            resetOdometers();
+            odo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             odo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             odo.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
         Motors.encoders[0].setDirection(DcMotorSimple.Direction.REVERSE);
         Motors.encoders[1].setDirection(DcMotorSimple.Direction.REVERSE);
+        Motors.encoders[2].setDirection(DcMotorSimple.Direction.REVERSE);
     }
 }

@@ -47,12 +47,19 @@ public class Drivers extends HardwareHelper {
         }
 
         if(gamepad.x){
-            bot.setSlideLevel(-200);
+            bot.setSlideLevel(600);
         }else if(gamepad.y){
-            bot.setSlideLevel(-600);
+            bot.setSlideLevel(2200);
         }
         else if(gamepad.b){
              bot.setSlideLevel(0);
+        }
+
+        if(gamepad.dpad_up){
+            bot.moveCollector();
+        }
+        else if(gamepad.dpad_down){
+            bot.stopCollector();
         }
     }
 

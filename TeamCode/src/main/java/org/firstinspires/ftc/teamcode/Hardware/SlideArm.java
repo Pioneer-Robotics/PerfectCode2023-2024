@@ -4,7 +4,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-public class SlideArm {
+import org.firstinspires.ftc.teamcode.Features.Config;
+import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
+
+public class SlideArm extends HardwareHelper {
     DcMotorEx slideArm;
     double speed;
 
@@ -13,14 +16,14 @@ public class SlideArm {
         this.slideArm.setDirection(DcMotorSimple.Direction.FORWARD);
         this.slideArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.slideArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        speed = .4;
+        speed = .7;
     }
 
     public void setLevel(int level){
         slideArm.setTargetPosition(level);
         slideArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.slideArm.setDirection(DcMotorSimple.Direction.REVERSE);
-        slideArm.setVelocity(1000 * speed);
+        slideArm.setVelocity(Config.encoderRatio * speed);
     }
 
     public void setVelocity(double speed){

@@ -14,6 +14,7 @@ public class Config {
     public static final String odoMiddle = "OdoMiddle";
     public static final String[] odos = {"OdoLeft", "OdoRight", "OdoMiddle"};
     public static final String slideArm = "slideArm";
+    public static final String collector = "collector";
 
     //Odometers
     public static final int odoTicksPerRotation = 8192;

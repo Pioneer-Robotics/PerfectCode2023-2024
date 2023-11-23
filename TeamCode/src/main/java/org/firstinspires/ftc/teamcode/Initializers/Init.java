@@ -5,12 +5,14 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Drivers.Drivers;
 import org.firstinspires.ftc.teamcode.Drivers.Mecanum;
 import org.firstinspires.ftc.teamcode.Features.Commands;
 import org.firstinspires.ftc.teamcode.Features.Config;
 import org.firstinspires.ftc.teamcode.Features.Voltage;
+import org.firstinspires.ftc.teamcode.Hardware.Collector;
 import org.firstinspires.ftc.teamcode.Hardware.MotorData;
 import org.firstinspires.ftc.teamcode.Hardware.PixelDropServo;
 import org.firstinspires.ftc.teamcode.Hardware.SlideArm;
@@ -35,6 +37,7 @@ public abstract class Init {
     public static SelfDriving selfDriving;
     public static SlideArm slideArm;
     public static Pose pose;
+    public static Collector collector;
 
     protected void init(OpScript opMode) {
         opmode              = opMode;
@@ -52,11 +55,13 @@ public abstract class Init {
                 opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF),
                 opMode.hardwareMap.get(DcMotorEx.class, Config.motorLB),
                 opMode.hardwareMap.get(DcMotorEx.class, Config.motorRB),
-                opMode.hardwareMap.get(DcMotorEx.class, Config.odoMiddle),
-                opMode.hardwareMap.get(DcMotorEx.class, Config.odoRight),
-                opMode.hardwareMap.get(DcMotorEx.class, Config.odoLeft)
+                //TODO fix this stuff @Seth
+                opMode.hardwareMap.get(DcMotorEx.class, Config.motorRB),
+                opMode.hardwareMap.get(DcMotorEx.class, Config.motorRB),
+                opMode.hardwareMap.get(DcMotorEx.class, Config.motorRB)
         );
         slideArm            = new SlideArm(opMode.hardwareMap.get(DcMotorEx.class, Config.slideArm));
+        collector           = new Collector(opMode.hardwareMap.get(DcMotorEx.class, Config.collector));
         pixelDropServo      = new PixelDropServo(opMode.hardwareMap.get(Servo.class, Config.pixelDropServo));
         commands            = new Commands();
         motorData           = new MotorData();

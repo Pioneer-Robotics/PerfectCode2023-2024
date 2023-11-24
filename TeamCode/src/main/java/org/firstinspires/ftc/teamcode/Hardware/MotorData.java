@@ -13,9 +13,6 @@ public class MotorData extends HardwareHelper {
     private static DcMotorEx rightFront;
     private static DcMotorEx leftBack;
     private static DcMotorEx rightBack;
-    private static DcMotorEx leftOdo;
-    private static DcMotorEx middleOdo;
-    private static DcMotorEx rightOdo;
 
     public MotorData(DcMotorEx lFront, DcMotorEx rFront, DcMotorEx lBack, DcMotorEx rBack) {
         leftFront = lFront;
@@ -44,6 +41,10 @@ public class MotorData extends HardwareHelper {
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
+    public double getPower(){
+        return leftBack.getPower();
+    }
+
     public void resetOdometers(){
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -57,10 +58,17 @@ public class MotorData extends HardwareHelper {
     }
 
     public void setMotorPower(double power){
-        leftFront.setVelocity(power * Config.encoderRatio);
-        leftBack.setVelocity(power * Config.encoderRatio);
-        rightBack.setVelocity(power * Config.encoderRatio);
-        rightFront.setVelocity(power * Config.encoderRatio);
+        leftFront.setPower(power);
+        leftBack.setPower(power);
+        rightBack.setPower(power);
+        rightFront.setPower(power);
+    }
+
+    public void setMotorPowerStrafe(double power){
+        leftFront.setPower(power);
+        leftBack.setPower(-power);
+        rightBack.setPower(power);
+        rightFront.setPower(-power);
     }
 
     public void setMotorPowerRight(double power){
@@ -78,10 +86,10 @@ public class MotorData extends HardwareHelper {
     }
 
     public void setMotorPower(double left, double right){
-        leftFront.setVelocity(left * Config.encoderRatio);
-        leftBack.setVelocity(left * Config.encoderRatio);
-        rightBack.setVelocity(right * Config.encoderRatio);
-        rightFront.setVelocity(right * Config.encoderRatio);
+        leftFront.setPower(left);
+        leftBack.setPower(left);
+        rightBack.setPower(right);
+        rightFront.setPower(right);
     }
 
     public void setVel(double LFvel, double LBvel, double RFvel, double RBvel){

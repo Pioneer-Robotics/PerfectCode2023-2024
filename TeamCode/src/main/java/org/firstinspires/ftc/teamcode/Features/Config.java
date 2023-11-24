@@ -17,12 +17,12 @@ public class Config {
     public static final String collector = "collector";
 
     //Odometers
-    public static final int odoTicksPerRotation = 8192;
-    public static final double odoDiameterIn = 2;
+    public static final int odoTicksPerRotation = 2000;
+    public static final double odoDiameterIn = 1.811;
     public static final double odoDiameterCM = odoDiameterIn * 2.54;
     public static final double odoRadiusCM = 2.54;
     public static final double odoCircumferenceCM = odoDiameterCM * Math.PI;
-    public static final double odoTicksToCm = odoCircumferenceCM / odoTicksPerRotation;
+    public static final double odoTicksToCm = (odoCircumferenceCM / odoTicksPerRotation);
 
     public static final double goBuildaOdoDiameter = 4.8;
     public static final double goBuildaOdoCircumferenceCM = goBuildaOdoDiameter * Math.PI;

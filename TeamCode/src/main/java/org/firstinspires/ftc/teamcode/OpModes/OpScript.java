@@ -30,10 +30,10 @@ public abstract class OpScript extends LinearOpMode {
         while (!opScript.opModeIsActive() && !opScript.isStarted()) {opScript.initloop();}
         while (opScript.opModeIsActive() && opScript.isStarted() && bot.isRunning()) {
             opScript.run();
-            opScript.telemetry.update();
             opScript.runAuto = false;
             cycleNumber++;
             bot.clearCache();
+            opScript.telemetry.update();
         }
     }
 
@@ -44,8 +44,8 @@ public abstract class OpScript extends LinearOpMode {
         opScript.runAuto = true;
         if(bot.isAuto()){
             bot.openCamera();
+            bot.addData("Camera", bot.getSaturationHigh());
         }
-        bot.addData("Camera", bot.getSaturationHigh());
         bot.addData("Voltage", bot.getVoltage());
         bot.update();
     }

@@ -27,7 +27,7 @@ public class SelfDriving extends HardwareHelper {
         pose[1] = y;
         pose[2] = Math.toRadians(theta);
         pose[3] = 0;
-        for (int i=0; i<3; i++) prevTicks[i] = bot.getOdos()[i];
+        //for (int i=0; i<3; i++) prevTicks[i] = bot.getOdos()[i];
     }
 
     /**
@@ -38,7 +38,7 @@ public class SelfDriving extends HardwareHelper {
 
     public double[] updateOdometryJ(){
         int[] ticks = new int[3];
-        for (int i=0; i<3; i++) ticks[i] = bot.encoders()[i].getCurrentPosition(); //get encoder positions
+        //for (int i=0; i<3; i++) ticks[i] = bot.encoders()[i].getCurrentPosition(); //get encoder positions
         ticks[1] = -ticks[1]; //correct for backwards odometer
         int newRightTicks = ticks[0] - prevTicks[0];
         int newLeftTicks =  ticks[1] - prevTicks[1];
@@ -72,7 +72,7 @@ public class SelfDriving extends HardwareHelper {
 
     public double[] updateOdometry(){
         int[] ticks = new int[3];
-        for (int i=0; i<3; i++) ticks[i] = bot.encoders()[i].getCurrentPosition();
+        //for (int i=0; i<3; i++) ticks[i] = bot.encoders()[i].getCurrentPosition();
         int newRightTicks = ticks[0] - prevTicks[0];
         int newLeftTicks = ticks[1] - prevTicks[1];
         int newXTicks = ticks[2] - prevTicks[2];
@@ -118,7 +118,7 @@ public class SelfDriving extends HardwareHelper {
 
             movement.runExtra();//run extra if needed
             drive(xPID, yPID, Math.copySign(rxPID, subHead(movement)));//drive there
-            OpScript.update();
+            bot.update();
         }
     }
     /**

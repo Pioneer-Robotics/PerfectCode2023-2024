@@ -30,7 +30,7 @@ public class Drivers extends HardwareHelper {
         else{bot.coordinateLock(scalePower);}
 
         if(gamepad.b){
-            bot.pixelDropOpen();
+            bot.leftDropOpen();
         }
 
         if(gamepad.x){//resets IMU/Odometry just in case robot is not facing directly north
@@ -41,9 +41,9 @@ public class Drivers extends HardwareHelper {
 
     public void Driver2(Gamepad gamepad){
         if(gamepad.a){
-            bot.pixelDropOpen();
+            bot.leftDropOpen();
         } else{
-            bot.pixelDropClosed();
+            bot.leftDropClosed();
         }
 
         if(gamepad.x){
@@ -52,7 +52,7 @@ public class Drivers extends HardwareHelper {
             bot.setSlideLevel(2200);
         }
         else if(gamepad.b){
-             bot.setSlideLevel(0);
+            bot.setSlideLevel(0);
         }
 
         if(gamepad.dpad_up){
@@ -64,23 +64,17 @@ public class Drivers extends HardwareHelper {
     }
 
     public void telemetry(){
-        double[] pos = bot.updateOdometry();
         telemetry.addData("Scale Power", scalePower.getNum());
         telemetry.addData("Regular Mecanum:", mecanumToggle.getBool());
         telemetry.addData("Angle:", bot.angleDEG());
-        telemetry.addData("x:", pos[1]);
-        telemetry.addData("y:", pos[0]);
-        telemetry.addData("Angle from odometry (rad):", pos[2]);
-        telemetry.addData("Angle delta Odo-IMU", pos[2]-bot.angleRAD());
-        telemetry.addData("odo Left Raw", bot.getOdos()[0]);
-        telemetry.addData("odo Right Raw", -bot.getOdos()[1]);
-        telemetry.addData("odo Back Raw", bot.getOdos()[2]);
-        telemetry.addData("odo Back Cm", bot.getOdos()[0]* (Config.goBuildaOdoTicksToCm));
-        telemetry.addData("odo Right Cm", bot.getOdos()[1] * (Config.goBuildaOdoTicksToCm));
-        telemetry.addData("odo Left Cm", bot.getOdos()[2] * Config.goBuildaOdoTicksToCm);
-
         telemetry.addData("arm pos", bot.getSlideLevel());
     }
 
-    public void example(){Telemetry.Line line = bot.isAuto() ? telemetry.addLine("Example auto succeeded") : telemetry.addLine("Example tele succeeded");}
+    public void TeleOp(Gamepad gamepad1, Gamepad gamepad2){
+        Driver1(gamepad1);
+        Driver2(gamepad2);
+        telemetry();
+    }
+
+    public void example(){telemetry.addLine(bot.isAuto() ? "Example auto succeeded" : "Example tele succeeded");}
 }

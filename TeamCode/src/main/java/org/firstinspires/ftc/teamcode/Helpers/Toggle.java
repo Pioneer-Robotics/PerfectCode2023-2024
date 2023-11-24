@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Helpers;//package org.firstinspires.ftc.t
 
 
 import org.firstinspires.ftc.teamcode.Bot;
+import org.firstinspires.ftc.teamcode.OpModes.OpScript;
 
 /**
  * This class is basically a wrapper class for booleans, but it allows you to negate
@@ -25,14 +26,14 @@ public class Toggle { //use this class when you want to have a boolean you toggl
 
     /**
      * if the input to this method is true, and the last time this method was
-     * called the input was false, then the boolean this object tracks is {@code state = !state}
-     * @param button
+     * called the input was false, then the boolean this object tracks is
+     * {@code state = !state}
      */
     public void toggle(boolean button){
         justChangedFlag = false;
         if(button && !buttonLast){
             state = !state;
-            lastChangeCycle = Bot.cycleNumber;
+            lastChangeCycle = OpScript.cycleNumber;
             justChangedFlag = true;
         }
         buttonLast = button;
@@ -45,7 +46,7 @@ public class Toggle { //use this class when you want to have a boolean you toggl
     public void set(boolean bool){
         if(bool != state){
             state = bool;
-            lastChangeCycle = Bot.cycleNumber;
+            lastChangeCycle = OpScript.cycleNumber;
             justChangedFlag = true;
         }
         else{ //this means state is already set to what it should be
@@ -67,8 +68,8 @@ public class Toggle { //use this class when you want to have a boolean you toggl
      * @return {@code true} if it did; {@code false} if it didn't.
      */
     public boolean justChanged(){
-        if(Bot.cycleNumber > 2) {
-            return Bot.cycleNumber == lastChangeCycle || Bot.cycleNumber - 1 == lastChangeCycle;
+        if(OpScript.cycleNumber > 2) {
+            return OpScript.cycleNumber == lastChangeCycle || OpScript.cycleNumber - 1 == lastChangeCycle;
         }
         else{
             return false;

@@ -6,141 +6,125 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Features.Config;
 import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
-import org.firstinspires.ftc.teamcode.Initializers.Init.Motors;
 
 
 public class MotorData extends HardwareHelper {
-    public DcMotorEx[] encoders(){return Motors.encoders;}
+    private static DcMotorEx leftFront;
+    private static DcMotorEx rightFront;
+    private static DcMotorEx leftBack;
+    private static DcMotorEx rightBack;
+    private static DcMotorEx leftOdo;
+    private static DcMotorEx middleOdo;
+    private static DcMotorEx rightOdo;
 
-    public int[] odoPos(){
-        int[] pos = new int[3];
-        for(int i = 0; i< encoders().length; i++){pos[i] = encoders()[i].getCurrentPosition();}
-        return pos;
+    public MotorData(DcMotorEx lFront, DcMotorEx rFront, DcMotorEx lBack, DcMotorEx rBack) {
+        leftFront = lFront;
+        rightFront = rFront;
+        leftBack = lBack;
+        rightBack = rBack;
+
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        rightBack.setDirection(DcMotor.Direction.FORWARD);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        leftBack.setDirection(DcMotor.Direction.REVERSE);
+
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void resetOdometers(){
-        Motors.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Motors.rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Motors.leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Motors.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        Motors.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motors.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motors.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motors.rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        for (DcMotorEx odo: Motors.encoders){
-            odo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            odo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        }
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void setMotorPower(double power){
-        Motors.leftFront.setVelocity(power * Config.encoderRatio);
-        Motors.leftBack.setVelocity(power * Config.encoderRatio);
-        Motors.rightBack.setVelocity(power * Config.encoderRatio);
-        Motors.rightFront.setVelocity(power * Config.encoderRatio);
+        leftFront.setVelocity(power * Config.encoderRatio);
+        leftBack.setVelocity(power * Config.encoderRatio);
+        rightBack.setVelocity(power * Config.encoderRatio);
+        rightFront.setVelocity(power * Config.encoderRatio);
     }
 
     public void setMotorPowerRight(double power){
-        Motors.leftFront.setVelocity(-power * Config.encoderRatio);
-        Motors.leftBack.setVelocity(power * Config.encoderRatio);
-        Motors.rightBack.setVelocity(-power * Config.encoderRatio);
-        Motors.rightFront.setVelocity(power * Config.encoderRatio);
+        leftFront.setVelocity(-power * Config.encoderRatio);
+        leftBack.setVelocity(power * Config.encoderRatio);
+        rightBack.setVelocity(-power * Config.encoderRatio);
+        rightFront.setVelocity(power * Config.encoderRatio);
     }
 
     public void setMotorPowerLeft(double power){
-        Motors.leftFront.setVelocity(power * Config.encoderRatio);
-        Motors.leftBack.setVelocity(-power * Config.encoderRatio);
-        Motors.rightBack.setVelocity(power * Config.encoderRatio);
-        Motors.rightFront.setVelocity(-power * Config.encoderRatio);
+        leftFront.setVelocity(power * Config.encoderRatio);
+        leftBack.setVelocity(-power * Config.encoderRatio);
+        rightBack.setVelocity(power * Config.encoderRatio);
+        rightFront.setVelocity(-power * Config.encoderRatio);
     }
 
     public void setMotorPower(double left, double right){
-        Motors.leftFront.setVelocity(left * Config.encoderRatio);
-        Motors.leftBack.setVelocity(left * Config.encoderRatio);
-        Motors.rightBack.setVelocity(right * Config.encoderRatio);
-        Motors.rightFront.setVelocity(right * Config.encoderRatio);
+        leftFront.setVelocity(left * Config.encoderRatio);
+        leftBack.setVelocity(left * Config.encoderRatio);
+        rightBack.setVelocity(right * Config.encoderRatio);
+        rightFront.setVelocity(right * Config.encoderRatio);
     }
 
     public void setVel(double LFvel, double LBvel, double RFvel, double RBvel){
-        Motors.leftFront.setVelocity(LFvel * Config.encoderRatio);
-        Motors.leftBack.setVelocity(LBvel * Config.encoderRatio);
-        Motors.rightBack.setVelocity(RBvel * Config.encoderRatio);
-        Motors.rightFront.setVelocity(RFvel * Config.encoderRatio);
+        leftFront.setVelocity(LFvel * Config.encoderRatio);
+        leftBack.setVelocity(LBvel * Config.encoderRatio);
+        rightBack.setVelocity(RBvel * Config.encoderRatio);
+        rightFront.setVelocity(RFvel * Config.encoderRatio);
     }
 
     public void setPowers(double LFpower, double LBpower, double Rfpower, double RBpower){
-        Motors.leftFront.setPower(LFpower);
-        Motors.leftBack.setPower(LBpower);
-        Motors.rightBack.setPower(RBpower);
-        Motors.rightFront.setPower(Rfpower);
+        leftFront.setPower(LFpower);
+        leftBack.setPower(LBpower);
+        rightBack.setPower(RBpower);
+        rightFront.setPower(Rfpower);
     }
 
     public void brake(){
-        Motors.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Motors.leftFront.setPower(0);
-        Motors.leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Motors.leftBack.setPower(0);
-        Motors.rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Motors.rightBack.setPower(0);
-        Motors.rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Motors.rightFront.setPower(0);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront.setPower(0);
+        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftBack.setPower(0);
+        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBack.setPower(0);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setPower(0);
     }
 
     public void setPowerBehavior(DcMotor.ZeroPowerBehavior Lbehavior, DcMotor.ZeroPowerBehavior Rbehavior ){
-        Motors.leftFront.setZeroPowerBehavior(Lbehavior);
-        Motors.leftBack.setZeroPowerBehavior(Lbehavior);
-        Motors.rightBack.setZeroPowerBehavior(Rbehavior);
-        Motors.rightFront.setZeroPowerBehavior(Rbehavior);
+        leftFront.setZeroPowerBehavior(Lbehavior);
+        leftBack.setZeroPowerBehavior(Lbehavior);
+        rightBack.setZeroPowerBehavior(Rbehavior);
+        rightFront.setZeroPowerBehavior(Rbehavior);
     }
 
     public void setRunMode(DcMotor.RunMode mode){
-        Motors.leftFront.setMode(mode);
-        Motors.leftBack.setMode(mode);
-        Motors.rightBack.setMode(mode);
-        Motors.rightFront.setMode(mode);
+        leftFront.setMode(mode);
+        leftBack.setMode(mode);
+        rightBack.setMode(mode);
+        rightFront.setMode(mode);
     }
 
-    public double getVelocityRF(){return Motors.rightFront.getVelocity();}
-    public double getVelocityRB(){return Motors.rightBack.getVelocity();}
-    public double getVelocityLF(){return Motors.leftFront.getVelocity();}
-    public double getVelocityLB(){return Motors.leftBack.getVelocity();}
-
-    public double getLeftPosition(){return odoTicksToCm(Motors.encoders[0].getCurrentPosition());}
-    public double getRightPosition(){return odoTicksToCm(Motors.encoders[1].getCurrentPosition());}
-    public double getMiddlePosition(){return odoTicksToCm(Motors.encoders[2].getCurrentPosition());}
+    public double getLeftPosition(){return odoTicksToCm(leftFront.getCurrentPosition());}
+    public double getRightPosition(){return odoTicksToCm(rightBack.getCurrentPosition());}
+    public double getMiddlePosition(){return odoTicksToCm(leftBack.getCurrentPosition());}
     public static double odoTicksToCm(int ticks){return ticks * Config.odoTicksToCm;}
-
-    public MotorData() {
-        Motors.rightFront.setDirection(DcMotor.Direction.FORWARD);
-        Motors.rightBack.setDirection(DcMotor.Direction.FORWARD);
-        Motors.leftFront.setDirection(DcMotor.Direction.REVERSE);
-        Motors.leftBack.setDirection(DcMotor.Direction.REVERSE);
-
-        Motors.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Motors.rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Motors.leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Motors.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        Motors.leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Motors.leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Motors.rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Motors.rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        Motors.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Motors.leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Motors.rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Motors.rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        for (DcMotorEx odo: Motors.encoders){
-            odo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            odo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            odo.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        }
-
-        Motors.encoders[0].setDirection(DcMotorSimple.Direction.REVERSE);
-        Motors.encoders[1].setDirection(DcMotorSimple.Direction.REVERSE);
-        Motors.encoders[2].setDirection(DcMotorSimple.Direction.REVERSE);
-    }
 }

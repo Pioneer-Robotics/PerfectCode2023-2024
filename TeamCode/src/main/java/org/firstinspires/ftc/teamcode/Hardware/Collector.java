@@ -8,8 +8,9 @@ import org.firstinspires.ftc.teamcode.Features.Config;
 import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
 
 public class Collector extends HardwareHelper {
-    private DcMotorEx collector;
+    private final DcMotorEx collector;
     private double speed;
+
     public Collector(DcMotorEx collector){
         this.collector = collector;
         this.collector.setDirection(DcMotorSimple.Direction.FORWARD);

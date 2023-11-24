@@ -11,8 +11,5 @@ public class Auto extends OpScript {
     public void run() {bot.drive(Config.turn90);}
 
     @Override
-    public void initloop() {init_loop(bot);}
-
-    @Override
     public void runOpMode() throws InterruptedException {runOpMode(this);}
 }

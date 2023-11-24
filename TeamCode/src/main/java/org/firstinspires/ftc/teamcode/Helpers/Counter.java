@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Helpers;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Bot;
+import org.firstinspires.ftc.teamcode.OpModes.OpScript;
 
 /**
  * Designed to increment a certain variable by a certain amount, based on buttons
@@ -49,12 +50,12 @@ public class Counter {
         if(add && state == buttonLast){
             buttonLast = state;
             state++;
-            lastChangeCycle = Bot.cycleNumber;
+            lastChangeCycle = OpScript.cycleNumber;
         }
         else if(subtract && state == buttonLast){
             buttonLast = state;
             state--;
-            lastChangeCycle = Bot.cycleNumber;
+            lastChangeCycle = OpScript.cycleNumber;
         }
         else if (!subtract && !add){
             buttonLast = state;
@@ -72,12 +73,12 @@ public class Counter {
         if(add && state == buttonLast){
             buttonLast = state;
             state += amount;
-            lastChangeCycle = Bot.cycleNumber;
+            lastChangeCycle = OpScript.cycleNumber;
         }
         else if(subtract && state == buttonLast){
             buttonLast = state;
             state -= amount;
-            lastChangeCycle = Bot.cycleNumber;
+            lastChangeCycle = OpScript.cycleNumber;
         }
         else if (!subtract && !add){
             buttonLast = state;
@@ -89,8 +90,8 @@ public class Counter {
     public void setNum(double num){state = num;}
 
     public boolean justChanged(){
-        if(Bot.cycleNumber > 2) {
-            return Bot.cycleNumber == lastChangeCycle || Bot.cycleNumber - 1 == lastChangeCycle;
+        if(OpScript.cycleNumber > 2) {
+            return OpScript.cycleNumber == lastChangeCycle || OpScript.cycleNumber - 1 == lastChangeCycle;
         }
         else{
             return false;

@@ -18,7 +18,7 @@ public class Pose extends HardwareHelper {
 
     public void updatePose(){
         int[] ticks = new int[3];
-        for (int i=0; i<3; i++) ticks[i] = bot.encoders()[i].getCurrentPosition(); //get encoder positions
+        //for (int i=0; i<3; i++) ticks[i] = bot.encoders()[i].getCurrentPosition(); //get encoder positions
         ticks[1] = -ticks[1]; //correct for backwards odometer
         int newRightTicks = ticks[0] - prevTicks[0];
         int newLeftTicks =  ticks[1] - prevTicks[1];

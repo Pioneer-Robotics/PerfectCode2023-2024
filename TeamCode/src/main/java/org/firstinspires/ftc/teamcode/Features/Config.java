@@ -45,7 +45,19 @@ public class Config {
         public void runExtra() {}
     };
 
-    //Servos
-    public static final String pixelDropServo = "PixelDrop";
+    //Pixel Servos
+    public static final String leftDropServo = "PixelDropLeft";
+    public static final String rightDropServo = "PixelDropRight";
+    public static final double leftOpenPos = 0.0;
+    public static final double rightOpenPos = 0.0;
+    public static final double leftClosedPos = 0.0;
+    public static final double rightClosedPos = 0.0;
 
+    //Gripper Servos
+    public static final String gripperServo = "gripperServo";
+    public static final String elevateServo = "elevateServo";
+    public static final double gripperOpen = 0.0;
+    public static final double gripperClosed = 0.0;
+    public static final double elevateOpen = 0.0;
+    public static final double elevateClosed = 0.0;
 }

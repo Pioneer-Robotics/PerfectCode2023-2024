@@ -12,47 +12,46 @@ import org.firstinspires.ftc.teamcode.Helpers.BulkReader;
  * initloop(): loops the init (basically for camera and pre-run)
  */
 public abstract class OpScript extends LinearOpMode {
-    public Bot bot;
-    public boolean runAuto = true;
-    public BulkReader bulkReader;
+    public static Bot bot;
+    public boolean runAuto;
+    public OpScript opScript;
+    public static long cycleNumber;
 
     public abstract void run();//method where you put wherever needs to be looped
-    public abstract void initloop();//loops whatever needs to happen in init
 
     /**
      * runs the opMode
      * @param opmode: input the OpScript object to run
      */
     public void runOpMode(OpScript opmode) {
-        opmode.bot = Bot.getInstance(opmode);
-        HardwareHelper.init(Bot.getInstance(), Bot.telemetry);
-        while (!opmode.opModeIsActive() && !opmode.isStarted()) {opmode.initloop();}
-        while (opmode.opModeIsActive() && opmode.isStarted() && bot.isRunning()) {
-            opmode.run();
-            opmode.telemetry.update();
-            opmode.bulkReader.clearCache();
-            Bot.cycleNumber++;
-            Bot.runAuto = false;
+        opScript = opmode;
+        bot = Bot.getInstance(opScript);
+        HardwareHelper.init(Bot.getInstance(), telemetry);
+        while (!opScript.opModeIsActive() && !opScript.isStarted()) {opScript.initloop();}
+        while (opScript.opModeIsActive() && opScript.isStarted() && bot.isRunning()) {
+            opScript.run();
+            opScript.telemetry.update();
+            opScript.runAuto = false;
+            cycleNumber++;
+            bot.clearCache();
         }
     }
 
     /**
      * Used to loop the camera in auto and telemetry pre-run
-     * @param bot: input the Bot objecct to run
      */
-    public static void init_loop(Bot bot) {
-        //Auto: scan QR code. TeleOp: telemetry
+    public void initloop() {
+        opScript.runAuto = true;
         if(bot.isAuto()){
-            //tbd
+            bot.openCamera();
         }
-        Bot.telemetry.addData("Voltage", bot.getVoltage());
-        Bot.telemetry.update();
+        bot.addData("Camera", bot.getSaturationHigh());
+        bot.addData("Voltage", bot.getVoltage());
+        bot.update();
     }
 
-    public static void update() {
-        Bot.bulkReader.clearCache();
-        Bot.telemetry.update();
-
-        Bot.telemetry.addLine();
+    public void update() {
+        bot.clearCache();
+        opScript.telemetry.update();
     }
 }

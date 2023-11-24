@@ -68,6 +68,8 @@ public class Drivers extends HardwareHelper {
         telemetry.addData("Regular Mecanum:", mecanumToggle.getBool());
         telemetry.addData("Angle:", bot.angleDEG());
         telemetry.addData("arm pos", bot.getSlideLevel());
+        telemetry.addData("X in cm", bot.getX());
+        telemetry.addData("Y in cm", bot.getY());
     }
 
     public void TeleOp(Gamepad gamepad1, Gamepad gamepad2){
@@ -76,5 +78,7 @@ public class Drivers extends HardwareHelper {
         telemetry();
     }
 
-    public void example(){telemetry.addLine(bot.isAuto() ? "Example auto succeeded" : "Example tele succeeded");}
+    public void example(){
+        telemetry.addLine(bot.isAuto() ? "Example auto succeeded" : "Example tele succeeded");
+    }
 }

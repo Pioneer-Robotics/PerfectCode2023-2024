@@ -21,6 +21,8 @@ import org.firstinspires.ftc.teamcode.Helpers.BulkReader;
 import org.firstinspires.ftc.teamcode.OpModes.OpScript;
 import org.firstinspires.ftc.teamcode.SelfDriving.Pose;
 import org.firstinspires.ftc.teamcode.SelfDriving.SelfDriving;
+import org.firstinspires.ftc.teamcode.SelfDriving.SimpleDrive;
+import org.firstinspires.ftc.teamcode.SelfDriving.SimplePose;
 
 public abstract class Init {
     public OpScript opmode;
@@ -38,6 +40,8 @@ public abstract class Init {
     public SlideArm slideArm;
     public Pose pose;
     public Collector collector;
+    public SimplePose simplePose;
+    public SimpleDrive simpleDrive;
 
     protected void init(OpScript opMode) {
         opmode              = opMode;
@@ -55,6 +59,10 @@ public abstract class Init {
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorLB),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRB));
+        simplePose          = new SimplePose(opMode.hardwareMap.get(DcMotorEx.class, Config.motorLB),
+                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
+                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF));
+        simpleDrive         = new SimpleDrive(1, 0, 0.125, 0);
         mecanum             = new Mecanum();
         drivers             = new Drivers();
         voltage             = new Voltage();

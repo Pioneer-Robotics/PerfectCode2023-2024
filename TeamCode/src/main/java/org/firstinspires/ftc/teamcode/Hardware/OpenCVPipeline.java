@@ -35,20 +35,15 @@ class OpenCVPipeline extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
-        Mat augmentedImage = new Mat(input, newImage);
-        Mat augmentedImage2 = new Mat(input, newImage2);
-        Mat augmentedImage3 = new Mat(input, newImage3);
+        saturationLeft = meanSaturation(input.submat(newImage));
+        saturationMiddle = meanSaturation(input.submat(newImage2));
+        saturationRight = meanSaturation(input.submat(newImage3));
 
-        saturationLeft = meanSaturation(augmentedImage);
-        saturationMiddle = meanSaturation(augmentedImage2);
-        saturationRight = meanSaturation(augmentedImage3);
+        Imgproc.rectangle(input, newImage.tl(), newImage.br(), new Scalar(0, 255, 0), 2);
+        Imgproc.rectangle(input, newImage2.tl(), newImage2.br(), new Scalar(0, 255, 0), 2);
+        Imgproc.rectangle(input, newImage3.tl(), newImage3.br(), new Scalar(0, 255, 0), 2);
 
-        Mat output = input.clone();
-        Imgproc.rectangle(output, newImage.tl(), newImage.br(), new Scalar(0, 255, 0), 2);
-        Imgproc.rectangle(output, newImage2.tl(), newImage2.br(), new Scalar(0, 255, 0), 2);
-        Imgproc.rectangle(output, newImage3.tl(), newImage3.br(), new Scalar(0, 255, 0), 2);
-
-        return output;
+        return input;
     }
 
     public double meanSaturation(Mat augmentedImage){

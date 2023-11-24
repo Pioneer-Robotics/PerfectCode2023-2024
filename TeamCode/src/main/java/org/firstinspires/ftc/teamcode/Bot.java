@@ -16,7 +16,9 @@ public class Bot extends Init {
 
     //Motors
     public void setPowers(double LFspeed, double LBspeed, double RFspeed, double RBspeed) {motorData.setPowers(LFspeed, LBspeed, RFspeed, RBspeed);}
+    public double getPower(){return motorData.getPower();}
     public void setMotorPower(double power) {motorData.setMotorPower(power);}
+    public void setMotorPowerStrafe(double power) {motorData.setMotorPowerStrafe(power);}
     public void setMotorPowerRight(double power) {motorData.setMotorPowerRight(power);}
     public void setMotorPowerLeft(double power) {motorData.setMotorPowerLeft(power);}
     public void setMotorPowerTurn(double power) {motorData.setMotorPower(-power, power);}
@@ -27,6 +29,10 @@ public class Bot extends Init {
 
     //Odometers
     public void resetOdometers(){motorData.resetOdometers();}
+    public double getX(){return simplePose.getX();}
+    public double getY(){return simplePose.getY();}
+    public void resetY(){simplePose.resetY();}
+
 
     //Angle
     public double angleDEG(){return imu.getDegrees();}
@@ -37,6 +43,9 @@ public class Bot extends Init {
     public boolean isRunning(){return !getInstance().isAuto() || opmode.runAuto;}
     public void openCamera(){camera.openCamera();}
     public String getSaturationHigh(){return camera.getSaturationHigh();}
+    public void startMove(double distance){simpleDrive.moveForward(distance);}
+    public void startTurn(double degree){simpleDrive.moveTurn(degree);}
+    public void startStrafe(double distance){simpleDrive.moveStrafe(distance);}
 
     //Features
     public double getVoltage(){return voltage.getVoltage(opmode.hardwareMap.voltageSensor);}

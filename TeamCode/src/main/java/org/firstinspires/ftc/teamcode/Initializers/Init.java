@@ -22,7 +22,6 @@ import org.firstinspires.ftc.teamcode.OpModes.OpScript;
 import org.firstinspires.ftc.teamcode.SelfDriving.Pose;
 import org.firstinspires.ftc.teamcode.SelfDriving.SelfDriving;
 import org.firstinspires.ftc.teamcode.SelfDriving.SimpleDrive;
-import org.firstinspires.ftc.teamcode.SelfDriving.SimplePose;
 
 public abstract class Init {
     public OpScript opmode;
@@ -48,12 +47,12 @@ public abstract class Init {
         imu                 = new BotIMU(opMode.hardwareMap.get(IMU.class, "imu"));
         camera              = new Camera(opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName()), opMode.hardwareMap.get(WebcamName.class, "Webcam 1"));
         slideArm            = new SlideArm(opMode.hardwareMap.get(DcMotorEx.class, Config.slideArm));
-        collector           = new Collector(opMode.hardwareMap.get(DcMotorEx.class, Config.collector));
+        collector           = new Collector(opMode.hardwareMap.get(DcMotorEx.class, Config.collectorMotor));
         leftDropServo       = new PixelDropServos(opMode.hardwareMap.get(Servo.class, Config.leftDropServo), Config.leftOpenPos, Config.leftClosedPos);
         rightDropServo      = new PixelDropServos(opMode.hardwareMap.get(Servo.class, Config.rightDropServo), Config.rightOpenPos, Config.rightClosedPos);
         gripperServo        = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.gripperServo), Config.gripperOpen, Config.gripperClosed);
-        intakeServo         = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.intakeServo), Config.intakeUp, Config.intakeDown);
-        wristServo        = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.wristServo), Config.elevateOpen, Config.elevateClosed);
+        intakeServo         = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.intakeServoForCollector), Config.intakeUp, Config.intakeDown);
+        wristServo        = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.wristServo), Config.WristVertical, Config.WristHorizontal);
         commands            = new Commands();
         motorData           = new MotorData(opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF),

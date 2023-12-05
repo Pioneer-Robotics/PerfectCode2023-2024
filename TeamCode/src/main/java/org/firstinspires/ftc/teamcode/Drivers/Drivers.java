@@ -45,6 +45,26 @@ public class Drivers extends HardwareHelper {
         } else{
             bot.leftDropClosed();
         }
+        if(gamepad.dpad_left){
+            bot.rightDropOpen();
+        } else{
+            bot.rightDropClosed();
+        }
+        if(gamepad.left_bumper){
+            bot.gripperOpen();
+        } else{
+            bot.gripperClosed();
+        }
+        if(gamepad.right_bumper){
+            bot.elevateOpen();
+        } else{
+            bot.elevateClosed();
+        }
+        if(gamepad.dpad_right){
+            bot.intakeUp();
+        } else{
+            bot.intakeDown();
+        }
 
         if(gamepad.x){
             bot.setSlideLevel(600);

@@ -33,7 +33,7 @@ public abstract class Init {
     public Mecanum mecanum;
     public Drivers drivers;
     public PixelDropServos leftDropServo, rightDropServo;
-    public GripperServo gripperServo, elevateServo;
+    public GripperServo gripperServo, elevateServo, intakeServo;
     public Voltage voltage;
     public SelfDriving selfDriving;
     public Camera camera;
@@ -53,7 +53,8 @@ public abstract class Init {
         leftDropServo       = new PixelDropServos(opMode.hardwareMap.get(Servo.class, Config.leftDropServo), Config.leftOpenPos, Config.leftClosedPos);
         rightDropServo      = new PixelDropServos(opMode.hardwareMap.get(Servo.class, Config.rightDropServo), Config.rightOpenPos, Config.rightClosedPos);
         gripperServo        = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.gripperServo), Config.gripperOpen, Config.gripperClosed);
-        elevateServo        = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.elevateServo), Config.elevateOpen, Config.elevateClosed);
+        intakeServo         = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.intakeServo), Config.intakeUp, Config.intakeDown);
+        elevateServo        = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.wristServo), Config.elevateOpen, Config.elevateClosed);
         commands            = new Commands();
         motorData           = new MotorData(opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF),
@@ -62,7 +63,7 @@ public abstract class Init {
         simplePose          = new SimplePose(opMode.hardwareMap.get(DcMotorEx.class, Config.motorLB),
                                              opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
                                              opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF));
-        simpleDrive         = new SimpleDrive(1, 0, 0.125, 0);
+        simpleDrive         = new SimpleDrive(1, 0, 0.1, 0);
         mecanum             = new Mecanum();
         drivers             = new Drivers();
         voltage             = new Voltage();

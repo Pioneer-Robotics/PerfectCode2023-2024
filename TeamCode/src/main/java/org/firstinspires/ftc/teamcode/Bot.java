@@ -67,6 +67,8 @@ public class Bot extends Init {
     public void gripperClosed(){gripperServo.servoClosed();}
     public void elevateOpen(){elevateServo.servoOpen();}
     public void elevateClosed(){elevateServo.servoClosed();}
+    public void intakeUp(){intakeServo.servoOpen();}
+    public void intakeDown(){intakeServo.servoClosed();}
 
     //SelfDriving
     public void drive(Movement movement){selfDriving.drive(movement);}

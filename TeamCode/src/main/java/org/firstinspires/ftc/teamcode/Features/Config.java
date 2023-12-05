@@ -48,16 +48,19 @@ public class Config {
     //Pixel Servos
     public static final String leftDropServo = "PixelDropLeft";
     public static final String rightDropServo = "PixelDropRight";
-    public static final double leftOpenPos = 0.0;
-    public static final double rightOpenPos = 0.0;
-    public static final double leftClosedPos = 0.0;
-    public static final double rightClosedPos = 0.0;
+    public static final double leftOpenPos = 0;
+    public static final double rightOpenPos = .6;
+    public static final double leftClosedPos = .6;
+    public static final double rightClosedPos = 0;
 
-    //Gripper Servos
+    //Collector Servos
     public static final String gripperServo = "gripperServo";
-    public static final String elevateServo = "elevateServo";
-    public static final double gripperOpen = 0.0;
-    public static final double gripperClosed = 0.0;
-    public static final double elevateOpen = 0.0;
-    public static final double elevateClosed = 0.0;
+    public static final String wristServo = "elevateServo";
+    public static final String intakeServo = "intakeServo";
+    public static final double intakeUp = .7;
+    public static final double intakeDown = .9;
+    public static final double gripperOpen = 0.65;
+    public static final double gripperClosed = .78;
+    public static final double elevateOpen = .9;
+    public static final double elevateClosed = .675;
 }

@@ -9,10 +9,20 @@ import org.firstinspires.ftc.teamcode.OpModes.OpScript;
 public class Auto extends OpScript {
     @Override
     public void run() {
-        bot.startMove(100);
-        bot.startTurn(90);
-        bot.startMove(100);
-        bot.startStrafe(20);
+        bot.startMove(58);
+        bot.startTurn(88);
+        bot.startMove(90);
+        while(bot.getSlideLevel() != 600) {
+            bot.setSlideLevel(600);
+            bot.elevateOpen();
+            bot.update();
+        }
+        while(!isStopRequested() && isStarted()){
+            telemetry.addLine("finished and waiting clock");
+        }
+//        bot.elevateOpen();
+//        bot.update();
+//        bot.startStrafe(20);
     }
 
     @Override

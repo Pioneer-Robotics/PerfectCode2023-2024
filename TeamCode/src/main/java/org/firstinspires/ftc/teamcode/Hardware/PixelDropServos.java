@@ -13,8 +13,8 @@ public class PixelDropServos {
         this.ClosePos = closePos;
     }
 
-    public void servoClosed() {
+    public void servoDown() {
         pixelDropServo.setPosition(ClosePos);
     }
-    public void servoOpen(){pixelDropServo.setPosition(OpenPos);}
+    public void servoUp(){pixelDropServo.setPosition(OpenPos);}
 }

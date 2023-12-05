@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.Drivers;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Features.Config;
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
 import org.firstinspires.ftc.teamcode.Helpers.Toggle;
 import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
@@ -30,7 +28,7 @@ public class Drivers extends HardwareHelper {
         else{bot.coordinateLock(scalePower);}
 
         if(gamepad.b){
-            bot.leftDropOpen();
+            bot.leftDropUp();
         }
 
         if(gamepad.x){//resets IMU/Odometry just in case robot is not facing directly north
@@ -41,9 +39,16 @@ public class Drivers extends HardwareHelper {
 
     public void Driver2(Gamepad gamepad){
         if(gamepad.a){
-            bot.leftDropOpen();
+            bot.wristVertical();
         } else{
-            bot.leftDropClosed();
+            bot.wristHorizontal();
+        }
+
+        if(gamepad.right_bumper){
+            bot.gripperClosed();
+        }
+        else if(gamepad.left_bumper){
+            bot.gripperOpen();
         }
         if(gamepad.dpad_left){
             bot.rightDropOpen();
@@ -84,12 +89,16 @@ public class Drivers extends HardwareHelper {
     }
 
     public void telemetry(){
+        bot.updateOdos();
         telemetry.addData("Scale Power", scalePower.getNum());
         telemetry.addData("Regular Mecanum:", mecanumToggle.getBool());
         telemetry.addData("Angle:", bot.angleDEG());
         telemetry.addData("arm pos", bot.getSlideLevel());
-        telemetry.addData("X in cm", bot.getX());
-        telemetry.addData("Y in cm", bot.getY());
+        telemetry.addData("X in cm", bot.getXX());
+        telemetry.addData("Y in cm", bot.getYY());
+        telemetry.addData("left", bot.getRawOdos()[0].getCurrentPosition());
+        telemetry.addData("right", -bot.getRawOdos()[1].getCurrentPosition());
+        telemetry.addData("middle", bot.getRawOdos()[2].getCurrentPosition());
     }
 
     public void TeleOp(Gamepad gamepad1, Gamepad gamepad2){

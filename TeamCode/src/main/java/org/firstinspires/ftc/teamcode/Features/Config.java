@@ -5,16 +5,16 @@ import org.firstinspires.ftc.teamcode.SelfDriving.PIDCoefficients;
 
 public class Config {
     //Motor names
-    public static final String motorLF = "LF";
-    public static final String motorLB = "LB";
-    public static final String motorRF = "RF";
+    public static final String motorLF = "LF";//Right Odometer
+    public static final String motorLB = "LB";//Left Odometer
+    public static final String motorRF = "RF";//Middle Odometer
     public static final String motorRB = "RB";
     public static final String odoLeft = "OdoLeft";
     public static final String odoRight = "OdoRight";
     public static final String odoMiddle = "OdoMiddle";
     public static final String[] odos = {"OdoLeft", "OdoRight", "OdoMiddle"};
     public static final String slideArm = "slideArm";
-    public static final String collector = "collector";
+    public static final String collectorMotor = "collector";
 
     //Odometers
     public static final int odoTicksPerRotation = 2000;
@@ -40,7 +40,7 @@ public class Config {
     public static PIDCoefficients drive = new PIDCoefficients(0.5,0,0, 0);
     public static PIDCoefficients drive2 = new PIDCoefficients(3,0,0, 0);
     public static PIDCoefficients turn = new PIDCoefficients(1,0,0,0);
-    public static Movement turn90 = new Movement(0,20,00, drive) {
+    public static Movement movement = new Movement(0,20,0, drive) {
         @Override
         public void runExtra() {}
     };
@@ -53,14 +53,14 @@ public class Config {
     public static final double leftClosedPos = .6;
     public static final double rightClosedPos = 0;
 
-    //Collector Servos
+    //Gripper Servos
     public static final String gripperServo = "gripperServo";
     public static final String wristServo = "elevateServo";
-    public static final String intakeServo = "intakeServo";
+    public static final String intakeServoForCollector = "intakeServo";
     public static final double intakeUp = .7;
     public static final double intakeDown = .9;
     public static final double gripperOpen = 0.65;
     public static final double gripperClosed = .78;
-    public static final double elevateOpen = .9;
-    public static final double elevateClosed = .675;
+    public static final double WristVertical = .9;
+    public static final double WristHorizontal = .675;
 }

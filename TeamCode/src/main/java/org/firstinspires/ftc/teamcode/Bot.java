@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
 import org.firstinspires.ftc.teamcode.Initializers.Init;
 import org.firstinspires.ftc.teamcode.OpModes.OpScript;
-import org.firstinspires.ftc.teamcode.SelfDriving.Movement;
 
 public class Bot extends Init {
     private Bot(OpScript op){super.init(op);}
@@ -28,15 +27,19 @@ public class Bot extends Init {
     public void gearShift(Counter counter) {commands.gearShift(opmode.gamepad1, counter);}
 
     //Odometers
+    public DcMotorEx[] getRawOdos(){return pose.getRawOdoValues();}
     public void resetOdometers(){motorData.resetOdometers();}
-    public double getX(){return simplePose.getX();}
-    public double getY(){return simplePose.getY();}
-    public void resetY(){simplePose.resetY();}
+    public double getX(){return pose.getX();}
+    public double getY(){return pose.getY();}
+    public void resetY(){pose.resetY();}
+    public double getXX(){return pose.getXX();}
+    public double getYY(){return pose.getYY();}
+    public void updateOdos(){pose.updateOdo();}
 
 
     //Angle
-    public double angleDEG(){return imu.getDegrees();}
-    public double angleRAD(){return imu.getRadians();}
+    public double angleDEG(){return -imu.getDegrees();}
+    public double angleRAD(){return -imu.getRadians();}
     public void resetIMU() {imu.resetYaw();}
 
     //Auto
@@ -59,10 +62,10 @@ public class Bot extends Init {
     public void regularMecanum(Counter counter) {mecanum.mecanumDrive(opmode.gamepad1, counter);}
 
     //Servos
-    public void leftDropOpen(){leftDropServo.servoOpen();}
-    public void leftDropClosed(){leftDropServo.servoClosed();}
-    public void rightDropOpen(){rightDropServo.servoOpen();}
-    public void rightDropClosed(){rightDropServo.servoClosed();}
+    public void leftDropUp(){leftDropServo.servoUp();}
+    public void leftDropDown(){leftDropServo.servoDown();}
+    public void rightDropUp(){rightDropServo.servoUp();}
+    public void rightDropDown(){rightDropServo.servoDown();}
     public void gripperOpen(){gripperServo.servoOpen();}
     public void gripperClosed(){gripperServo.servoClosed();}
     public void elevateOpen(){elevateServo.servoOpen();}
@@ -71,7 +74,7 @@ public class Bot extends Init {
     public void intakeDown(){intakeServo.servoClosed();}
 
     //SelfDriving
-    public void drive(Movement movement){selfDriving.drive(movement);}
+//    public void drive(Movement movement){selfDriving.drive(movement);}
 
     //Slide Arm
     public void setSlideLevel(int level){slideArm.setLevel(level);}

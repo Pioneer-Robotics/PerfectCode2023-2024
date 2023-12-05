@@ -33,14 +33,13 @@ public abstract class Init {
     public Mecanum mecanum;
     public Drivers drivers;
     public PixelDropServos leftDropServo, rightDropServo;
-    public GripperServo gripperServo, elevateServo, intakeServo;
+    public GripperServo gripperServo, wristServo, intakeServo;
     public Voltage voltage;
     public SelfDriving selfDriving;
     public Camera camera;
     public SlideArm slideArm;
     public Pose pose;
     public Collector collector;
-    public SimplePose simplePose;
     public SimpleDrive simpleDrive;
 
     protected void init(OpScript opMode) {
@@ -54,20 +53,20 @@ public abstract class Init {
         rightDropServo      = new PixelDropServos(opMode.hardwareMap.get(Servo.class, Config.rightDropServo), Config.rightOpenPos, Config.rightClosedPos);
         gripperServo        = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.gripperServo), Config.gripperOpen, Config.gripperClosed);
         intakeServo         = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.intakeServo), Config.intakeUp, Config.intakeDown);
-        elevateServo        = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.wristServo), Config.elevateOpen, Config.elevateClosed);
+        wristServo        = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.wristServo), Config.elevateOpen, Config.elevateClosed);
         commands            = new Commands();
         motorData           = new MotorData(opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorLB),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRB));
-        simplePose          = new SimplePose(opMode.hardwareMap.get(DcMotorEx.class, Config.motorLB),
-                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
-                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF));
-        simpleDrive         = new SimpleDrive(1, 0, 0.1, 0);
+        pose                = new Pose(0,0,0,
+                                            opMode.hardwareMap.get(DcMotorEx.class, Config.motorLB),
+                                            opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
+                                            opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF));
+        simpleDrive         = new SimpleDrive(1, 0, 0.125, 0);
         mecanum             = new Mecanum();
         drivers             = new Drivers();
         voltage             = new Voltage();
-        selfDriving         = new SelfDriving();
-        pose                = new Pose(0,0,0);
+        selfDriving         = new SelfDriving(pose);
     }
 }

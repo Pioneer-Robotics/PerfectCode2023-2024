@@ -72,7 +72,7 @@ public class Drivers extends HardwareHelper {
         }
 
         if(gamepad.x){
-            bot.setSlideLevel(600);
+            bot.setSlideLevel(1200);
         }else if(gamepad.y){
             bot.setSlideLevel(2200);
         }

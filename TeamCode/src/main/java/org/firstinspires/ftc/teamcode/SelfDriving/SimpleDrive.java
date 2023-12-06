@@ -48,18 +48,20 @@ public class SimpleDrive extends HardwareHelper {
 
     //turn only
     public void moveTurn(double degree) {
+        double kiTurn = .001;
+        double kpTurn = 1.15;
         setpoint = degree;
 
         bot.setMotorPower(.06);
-        while(Math.abs(setpoint) - Math.abs(bot.angleDEG()) > 3.5 && Math.abs(bot.getPower()) > 0.05 && bot.opmode.opModeIsActive() && bot.opmode.isStarted()){
+        while(Math.abs(setpoint) - Math.abs(bot.angleDEG()) > 2 && Math.abs(bot.getPower()) > 0.05 && bot.opmode.opModeIsActive() && bot.opmode.isStarted()){
             double error = (Math.abs(setpoint) - Math.abs(bot.angleDEG())) / degree;
-            double proportional = kp * error;
+            double proportional = kpTurn * error;
 
             integral += error;
 
             double derivative = error - previousError;
             double feedforward = kf * degree;
-            double output = proportional + ki * integral + kd * .2 + feedforward;
+            double output = proportional + kiTurn * integral + kd * .2 + feedforward;
 
             bot.setMotorPowerTurn(output);
 

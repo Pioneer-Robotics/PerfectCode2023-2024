@@ -7,19 +7,28 @@ import org.firstinspires.ftc.teamcode.OpModes.OpScript;
 
 @Autonomous
 public class Auto extends OpScript {
+    boolean moveRight = true;
     @Override
     public void run() {
+        bot.gripperClosed();
         bot.startMove(58);
-        bot.startTurn(88);
+        sleep(2000);
+        bot.rightDropUp();
+        bot.update();
+        sleep(2000);
+        //bot.startStrafe(-20);
+        bot.startTurn(90);
         bot.startMove(90);
-        while(bot.getSlideLevel() != 600) {
-            bot.setSlideLevel(600);
+        if(moveRight) {
+            bot.startStrafe(30);
+        }
+        while(bot.getSlideLevel() != 1100) {
+            bot.setSlideLevel(1100);
             bot.wristVertical();
             bot.update();
         }
-        while(!isStopRequested() && isStarted()){
-            telemetry.addLine("finished and waiting clock");
-        }
+        bot.gripperOpen();
+        bot.update();
 //        bot.elevateOpen();
 //        bot.update();
 //        bot.startStrafe(20);

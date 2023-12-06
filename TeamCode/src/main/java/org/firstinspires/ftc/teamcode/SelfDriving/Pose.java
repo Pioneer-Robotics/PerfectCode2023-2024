@@ -87,10 +87,29 @@ public class Pose extends HardwareHelper {
 //            x += dxR * cos + dyR * sin;//x
 //            y += -dxR * sin + dyR * cos;//y
 //        }
+    }
 
+    public void gruberOdoCalculations()
+    {
+        //conversions and storing arrays
+        int[] ticks = new int[3];
+        for (int i=0; i<3; i++) ticks[i] = getRawOdoValues()[i].getCurrentPosition();
+        ticks[1] = -ticks[1];
+        int newLeftTicks = ticks[0] - prevTicks[0];
+        int newRightTicks = ticks[1] - prevTicks[1];
+        int newXTicks = ticks[2] - prevTicks[2];
+        prevTicks = Arrays.copyOf(ticks, ticks.length);
+        double rightDistToCM = newRightTicks * Config.goBuildaOdoTicksToCm;
+        double leftDistToCM = newLeftTicks * Config.goBuildaOdoTicksToCm;
+        double middleDistToCM = newXTicks * Config.goBuildaOdoTicksToCm;
+        double avgY_odos = 0/5 * (rightDistToCM + leftDistToCM);
 
+        //calculate and update
+        double xRotation = Config.odoXOffset * Math.cos(bot.angleDEG());
+        double yRotation = Config.odoYOffset * Math.sin(bot.angleDEG());
 
-
+        x += middleDistToCM - xRotation;
+        y += avgY_odos - yRotation;
     }
 
     public double getXX(){return x;}

@@ -52,7 +52,7 @@ public abstract class Init {
         rightDropServo      = new PixelDropServos(opMode.hardwareMap.get(Servo.class, Config.rightDropServo), Config.rightOpenPos, Config.rightClosedPos);
         gripperServo        = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.gripperServo), Config.gripperOpen, Config.gripperClosed);
         intakeServo         = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.intakeServoForCollector), Config.intakeUp, Config.intakeDown);
-        wristServo        = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.wristServo), Config.WristVertical, Config.WristHorizontal);
+        wristServo          = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.wristServo), Config.WristVertical, Config.WristHorizontal);
         commands            = new Commands();
         motorData           = new MotorData(opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF),
@@ -62,7 +62,7 @@ public abstract class Init {
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorLB),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF));
-        simpleDrive         = new SimpleDrive(1, 0, 0.125, 0);
+        simpleDrive         = new SimpleDrive(.8, 0.001, 0, 0);
         mecanum             = new Mecanum();
         drivers             = new Drivers();
         voltage             = new Voltage();

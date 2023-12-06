@@ -35,11 +35,14 @@ public class Bot extends Init {
     public double getXX(){return pose.getXX();}
     public double getYY(){return pose.getYY();}
     public void updateOdos(){pose.updateOdo();}
+    public void gruberOdos(){pose.gruberOdoCalculations();}
 
 
     //Angle
-    public double angleDEG(){return -imu.getDegrees();}
-    public double angleRAD(){return -imu.getRadians();}
+    public double angleDEG(){return imu.getDegrees();}
+    public double angleRAD(){return imu.getRadians();}
+    public double angleDEGN(){return -imu.getDegrees();}
+    public double angleRADN(){return -imu.getRadians();}
     public void resetIMU() {imu.resetYaw();}
 
     //Auto

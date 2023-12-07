@@ -18,8 +18,8 @@ public class Mecanum extends HardwareHelper {
 
         leftDiagPower = -(((-gamepad.left_stick_y - gamepad.left_stick_x) * Math.sin(angle) + ((gamepad.left_stick_y - gamepad.left_stick_x)) * Math.cos(angle)));
         rightDiagPower = -(((-(-gamepad.left_stick_y + gamepad.left_stick_x)) * Math.sin(angle) + ((gamepad.left_stick_y + gamepad.left_stick_x) * Math.cos(angle))));
-        leftRotatePower = -gamepad.right_stick_x*0.8;
-        rightRotatePower = gamepad.right_stick_x*0.8;
+        leftRotatePower =  gamepad.right_stick_x;
+        rightRotatePower = -gamepad.right_stick_x;
 
         bot.gearShift(scalePower);
         bot.setPowers(scalePower.getNum()*(leftDiagPower+leftRotatePower),
@@ -31,8 +31,8 @@ public class Mecanum extends HardwareHelper {
     public void mecanumDrive(Gamepad gamepad, Counter scalePower){
         leftDiagPower = ((-gamepad.left_stick_y + gamepad.left_stick_x));
         rightDiagPower = ((-gamepad.left_stick_y - gamepad.left_stick_x));
-        leftRotatePower =  gamepad.right_stick_x*0.8;
-        rightRotatePower = -gamepad.right_stick_x*0.8;
+        leftRotatePower =  gamepad.right_stick_x;
+        rightRotatePower = -gamepad.right_stick_x;
 
         bot.gearShift(scalePower);
         bot.setPowers(scalePower.getNum() *(leftDiagPower+leftRotatePower),

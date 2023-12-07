@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
 
 public class Drivers extends HardwareHelper {
     //Toggles
-    private final Toggle mecanumToggle = new Toggle(true);
+    private final Toggle mecanumToggle = new Toggle(false);
 
     //Counter
     private final Counter scalePower = new Counter(.3, .2, 0.8);
@@ -16,24 +16,12 @@ public class Drivers extends HardwareHelper {
     public void Driver1(Gamepad gamepad){
         mecanumToggle.toggle(gamepad.y);//toggles between regular and coordinate lock mecanum
 
-//        if(gamepad.a){
-//            bot.setPowers(.15,.15,.15,.15);
-//        } else if(gamepad.b){
-//            bot.setPowers(-0.1,-0.1,-0.1,-0.1);
-//        } else{
-//            bot.setPowers(0,0,0,0);
-//        }
-
-        if(mecanumToggle.getBool()){bot.regularMecanum(scalePower);}
-        else{bot.coordinateLock(scalePower);}
-
-        if(gamepad.b){
-            bot.leftDropUp();
-        }
+        if(mecanumToggle.getBool()){bot.coordinateLock(scalePower);}
+        else{bot.regularMecanum(scalePower);}
 
         if(gamepad.x){//resets IMU/Odometry just in case robot is not facing directly north
             bot.resetIMU();
-            bot.resetOdometers();
+            //bot.resetOdometers();
         }
     }
 
@@ -89,9 +77,9 @@ public class Drivers extends HardwareHelper {
     }
 
     public void telemetry(){
-        bot.updateOdos();
+        bot.gruberOdos();
         telemetry.addData("Scale Power", scalePower.getNum());
-        telemetry.addData("Regular Mecanum:", mecanumToggle.getBool());
+        telemetry.addData("Coordinate Lock Mecanum:", mecanumToggle.getBool());
         telemetry.addData("Angle:", bot.angleDEG());
         telemetry.addData("arm pos", bot.getSlideLevel());
         telemetry.addData("X in cm", bot.getXX());

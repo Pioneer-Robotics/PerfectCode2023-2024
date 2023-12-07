@@ -81,17 +81,16 @@ public class Pose extends HardwareHelper {
         double dyR = 0.5 * (rightDist + leftDist);
         double headingChangeRadians = (rightDist - leftDist) / Config.goBuildaOdoDiameter;
         double dxR = newXTicks * (Config.goBuildaOdoTicksToCm);
-        double cos = Math.cos(bot.angleRAD());
-        double sin = Math.sin(bot.angleRAD());
+        double cos = Math.cos(-bot.angleRAD());
+        double sin = Math.sin(-bot.angleRAD());
 
-        x += dxR * cos + dyR * sin;
-        y += -dxR * cos + dyR * cos;
+//        x += dxR * cos + dyR * sin;
+//        y += -dxR * cos + dyR * cos;
         //        if (Math.abs(rightDist + leftDist) > .3 || Math.abs(dxR) > 0.5) {
-//        if (Math.abs(rightDist + leftDist) > .5) {
-            //moving
-//            x += dxR * cos + dyR * sin;//x
-//            y += -dxR * sin + dyR * cos;//y
-//        }
+        if (Math.abs(rightDist + leftDist) > 1 || Math.abs(dxR) > 1) {
+            x += dxR * cos + dyR * sin;//x
+            y += -dxR * sin + dyR * cos;//y
+        }
     }
 
     public void gruberOdoCalculations()
@@ -103,13 +102,13 @@ public class Pose extends HardwareHelper {
 
         //Handle angle change and store previous angle
         double currentAngleRAD = bot.angleRAD();
-        double changeInTheta = bMath.regularizeAngleRad(currentAngleRAD - theta);
-        theta = currentAngleRAD;//set
+//        double changeInTheta = bMath.regularizeAngleRad(currentAngleRAD - theta);
+//        theta = currentAngleRAD;//set
 
         //Pure rotation
-        double middleOdoRotation = Config.odoXOffset * Math.cos(xOdoStartingAngle + changeInTheta);
-        double rightOdoRotation = Config.odoYOffset * Math.sin(rightOdoStartingAngle + changeInTheta);
-        double leftOdoRotation = Config.odoYOffset * Math.sin(leftOdoStartingAngle + changeInTheta);
+        double middleOdoRotation = Config.odoXOffset * Math.cos(xOdoStartingAngle + currentAngleRAD);
+        double rightOdoRotation = Config.odoYOffset * Math.sin(rightOdoStartingAngle + currentAngleRAD);
+        double leftOdoRotation = Config.odoYOffset * Math.sin(leftOdoStartingAngle + currentAngleRAD);
 
         //Deal with y translation
         double rightYTranslation = rightOdoTicksToCM - rightOdoRotation;

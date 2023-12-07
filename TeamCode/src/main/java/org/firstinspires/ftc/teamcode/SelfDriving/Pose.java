@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.Features.Config;
+import org.firstinspires.ftc.teamcode.Helpers.bMath;
 import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
 
 import java.util.Arrays;
@@ -16,6 +17,7 @@ public class Pose extends HardwareHelper {
 
     private double x = 0, y = 0, theta = 0;
     private int[] prevTicks = new int[3];
+    private double rightOdoStartingAngle = 90d, leftOdoStartingAngle = -90d, xOdoStartingAngle = 0d;
 
 
     public Pose(DcMotorEx leftOdo, DcMotorEx middleOdo, DcMotorEx rightOdo){
@@ -31,6 +33,7 @@ public class Pose extends HardwareHelper {
         this.middleOdo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.rightOdo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
     public Pose(double x, double y, double theta, DcMotorEx leftOdo, DcMotorEx middleOdo, DcMotorEx rightOdo){
         this.x = x;
         this.y = y;
@@ -81,6 +84,8 @@ public class Pose extends HardwareHelper {
         double cos = Math.cos(bot.angleRAD());
         double sin = Math.sin(bot.angleRAD());
 
+        x += dxR * cos + dyR * sin;
+        y += -dxR * cos + dyR * cos;
         //        if (Math.abs(rightDist + leftDist) > .3 || Math.abs(dxR) > 0.5) {
 //        if (Math.abs(rightDist + leftDist) > .5) {
             //moving
@@ -91,25 +96,30 @@ public class Pose extends HardwareHelper {
 
     public void gruberOdoCalculations()
     {
-        //conversions and storing arrays
-        int[] ticks = new int[3];
-        for (int i=0; i<3; i++) ticks[i] = getRawOdoValues()[i].getCurrentPosition();
-        ticks[1] = -ticks[1];
-        int newLeftTicks = ticks[0] - prevTicks[0];
-        int newRightTicks = ticks[1] - prevTicks[1];
-        int newXTicks = ticks[2] - prevTicks[2];
-        prevTicks = Arrays.copyOf(ticks, ticks.length);
-        double rightDistToCM = newRightTicks * Config.goBuildaOdoTicksToCm;
-        double leftDistToCM = newLeftTicks * Config.goBuildaOdoTicksToCm;
-        double middleDistToCM = newXTicks * Config.goBuildaOdoTicksToCm;
-        double avgY_odos = 0/5 * (rightDistToCM + leftDistToCM);
+        //convert to CM
+        double leftOdoTicksToCM = leftOdo.getCurrentPosition() * Config.goBuildaOdoTicksToCm;
+        double rightOdoTicksToCM = -rightOdo.getCurrentPosition() * Config.goBuildaOdoTicksToCm;//right reversed
+        double middleOdoTicksToCM = middleOdo.getCurrentPosition() * Config.goBuildaOdoTicksToCm;
 
-        //calculate and update
-        double xRotation = Config.odoXOffset * Math.cos(bot.angleDEG());
-        double yRotation = Config.odoYOffset * Math.sin(bot.angleDEG());
+        //Handle angle change and store previous angle
+        double currentAngleRAD = bot.angleRAD();
+        double changeInTheta = bMath.regularizeAngleRad(currentAngleRAD - theta);
+        theta = currentAngleRAD;//set
 
-        x += middleDistToCM - xRotation;
-        y += avgY_odos - yRotation;
+        //Pure rotation
+        double middleOdoRotation = Config.odoXOffset * Math.cos(xOdoStartingAngle + changeInTheta);
+        double rightOdoRotation = Config.odoYOffset * Math.sin(rightOdoStartingAngle + changeInTheta);
+        double leftOdoRotation = Config.odoYOffset * Math.sin(leftOdoStartingAngle + changeInTheta);
+
+        //Deal with y translation
+        double rightYTranslation = rightOdoTicksToCM - rightOdoRotation;
+        double leftYTranslation = leftOdoTicksToCM - leftOdoRotation;
+
+        //Finally update current position
+        x = middleOdoTicksToCM - middleOdoRotation;
+        y = (rightYTranslation + leftYTranslation)/2;
+
+        //Must run in loop
     }
 
     public double getXX(){return x;}

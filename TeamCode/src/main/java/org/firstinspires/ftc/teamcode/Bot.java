@@ -70,10 +70,10 @@ public class Bot extends Init {
     public void regularMecanum(Counter counter) {mecanum.mecanumDrive(opmode.gamepad1, counter);}
 
     //Servos
-    public void leftDropUp(){leftDropServo.servoUp();}
-    public void leftDropDown(){leftDropServo.servoDown();}
-    public void rightDropUp(){rightDropServo.servoUp();}
-    public void rightDropDown(){rightDropServo.servoDown();}
+    public void leftDropUp(){leftDropServo.servoOpen();}
+    public void leftDropDown(){leftDropServo.servoClosed();}
+    public void rightDropUp(){rightDropServo.servoOpen();}
+    public void rightDropDown(){rightDropServo.servoClosed();}
     public void gripperOpen(){gripperServo.servoOpen();}
     public void gripperClosed(){gripperServo.servoClosed();}
     public void wristVertical(){wristServo.servoOpen();}

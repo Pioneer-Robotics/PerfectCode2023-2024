@@ -13,9 +13,8 @@ import org.firstinspires.ftc.teamcode.Features.Voltage;
 import org.firstinspires.ftc.teamcode.Hardware.BotIMU;
 import org.firstinspires.ftc.teamcode.Hardware.Camera;
 import org.firstinspires.ftc.teamcode.Hardware.Collector;
-import org.firstinspires.ftc.teamcode.Hardware.GripperServo;
+import org.firstinspires.ftc.teamcode.Hardware.UniServo;
 import org.firstinspires.ftc.teamcode.Hardware.MotorData;
-import org.firstinspires.ftc.teamcode.Hardware.PixelDropServos;
 import org.firstinspires.ftc.teamcode.Hardware.SlideArm;
 import org.firstinspires.ftc.teamcode.Helpers.BulkReader;
 import org.firstinspires.ftc.teamcode.OpModes.OpScript;
@@ -31,8 +30,7 @@ public abstract class Init {
     public BulkReader bulkReader;
     public Mecanum mecanum;
     public Drivers drivers;
-    public PixelDropServos leftDropServo, rightDropServo;
-    public GripperServo gripperServo, wristServo, intakeServo;
+    public UniServo gripperServo, wristServo, intakeServo, leftDropServo, rightDropServo;
     public Voltage voltage;
     public SelfDriving selfDriving;
     public Camera camera;
@@ -49,11 +47,11 @@ public abstract class Init {
         camera              = new Camera(opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName()), opMode.hardwareMap.get(WebcamName.class, "Webcam 1"));
         slideArm            = new SlideArm(opMode.hardwareMap.get(DcMotorEx.class, Config.slideArm));
         collector           = new Collector(opMode.hardwareMap.get(DcMotorEx.class, Config.collectorMotor));
-        leftDropServo       = new PixelDropServos(opMode.hardwareMap.get(Servo.class, Config.leftDropServo), Config.leftClosedPos, Config.leftOpenPos);
-        rightDropServo      = new PixelDropServos(opMode.hardwareMap.get(Servo.class, Config.rightDropServo),Config.rightClosedPos , Config.rightOpenPos);
-        gripperServo        = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.gripperServo), Config.gripperOpen, Config.gripperClosed);
-        intakeServo         = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.intakeServoForCollector), Config.intakeUp, Config.intakeDown);
-        wristServo          = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.wristServo), Config.WristVertical, Config.WristHorizontal);
+        leftDropServo       = new UniServo(opMode.hardwareMap.get(Servo.class, Config.leftDropServo), Config.leftClosedPos, Config.leftOpenPos);
+        rightDropServo      = new UniServo(opMode.hardwareMap.get(Servo.class, Config.rightDropServo),Config.rightClosedPos , Config.rightOpenPos);
+        gripperServo        = new UniServo(opMode.hardwareMap.get(Servo.class, Config.gripperServo), Config.gripperOpen, Config.gripperClosed);
+        intakeServo         = new UniServo(opMode.hardwareMap.get(Servo.class, Config.intakeServoForCollector), Config.intakeUp, Config.intakeDown);
+        wristServo          = new UniServo(opMode.hardwareMap.get(Servo.class, Config.wristServo), Config.WristVertical, Config.WristHorizontal);
         commands            = new Commands();
         motorData           = new MotorData(opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF),

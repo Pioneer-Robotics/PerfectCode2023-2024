@@ -48,7 +48,7 @@ public class SimpleDrive extends HardwareHelper {
 
     //turn only
     public void moveTurn(double degree) {
-        double kiTurn = .001;
+        double kiTurn = .0005;
         double kpTurn = 1.15;
         setpoint = degree;
 

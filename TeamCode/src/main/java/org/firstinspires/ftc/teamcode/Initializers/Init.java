@@ -62,7 +62,7 @@ public abstract class Init {
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorLB),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF));
-        simpleDrive         = new SimpleDrive(.8, 0.001, 0, 0);
+        simpleDrive         = new SimpleDrive(.6, 0.002, 0, 0);
         mecanum             = new Mecanum();
         drivers             = new Drivers();
         voltage             = new Voltage();

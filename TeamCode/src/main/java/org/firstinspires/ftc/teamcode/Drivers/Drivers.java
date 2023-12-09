@@ -8,7 +8,10 @@ import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
 
 public class Drivers extends HardwareHelper {
     //Toggles
-    private final Toggle mecanumToggle = new Toggle(false);
+    private final Toggle mecanumToggle = new Toggle(true);
+    private final Toggle collectorToggle = new Toggle(false);
+    private final Toggle grabberToggle = new Toggle(true);
+    private final Toggle intakeToggle = new Toggle(true);
 
     //Counter
     private final Counter scalePower = new Counter(.3, .2, 0.8);
@@ -26,34 +29,22 @@ public class Drivers extends HardwareHelper {
     }
 
     public void Driver2(Gamepad gamepad){
-        if(gamepad.a){
-            bot.leftDropDown();
-        } else{
-            bot.leftDropUp();
+        grabberToggle.toggle(gamepad.left_bumper);
+        if(grabberToggle.getBool()){
+            bot.gripperOpen();
+        }
+        else{
+             bot.gripperClosed();
         }
 
-        if(gamepad.right_bumper){
-            bot.gripperClosed();
-        }
-        else if(gamepad.left_bumper){
-            bot.gripperOpen();
-        }
-        if(gamepad.dpad_left){
-            bot.rightDropUp();
-        } else{
-            bot.rightDropDown();
-        }
-        if(gamepad.left_bumper){
-            bot.gripperOpen();
-        } else{
-            bot.gripperClosed();
-        }
         if(gamepad.right_bumper){
             bot.wristVertical();
         } else{
             bot.wristHorizontal();
         }
-        if(gamepad.dpad_right){
+
+        intakeToggle.toggle(gamepad.dpad_left);
+        if(intakeToggle.getBool()){
             bot.intakeUp();
         } else{
             bot.intakeDown();
@@ -67,12 +58,18 @@ public class Drivers extends HardwareHelper {
         else if(gamepad.b){
             bot.setSlideLevel(0);
         }
+        collectorToggle.toggle(gamepad.dpad_down);
 
         if(gamepad.dpad_up){
-            bot.moveCollector();
+            bot.moveCollectorBack();
         }
-        else if(gamepad.dpad_down){
-            bot.stopCollector();
+        else{
+            if(collectorToggle.getBool()){
+                bot.moveCollector();
+            }
+            else{
+                bot.stopCollector();
+            }
         }
     }
 

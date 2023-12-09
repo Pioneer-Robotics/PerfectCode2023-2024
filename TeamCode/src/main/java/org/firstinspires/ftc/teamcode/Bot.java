@@ -86,6 +86,7 @@ public class Bot extends Init {
     public double getSlideLevel(){return slideArm.getSlideLevel();}
 
     //Collector Arm
+    public void moveCollectorBack(){collector.moveCollectorBack();}
     public void moveCollector(){collector.moveCollector();}
     public void stopCollector(){collector.stopCollector();}
     public void setCollectorVelocitySpeed(double speed){collector.setVelocitySpeed(speed);}

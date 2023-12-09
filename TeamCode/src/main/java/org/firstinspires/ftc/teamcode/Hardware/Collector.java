@@ -26,6 +26,9 @@ public class Collector extends HardwareHelper {
     public void moveCollector(){
         collector.setVelocity(Config.encoderRatio * speed);
     }
+    public void moveCollectorBack(){
+        collector.setVelocity(-Config.encoderRatio * .1);
+    }
 
     public void stopCollector(){
         collector.setVelocity(0);

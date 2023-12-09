@@ -36,6 +36,7 @@ public class Bot extends Init {
     public double getYY(){return pose.getYY();}
     public void updateOdos(){pose.updateOdo();}
     public void gruberOdos(){pose.gruberOdoCalculations();}
+    public void newOdoCalc(){pose.newOdoCalc();}
 
 
     //Angle
@@ -45,13 +46,17 @@ public class Bot extends Init {
     public double angleRADN(){return -imu.getRadians();}
     public void resetIMU() {imu.resetYaw();}
 
-    //Auto
+    //RedAuto
+    public void runAuto() {commands.boardSide();}
+    public void runAuto2() {commands.audienceSide();}
     public boolean isRunning(){return !getInstance().isAuto() || opmode.runAuto;}
     public void openCamera(){camera.openCamera();}
+    public int locationCamera(){return camera.locationCamera();}
     public String getSaturationHigh(){return camera.getSaturationHigh();}
     public void startMove(double distance){simpleDrive.moveForward(distance);}
     public void startTurn(double degree){simpleDrive.moveTurn(degree);}
     public void startStrafe(double distance){simpleDrive.moveStrafe(distance);}
+    public void startStrafeNegative(double distance){simpleDrive.moveStrafe(distance);}
 
     //Features
     public double getVoltage(){return voltage.getVoltage(opmode.hardwareMap.voltageSensor);}

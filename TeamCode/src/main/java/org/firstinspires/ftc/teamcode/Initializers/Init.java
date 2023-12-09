@@ -45,11 +45,12 @@ public abstract class Init {
         opmode              = opMode;
         bulkReader          = new BulkReader(opMode.hardwareMap);
         imu                 = new BotIMU(opMode.hardwareMap.get(IMU.class, "imu"));
+        imu.resetYaw();
         camera              = new Camera(opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName()), opMode.hardwareMap.get(WebcamName.class, "Webcam 1"));
         slideArm            = new SlideArm(opMode.hardwareMap.get(DcMotorEx.class, Config.slideArm));
         collector           = new Collector(opMode.hardwareMap.get(DcMotorEx.class, Config.collectorMotor));
-        leftDropServo       = new PixelDropServos(opMode.hardwareMap.get(Servo.class, Config.leftDropServo), Config.leftOpenPos, Config.leftClosedPos);
-        rightDropServo      = new PixelDropServos(opMode.hardwareMap.get(Servo.class, Config.rightDropServo), Config.rightOpenPos, Config.rightClosedPos);
+        leftDropServo       = new PixelDropServos(opMode.hardwareMap.get(Servo.class, Config.leftDropServo), Config.leftClosedPos, Config.leftOpenPos);
+        rightDropServo      = new PixelDropServos(opMode.hardwareMap.get(Servo.class, Config.rightDropServo),Config.rightClosedPos , Config.rightOpenPos);
         gripperServo        = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.gripperServo), Config.gripperOpen, Config.gripperClosed);
         intakeServo         = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.intakeServoForCollector), Config.intakeUp, Config.intakeDown);
         wristServo          = new GripperServo(opMode.hardwareMap.get(Servo.class, Config.wristServo), Config.WristVertical, Config.WristHorizontal);

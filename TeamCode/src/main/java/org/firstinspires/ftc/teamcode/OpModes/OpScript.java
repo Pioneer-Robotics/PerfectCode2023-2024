@@ -16,6 +16,7 @@ public abstract class OpScript extends LinearOpMode {
     public boolean runAuto;
     public OpScript opScript;
     public static long cycleNumber;
+    public int location;
 
     public abstract void run();//method where you put wherever needs to be looped
 
@@ -44,6 +45,7 @@ public abstract class OpScript extends LinearOpMode {
         opScript.runAuto = true;
         if(bot.isAuto()){
             bot.openCamera();
+            location = bot.locationCamera();
             bot.addData("Camera", bot.getSaturationHigh());
         }
         bot.addData("Voltage", bot.getVoltage());

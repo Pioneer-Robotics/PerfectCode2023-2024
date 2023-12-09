@@ -100,4 +100,31 @@ public class SimpleDrive extends HardwareHelper {
         }
         bot.setMotorPower(0);
     }
+
+    //strafe only
+    public void moveStrafeNegative(double distance) {
+        bot.resetY();
+        setpoint = bot.getY() + distance;
+
+        bot.setMotorPower(.06);
+        while (bot.getY() > setpoint + 1 && Math.abs(bot.getPower()) > 0.05 && bot.opmode.opModeIsActive() && bot.opmode.isStarted()) {
+            double error = (setpoint - bot.getY()) / distance;
+            double proportional = kp * error;
+
+            integral += error;
+
+            double derivative = error - previousError;
+            double feedforward = kf * distance;
+            double output = proportional + ki * integral + kd * derivative + feedforward;
+
+            bot.setMotorPowerStrafe(-output);
+
+            bot.addData("distance", setpoint);
+            bot.addData("cur", bot.getY());
+            bot.update();
+
+            previousError = error;
+        }
+        bot.setMotorPower(0);
+    }
 }

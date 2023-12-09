@@ -29,6 +29,8 @@ public class Drivers extends HardwareHelper {
     }
 
     public void Driver2(Gamepad gamepad){
+        bot.rightDropUp();
+        bot.leftDropDown();
         grabberToggle.toggle(gamepad.left_bumper);
         if(grabberToggle.getBool()){
             bot.gripperOpen();
@@ -74,7 +76,7 @@ public class Drivers extends HardwareHelper {
     }
 
     public void telemetry(){
-        bot.gruberOdos();
+        bot.newOdoCalc();
         telemetry.addData("Scale Power", scalePower.getNum());
         telemetry.addData("Coordinate Lock Mecanum:", mecanumToggle.getBool());
         telemetry.addData("Angle:", bot.angleDEG());

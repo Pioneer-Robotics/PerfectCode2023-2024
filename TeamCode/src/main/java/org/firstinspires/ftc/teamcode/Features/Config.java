@@ -61,6 +61,6 @@ public class Config {
     public static final double intakeDown = .9;
     public static final double gripperOpen = 0.65;
     public static final double gripperClosed = .78;
-    public static final double WristVertical = .9;
+    public static final double WristVertical = .95;
     public static final double WristHorizontal = .675;
 }

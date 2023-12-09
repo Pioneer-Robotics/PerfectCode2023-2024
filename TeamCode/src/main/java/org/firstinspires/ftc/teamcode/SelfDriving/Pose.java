@@ -106,9 +106,9 @@ public class Pose extends HardwareHelper {
 //        theta = currentAngleRAD;//set
 
         //Pure rotation
-        double middleOdoRotation = Config.odoXOffset * Math.cos(xOdoStartingAngle + currentAngleRAD);
-        double rightOdoRotation = Config.odoYOffset * Math.sin(rightOdoStartingAngle + currentAngleRAD);
-        double leftOdoRotation = Config.odoYOffset * Math.sin(leftOdoStartingAngle + currentAngleRAD);
+        double middleOdoRotation = Config.odoXOffset * Math.cos( Math.toRadians(xOdoStartingAngle) + currentAngleRAD);
+        double rightOdoRotation = Config.odoYOffset * Math.sin( Math.toRadians(rightOdoStartingAngle) + currentAngleRAD);
+        double leftOdoRotation = Config.odoYOffset * Math.sin(  Math.toRadians(leftOdoStartingAngle) + currentAngleRAD);
 
         //Deal with y translation
         double rightYTranslation = rightOdoTicksToCM - rightOdoRotation;
@@ -119,6 +119,31 @@ public class Pose extends HardwareHelper {
         y = (rightYTranslation + leftYTranslation)/2;
 
         //Must run in loop
+    }
+
+    public void newOdoCalc(){
+        int[] ticks = new int[3];
+        for (int i=0; i<3; i++) ticks[i] = getRawOdoValues()[i].getCurrentPosition(); //get encoder positions
+        ticks[1] = -ticks[1]; //correct for backwards odometer
+        int newLeftTicks = ticks[0] - prevTicks[0];
+        int newRightTicks =  ticks[1] - prevTicks[1];
+        int newXTicks = ticks[2] - prevTicks[2];
+        prevTicks = ticks;
+        double rightDist = newRightTicks * (Config.goBuildaOdoTicksToCm); //convert from ticks to cm
+        double leftDist = newLeftTicks * (Config.goBuildaOdoTicksToCm); //convert from ticks to cm
+        double backDist = newXTicks * (Config.goBuildaOdoTicksToCm); //convert from ticks to cm
+        double dyR = 0.5 * (rightDist + leftDist); //average of left/right odometer delta
+        double headingChangeRadians = (rightDist - leftDist) / (Config.odoXOffset * 2);
+        if (Math.abs(headingChangeRadians) != 0) { //if robot has turned since last update accout for turning
+            double turnRadius = Config.odoXOffset * (leftDist + rightDist) / (rightDist - leftDist);
+            double strafeRadius = backDist / headingChangeRadians - Config.odoYOffset;
+            y += turnRadius*Math.sin(headingChangeRadians)+strafeRadius*(1-Math.cos(headingChangeRadians)); //cumulate y axis
+            x -= turnRadius*(Math.cos(headingChangeRadians)-1)+strafeRadius*(headingChangeRadians); //subtract to correct direction for x axis
+            theta = -bMath.regularizeAngleRad(theta + headingChangeRadians); //cumulate total angle from odometry
+        } else { //simple formulas if we haven't turned
+            y += dyR;
+            x += backDist;
+        }
     }
 
     public double getXX(){return x;}

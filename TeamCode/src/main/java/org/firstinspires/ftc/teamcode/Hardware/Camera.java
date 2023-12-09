@@ -36,6 +36,22 @@ public class Camera extends HardwareHelper {
         });
     }
 
+    public int locationCamera(){
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                streamCamera(openCVPipeline);
+                telemetry.addData("Camera Sat", getSaturationHigh());
+            }
+            @Override
+            public void onError(int errorCode) {
+                bot.addLine("Camera Failed.");
+            }
+        });
+        String satHigh = getSaturationHigh();
+        return satHigh.equals("Left") ? 1 : satHigh.equals("Right") ? 3 : 2;
+    }
+
     public void streamCamera(OpenCVPipeline openCVPipeline) {
         synchronized (lock) {
             camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);

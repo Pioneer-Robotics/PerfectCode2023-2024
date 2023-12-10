@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Features;
+package org.firstinspires.ftc.teamcode.SelfDrivingAuto;
 
 import static java.lang.Thread.sleep;
 
@@ -42,22 +42,27 @@ public class Commands extends AbstractHardwareComponent {
 //                moveRight = true;
 //            }
 
+            //flipping turn based on if we are on red or blue side
             if(!isBlue){
                 turn = -turn;
             }
 
+            //not going to left side
             if (!moveLeft) {
+                //make sure all motors and servos are in correct position
                 bot.rightDropUp();
                 bot.gripperClosed();
-                bot.startMove(58);
-                sleep(1000);
+
+                bot.startMove(58);//move forward one square
+                sleep(1000);//wait one second
                 if (moveRight) {
+                    //drop pixel if we are going to the right
                     bot.rightDropDown();
                 }
                 bot.update();
-                sleep(1000);
+                sleep(1000);//one second
                 //bot.startStrafe(-20);
-                bot.startTurn(turn);
+                bot.startTurn(turn);//turn
                 sleep(1000);
                 if (moveMiddle) {
                     bot.rightDropDown();

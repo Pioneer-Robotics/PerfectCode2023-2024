@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Drivers;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
-import org.firstinspires.ftc.teamcode.Helpers.VelocityMath;
+import org.firstinspires.ftc.teamcode.Helpers.bMath;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
 /**
@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
  */
 public class Mecanum extends AbstractHardwareComponent {
     private double leftDiagPower = 0d, rightDiagPower = 0d, leftRotatePower = 0d, rightRotatePower = 0d;
-    private final double sq2 = VelocityMath.sq2;
+    private final double sq2 = bMath.sq2;
 
     /**
      * Based on the zero angle, it will drive depending on that
@@ -28,10 +28,10 @@ public class Mecanum extends AbstractHardwareComponent {
         rightRotatePower = -gamepad.right_stick_x;
 
         bot.gearShift(scalePower);//utilizes the counter class
-        bot.setPowers(scalePower.getNum()*(leftDiagPower+leftRotatePower),
-                scalePower.getNum()*(rightDiagPower+leftRotatePower),
-                scalePower.getNum()*(rightDiagPower+rightRotatePower),
-                scalePower.getNum()*(leftDiagPower+rightRotatePower) );
+        bot.setPowers(scalePower.getNum() * (leftDiagPower+leftRotatePower),
+                scalePower.getNum() * (rightDiagPower+leftRotatePower),
+                scalePower.getNum() * (rightDiagPower+rightRotatePower),
+                scalePower.getNum() * (leftDiagPower+rightRotatePower) );
     }
 
     public void mecanumDrive(Gamepad gamepad, Counter scalePower){
@@ -41,10 +41,10 @@ public class Mecanum extends AbstractHardwareComponent {
         rightRotatePower = -gamepad.right_stick_x;
 
         bot.gearShift(scalePower);
-        bot.setPowers(scalePower.getNum() *(leftDiagPower+leftRotatePower),
-                scalePower.getNum() *(rightDiagPower+leftRotatePower),
-                scalePower.getNum() *(rightDiagPower+rightRotatePower),
-                scalePower.getNum() *(leftDiagPower+rightRotatePower));
+        bot.setPowers(scalePower.getNum() * (leftDiagPower+leftRotatePower),
+                scalePower.getNum() * (rightDiagPower+leftRotatePower),
+                scalePower.getNum() * (rightDiagPower+rightRotatePower),
+                scalePower.getNum() * (leftDiagPower+rightRotatePower));
     }
 
     //Velocities

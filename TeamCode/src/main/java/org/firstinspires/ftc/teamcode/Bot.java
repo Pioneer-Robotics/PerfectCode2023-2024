@@ -4,14 +4,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
-import org.firstinspires.ftc.teamcode.Initializers.Init;
+import org.firstinspires.ftc.teamcode.Initializers.AbstractBot;
 import org.firstinspires.ftc.teamcode.OpModes.OpScript;
 
-public class Bot extends Init {
-    private Bot(OpScript op){super.init(op);}
-    public static Bot getInstance(OpScript op) {return new Bot(op);}
-    public static Bot getInstance() {return OpScript.bot;}
-    public boolean isAuto() {return opmode.getClass().isAnnotationPresent(Autonomous.class);}
+/**
+ * Singleton class that contains all of the methods we are using
+ */
+public class Bot extends AbstractBot {
+    private Bot(OpScript op){super.init(op);}//inits bot that creates our OpMode
+    public static Bot getInstance(OpScript op) {return new Bot(op);}//returns a new instance of itself
+    public static Bot getInstance() {return OpScript.bot;}//gets itself
+    public boolean isAuto() {return opmode.getClass().isAnnotationPresent(Autonomous.class);}//used to see if we are in auto or not
 
     //Motors
     public void setPowers(double LFspeed, double LBspeed, double RFspeed, double RBspeed) {driveMotors.setPowers(LFspeed, LBspeed, RFspeed, RBspeed);}
@@ -28,8 +31,7 @@ public class Bot extends Init {
 
     //Odometers
     public DcMotorEx[] getRawOdos(){return pose.getRawOdoValues();}
-    public void resetOdometers(){
-        driveMotors.resetOdometers();}
+    public void resetOdometers(){driveMotors.resetOdometers();}
     public double getX(){return pose.getX();}
     public double getY(){return pose.getY();}
     public void resetY(){pose.resetY();}
@@ -60,10 +62,10 @@ public class Bot extends Init {
     public void startStrafeNegative(double distance){simpleDrive.moveStrafe(distance);}
 
     //Features
-    public double getVoltage(){return voltage.getVoltage(opmode.hardwareMap.voltageSensor);}
+    public double getVoltage(){return voltageHandler.getVoltage(opmode.hardwareMap.voltageSensor);}
 
     //TeleOp
-    public void TeleOp(){drivers.TeleOp(opmode.gamepad1, opmode.gamepad2);}
+    public void teleOp(){drivers.teleOp(opmode.gamepad1, opmode.gamepad2);}
     public void example(){drivers.example();}
 
     //Driving movements

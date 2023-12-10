@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Helpers;
 
-import org.firstinspires.ftc.teamcode.Features.Config;
+import org.firstinspires.ftc.teamcode.Config;
 
 public class bMath {
     public static double pi = 3.14159265359;

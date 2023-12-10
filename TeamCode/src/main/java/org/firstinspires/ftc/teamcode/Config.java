@@ -1,7 +1,7 @@
-package org.firstinspires.ftc.teamcode.Features;
+package org.firstinspires.ftc.teamcode;
 
-import org.firstinspires.ftc.teamcode.SelfDriving.Movement;
-import org.firstinspires.ftc.teamcode.SelfDriving.PIDCoefficients;
+import org.firstinspires.ftc.teamcode.SelfDrivingAuto.Movement;
+import org.firstinspires.ftc.teamcode.SelfDrivingAuto.PIDCoefficients;
 
 /**
  * Contains all of our strings for servos and motors and any reusable constants

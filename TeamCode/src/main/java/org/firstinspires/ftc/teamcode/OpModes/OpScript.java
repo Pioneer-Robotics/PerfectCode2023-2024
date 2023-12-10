@@ -47,7 +47,7 @@ public abstract class OpScript extends LinearOpMode {
             location = bot.locationCamera();
             bot.addData("CameraHandler", bot.getSaturationHigh());
         }
-        bot.addData("Voltage", bot.getVoltage());
+        bot.addData("VoltageHandler", bot.getVoltage());
         bot.update();
     }
 

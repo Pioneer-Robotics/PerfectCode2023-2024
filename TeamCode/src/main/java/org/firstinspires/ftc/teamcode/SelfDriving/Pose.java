@@ -5,11 +5,11 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.Features.Config;
 import org.firstinspires.ftc.teamcode.Helpers.bMath;
-import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
+import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
 import java.util.Arrays;
 
-public class Pose extends HardwareHelper {
+public class Pose extends AbstractHardwareComponent {
     DcMotorEx leftOdo;
     DcMotorEx rightOdo;
     DcMotorEx middleOdo;

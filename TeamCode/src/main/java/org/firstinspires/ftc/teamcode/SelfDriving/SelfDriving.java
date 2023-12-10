@@ -2,9 +2,9 @@ package org.firstinspires.ftc.teamcode.SelfDriving;
 
 import org.firstinspires.ftc.teamcode.Features.Config;
 import org.firstinspires.ftc.teamcode.Helpers.bMath;
-import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
+import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
-public class SelfDriving extends HardwareHelper {
+public class SelfDriving extends AbstractHardwareComponent {
     //PIDs for x,y, and turning inputs
     double xPID, yPID, rxPID;
 

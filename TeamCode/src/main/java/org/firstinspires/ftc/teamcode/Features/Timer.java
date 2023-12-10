@@ -2,9 +2,9 @@ package org.firstinspires.ftc.teamcode.Features;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
+import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
-public class Timer extends HardwareHelper {
+public class Timer extends AbstractHardwareComponent {
     static boolean firsttime = true;
     static ElapsedTime time = new ElapsedTime();
 

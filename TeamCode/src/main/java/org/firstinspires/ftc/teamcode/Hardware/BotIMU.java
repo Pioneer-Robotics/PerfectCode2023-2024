@@ -4,9 +4,12 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
+import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
-public class BotIMU extends HardwareHelper {
+/**
+ * Handles IMU initializing and simplifies getting the orientation
+ */
+public class BotIMU extends AbstractHardwareComponent {
     private final IMU imu;
 
     public BotIMU(IMU imu){

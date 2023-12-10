@@ -6,16 +6,29 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
-import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
+import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
-public class Commands extends HardwareHelper {
-    private double turn = 90d;
+/**
+ * This class will contain our autonomous methods as well as gearShift
+ */
+public class Commands extends AbstractHardwareComponent {
+    private double turn = 90d;//depending on red or blue side, this turn will be flipped
+
+    //Based on booleans, will move to certain parts of the board
     boolean moveLeft = true;
     boolean moveRight = false;
     boolean moveMiddle = false;
 
+    /**
+     * Is used to "gear shift" between powers in teleOp
+     * @param gamepad: usually gamepad1
+     * @param counter: this is the object that will handle that math
+     */
     public void gearShift(Gamepad gamepad, Counter counter){counter.arithmetic(gamepad.right_bumper, gamepad.left_bumper, .1);}
 
+    /**
+     * Depending on if red or blue side and what the camera sees, this method will make the robot go there
+     */
     public void boardSide() {
         try {
             ElapsedTime time = new ElapsedTime();

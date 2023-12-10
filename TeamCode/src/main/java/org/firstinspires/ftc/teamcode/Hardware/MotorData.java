@@ -2,13 +2,15 @@ package org.firstinspires.ftc.teamcode.Hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Features.Config;
-import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
+import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
 
-public class MotorData extends HardwareHelper {
+/**
+ * Initializes all of our driving motors while making all necessary methods
+ */
+public class MotorData extends AbstractHardwareComponent {
     private static DcMotorEx leftFront;
     private static DcMotorEx rightFront;
     private static DcMotorEx leftBack;

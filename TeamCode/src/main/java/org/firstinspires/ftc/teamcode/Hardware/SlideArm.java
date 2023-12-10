@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Features.Config;
-import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
+import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
-public class SlideArm extends HardwareHelper {
+public class SlideArm extends AbstractHardwareComponent {
     DcMotorEx slideArm;
     double speed;
 

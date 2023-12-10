@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.Features;
 import org.firstinspires.ftc.teamcode.SelfDriving.Movement;
 import org.firstinspires.ftc.teamcode.SelfDriving.PIDCoefficients;
 
+/**
+ * Contains all of our strings for servos and motors and any reusable constants
+ */
 public class Config {
     //Motor names
     public static final String motorLF = "LF";//Right Odometer

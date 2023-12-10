@@ -8,15 +8,15 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class UniServo {
     private final Servo servo;
     //Two positions used
-    public double OpenPos;
-    public double ClosePos;
+    public double openPos;
+    public double closePos;
 
     public UniServo(Servo servo, double openPos, double closePos){
         this.servo = servo;
-        this.OpenPos = openPos;
-        this.ClosePos = closePos;
+        this.openPos = openPos;
+        this.closePos = closePos;
     }
 
-    public void servoClosed() {servo.setPosition(ClosePos);}
-    public void servoOpen(){servo.setPosition(OpenPos);}
+    public void servoClosed() {servo.setPosition(closePos);}
+    public void servoOpen(){servo.setPosition(openPos);}
 }

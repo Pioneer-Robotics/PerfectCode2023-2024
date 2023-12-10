@@ -4,24 +4,30 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
 import org.firstinspires.ftc.teamcode.Helpers.VelocityMath;
-import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
+import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
-public class Mecanum extends HardwareHelper {
+/**
+ * Holds two methods: coordinateLock and regularMecanum that are our two modes of driving
+ */
+public class Mecanum extends AbstractHardwareComponent {
     private double leftDiagPower = 0d, rightDiagPower = 0d, leftRotatePower = 0d, rightRotatePower = 0d;
     private final double sq2 = VelocityMath.sq2;
 
-    //POWERS
-    //TODO get rid of this when velocities are correct
+    /**
+     * Based on the zero angle, it will drive depending on that
+     * @param gamepad: input gamepad
+     * @param scalePower: ranging from 0-1
+     */
     public void coordinateLockMecanum(Gamepad gamepad, Counter scalePower){
-        double imu_offset = Math.toRadians(bot.angleDEG());
-        double angle = (Math.toRadians(bot.angleRAD()) - imu_offset);
+        double imu_offset = Math.toRadians(bot.angleDEG());//current angle
+        double angle = (Math.toRadians(bot.angleRAD()) - imu_offset);//difference ƒrom last time
 
         leftDiagPower = -(((-gamepad.left_stick_y - gamepad.left_stick_x) * Math.sin(angle) + ((gamepad.left_stick_y - gamepad.left_stick_x)) * Math.cos(angle)));
         rightDiagPower = -(((-(-gamepad.left_stick_y + gamepad.left_stick_x)) * Math.sin(angle) + ((gamepad.left_stick_y + gamepad.left_stick_x) * Math.cos(angle))));
         leftRotatePower =  gamepad.right_stick_x;
         rightRotatePower = -gamepad.right_stick_x;
 
-        bot.gearShift(scalePower);
+        bot.gearShift(scalePower);//utilizes the counter class
         bot.setPowers(scalePower.getNum()*(leftDiagPower+leftRotatePower),
                 scalePower.getNum()*(rightDiagPower+leftRotatePower),
                 scalePower.getNum()*(rightDiagPower+rightRotatePower),

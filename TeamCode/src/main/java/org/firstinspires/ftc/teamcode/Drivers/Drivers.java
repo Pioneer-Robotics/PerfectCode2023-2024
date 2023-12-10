@@ -4,9 +4,13 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
 import org.firstinspires.ftc.teamcode.Helpers.Toggle;
-import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
+import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
-public class Drivers extends HardwareHelper {
+/**
+ * / This class will hold three methods that will run driver 1, 2, and the telemetry.
+ * It uses Toggle and Counter
+ */
+public class Drivers extends AbstractHardwareComponent {
     //Toggles
     private final Toggle mecanumToggle = new Toggle(true);
     private final Toggle collectorToggle = new Toggle(false);

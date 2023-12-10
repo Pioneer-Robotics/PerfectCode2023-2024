@@ -1,9 +1,8 @@
 package org.firstinspires.ftc.teamcode.SelfDriving;
 
-import org.firstinspires.ftc.teamcode.Helpers.bMath;
-import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
+import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
-public class SimpleDrive extends HardwareHelper {
+public class SimpleDrive extends AbstractHardwareComponent {
     private final double kp;
     private final double ki;
     private final double kd;

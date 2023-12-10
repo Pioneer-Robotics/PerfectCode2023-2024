@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.Hardware;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
+import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-public class Camera extends HardwareHelper {
+public class Camera extends AbstractHardwareComponent {
     private final Object lock = new Object();
     int cameraMonitorViewId;
     OpenCvCamera camera;

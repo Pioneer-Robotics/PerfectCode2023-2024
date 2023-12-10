@@ -3,8 +3,7 @@ package org.firstinspires.ftc.teamcode.OpModes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Bot;
-import org.firstinspires.ftc.teamcode.Initializers.HardwareHelper;
-import org.firstinspires.ftc.teamcode.Helpers.BulkReader;
+import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
 /**
  * Abstract class which should be the inheritance class for every OpMode
@@ -27,7 +26,7 @@ public abstract class OpScript extends LinearOpMode {
     public void runOpMode(OpScript opmode) {
         opScript = opmode;
         bot = Bot.getInstance(opScript);
-        HardwareHelper.init(Bot.getInstance(), telemetry);
+        AbstractHardwareComponent.init(Bot.getInstance(), telemetry);
         while (!opScript.opModeIsActive() && !opScript.isStarted()) {opScript.initloop();}
         while (opScript.opModeIsActive() && opScript.isStarted() && bot.isRunning()) {
             opScript.run();

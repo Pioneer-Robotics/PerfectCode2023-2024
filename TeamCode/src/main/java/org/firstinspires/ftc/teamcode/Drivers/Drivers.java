@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Drivers;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.Annotations.DriverAnnotations;
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
 import org.firstinspires.ftc.teamcode.Helpers.Toggle;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
@@ -20,7 +21,8 @@ public class Drivers extends AbstractHardwareComponent {
     //Counter
     private final Counter scalePower = new Counter(.3, .2, 0.8);
 
-    public void Driver1(Gamepad gamepad){
+    @DriverAnnotations.Driver1.Seth
+    public void driver1(Gamepad gamepad){
         mecanumToggle.toggle(gamepad.y);//toggles between regular and coordinate lock mecanum
 
         if(mecanumToggle.getBool()){bot.coordinateLock(scalePower);}
@@ -32,7 +34,9 @@ public class Drivers extends AbstractHardwareComponent {
         }
     }
 
-    public void Driver2(Gamepad gamepad){
+    @DriverAnnotations.Driver2.Henry
+    public void driver2(Gamepad gamepad){
+        //ensures pixel drop servos are up
         bot.rightDropUp();
         bot.leftDropDown();
         grabberToggle.toggle(gamepad.left_bumper);
@@ -92,9 +96,9 @@ public class Drivers extends AbstractHardwareComponent {
         telemetry.addData("middle", bot.getRawOdos()[2].getCurrentPosition());
     }
 
-    public void TeleOp(Gamepad gamepad1, Gamepad gamepad2){
-        Driver1(gamepad1);
-        Driver2(gamepad2);
+    public void teleOp(Gamepad gamepad1, Gamepad gamepad2){
+        driver1(gamepad1);
+        driver2(gamepad2);
         telemetry();
     }
 

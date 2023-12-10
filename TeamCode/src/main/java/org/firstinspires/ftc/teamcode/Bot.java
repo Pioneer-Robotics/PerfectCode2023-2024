@@ -4,31 +4,34 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
-import org.firstinspires.ftc.teamcode.Initializers.Init;
+import org.firstinspires.ftc.teamcode.Initializers.AbstractBot;
 import org.firstinspires.ftc.teamcode.OpModes.OpScript;
 
-public class Bot extends Init {
-    private Bot(OpScript op){super.init(op);}
-    public static Bot getInstance(OpScript op) {return new Bot(op);}
-    public static Bot getInstance() {return OpScript.bot;}
-    public boolean isAuto() {return opmode.getClass().isAnnotationPresent(Autonomous.class);}
+/**
+ * Singleton class that contains all of the methods we are using
+ */
+public class Bot extends AbstractBot {
+    private Bot(OpScript op){super.init(op);}//inits bot that creates our OpMode
+    public static Bot getInstance(OpScript op) {return new Bot(op);}//returns a new instance of itself
+    public static Bot getInstance() {return OpScript.bot;}//gets itself
+    public boolean isAuto() {return opmode.getClass().isAnnotationPresent(Autonomous.class);}//used to see if we are in auto or not
 
     //Motors
-    public void setPowers(double LFspeed, double LBspeed, double RFspeed, double RBspeed) {motorData.setPowers(LFspeed, LBspeed, RFspeed, RBspeed);}
-    public double getPower(){return motorData.getPower();}
-    public void setMotorPower(double power) {motorData.setMotorPower(power);}
-    public void setMotorPowerStrafe(double power) {motorData.setMotorPowerStrafe(power);}
-    public void setMotorPowerRight(double power) {motorData.setMotorPowerRight(power);}
-    public void setMotorPowerLeft(double power) {motorData.setMotorPowerLeft(power);}
-    public void setMotorPowerTurn(double power) {motorData.setMotorPower(-power, power);}
-    public void setRunMode(DcMotorEx.RunMode mode) {motorData.setRunMode(mode);}
-    public void setPowerBehavior(DcMotorEx.ZeroPowerBehavior Lbehavior, DcMotorEx.ZeroPowerBehavior Rbehavior) {motorData.setPowerBehavior(Lbehavior, Rbehavior);}
-    public void brake() {motorData.brake();}
+    public void setPowers(double LFspeed, double LBspeed, double RFspeed, double RBspeed) {driveMotors.setPowers(LFspeed, LBspeed, RFspeed, RBspeed);}
+    public double getPower(){return driveMotors.getPower();}
+    public void setMotorPower(double power) {driveMotors.setMotorPower(power);}
+    public void setMotorPowerStrafe(double power) {driveMotors.setMotorPowerStrafe(power);}
+    public void setMotorPowerRight(double power) {driveMotors.setMotorPowerRight(power);}
+    public void setMotorPowerLeft(double power) {driveMotors.setMotorPowerLeft(power);}
+    public void setMotorPowerTurn(double power) {driveMotors.setMotorPower(-power, power);}
+    public void setRunMode(DcMotorEx.RunMode mode) {driveMotors.setRunMode(mode);}
+    public void setPowerBehavior(DcMotorEx.ZeroPowerBehavior Lbehavior, DcMotorEx.ZeroPowerBehavior Rbehavior) {driveMotors.setPowerBehavior(Lbehavior, Rbehavior);}
+    public void brake() {driveMotors.brake();}
     public void gearShift(Counter counter) {commands.gearShift(opmode.gamepad1, counter);}
 
     //Odometers
     public DcMotorEx[] getRawOdos(){return pose.getRawOdoValues();}
-    public void resetOdometers(){motorData.resetOdometers();}
+    public void resetOdometers(){driveMotors.resetOdometers();}
     public double getX(){return pose.getX();}
     public double getY(){return pose.getY();}
     public void resetY(){pose.resetY();}
@@ -50,19 +53,19 @@ public class Bot extends Init {
     public void runAuto() {commands.boardSide();}
     public void runAuto2() {commands.audienceSide();}
     public boolean isRunning(){return !getInstance().isAuto() || opmode.runAuto;}
-    public void openCamera(){camera.openCamera();}
-    public int locationCamera(){return camera.locationCamera();}
-    public String getSaturationHigh(){return camera.getSaturationHigh();}
+    public void openCamera(){cameraHandler.openCamera();}
+    public int locationCamera(){return cameraHandler.locationCamera();}
+    public String getSaturationHigh(){return cameraHandler.getSaturationHigh();}
     public void startMove(double distance){simpleDrive.moveForward(distance);}
     public void startTurn(double degree){simpleDrive.moveTurn(degree);}
     public void startStrafe(double distance){simpleDrive.moveStrafe(distance);}
     public void startStrafeNegative(double distance){simpleDrive.moveStrafe(distance);}
 
     //Features
-    public double getVoltage(){return voltage.getVoltage(opmode.hardwareMap.voltageSensor);}
+    public double getVoltage(){return voltageHandler.getVoltage(opmode.hardwareMap.voltageSensor);}
 
     //TeleOp
-    public void TeleOp(){drivers.TeleOp(opmode.gamepad1, opmode.gamepad2);}
+    public void teleOp(){drivers.teleOp(opmode.gamepad1, opmode.gamepad2);}
     public void example(){drivers.example();}
 
     //Driving movements
@@ -85,16 +88,16 @@ public class Bot extends Init {
 //    public void drive(Movement movement){selfDriving.drive(movement);}
 
     //Slide Arm
-    public void setSlideLevel(int level){slideArm.setLevel(level);}
-    public void slideVelocity(double speed){slideArm.setVelocity(speed);}
-    public void resetSlideVelocity(double speed){slideArm.resetVelocity(speed);}
-    public double getSlideLevel(){return slideArm.getSlideLevel();}
+    public void setSlideLevel(int level){slideArmMotor.setLevel(level);}
+    public void slideVelocity(double speed){slideArmMotor.setVelocity(speed);}
+    public void resetSlideVelocity(double speed){slideArmMotor.setDefaultVelocity(speed);}
+    public double getSlideLevel(){return slideArmMotor.getSlideLevel();}
 
     //Collector Arm
     public void moveCollectorBack(){collector.moveCollectorBack();}
     public void moveCollector(){collector.moveCollector();}
     public void stopCollector(){collector.stopCollector();}
-    public void setCollectorVelocitySpeed(double speed){collector.setVelocitySpeed(speed);}
+    public void setCollectorVelocitySpeed(double speed){collector.setVelocity(speed);}
 
     //Telemetry and Bulkreader
     public void update(){opmode.update();}

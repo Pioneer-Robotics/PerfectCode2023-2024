@@ -1,7 +1,7 @@
-package org.firstinspires.ftc.teamcode.Features;
+package org.firstinspires.ftc.teamcode;
 
-import org.firstinspires.ftc.teamcode.SelfDriving.Movement;
-import org.firstinspires.ftc.teamcode.SelfDriving.PIDCoefficients;
+import org.firstinspires.ftc.teamcode.SelfDrivingAuto.Movement;
+import org.firstinspires.ftc.teamcode.SelfDrivingAuto.PIDCoefficients;
 
 /**
  * Contains all of our strings for servos and motors and any reusable constants
@@ -16,7 +16,7 @@ public class Config {
     public static final String odoRight = "OdoRight";
     public static final String odoMiddle = "OdoMiddle";
     public static final String[] odos = {"OdoLeft", "OdoRight", "OdoMiddle"};
-    public static final String slideArm = "slideArm";
+    public static final String slideArm = "slideArmMotor";
     public static final String collectorMotor = "collector";
 
     //Odometers

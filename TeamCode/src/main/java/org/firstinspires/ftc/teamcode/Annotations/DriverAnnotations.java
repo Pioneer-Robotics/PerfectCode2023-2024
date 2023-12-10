@@ -7,12 +7,12 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
-public @interface Driver {
+public @interface DriverAnnotations {
     @interface Driver1 {
         @interface Seth{}
     }
     @interface Driver2{
-        @interface Lil_Hendry{}
+        @interface Henry{}
     }
     @interface Coach{
         @interface Zak{}

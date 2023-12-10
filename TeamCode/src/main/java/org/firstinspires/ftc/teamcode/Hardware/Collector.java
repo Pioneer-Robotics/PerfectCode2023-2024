@@ -4,27 +4,30 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.Features.Config;
+import org.firstinspires.ftc.teamcode.Config;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
+/**
+ * Initializes our collector
+ */
 public class Collector extends AbstractHardwareComponent {
     private final DcMotorEx collector;
-    private double speed;
+    private double defaultVelocity;
 
     public Collector(DcMotorEx collector){
         this.collector = collector;
         this.collector.setDirection(DcMotorSimple.Direction.FORWARD);
         this.collector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.collector.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        speed = 0.3;
+        defaultVelocity = 0.3;
     }
 
-    public void setVelocitySpeed(double speed){
-        this.speed = speed;
+    public void setVelocity(double speed){
+        this.defaultVelocity = speed;
     }
 
     public void moveCollector(){
-        collector.setVelocity(Config.encoderRatio * speed);
+        collector.setVelocity(Config.encoderRatio * defaultVelocity);
     }
     public void moveCollectorBack(){
         collector.setVelocity(-Config.encoderRatio * .1);

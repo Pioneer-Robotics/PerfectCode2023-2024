@@ -3,20 +3,22 @@ package org.firstinspires.ftc.teamcode.Hardware;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.Features.Config;
+import org.firstinspires.ftc.teamcode.Config;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
 
 /**
  * Initializes all of our driving motors while making all necessary methods
  */
-public class MotorData extends AbstractHardwareComponent {
+public class DriveMotors extends AbstractHardwareComponent {
+    //Creates drive motor objects
     private static DcMotorEx leftFront;
     private static DcMotorEx rightFront;
     private static DcMotorEx leftBack;
     private static DcMotorEx rightBack;
 
-    public MotorData(DcMotorEx lFront, DcMotorEx rFront, DcMotorEx lBack, DcMotorEx rBack) {
+    //initializes drive motors
+    public DriveMotors(DcMotorEx lFront, DcMotorEx rFront, DcMotorEx lBack, DcMotorEx rBack) {
         leftFront = lFront;
         rightFront = rFront;
         leftBack = lBack;
@@ -47,6 +49,7 @@ public class MotorData extends AbstractHardwareComponent {
         return leftBack.getPower();
     }
 
+    //resets odos
     public void resetOdometers(){
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -101,6 +104,13 @@ public class MotorData extends AbstractHardwareComponent {
         rightFront.setVelocity(RFvel * Config.encoderRatio);
     }
 
+    /**
+     * Can input specified motor powers
+     * @param LFpower
+     * @param LBpower
+     * @param Rfpower
+     * @param RBpower
+     */
     public void setPowers(double LFpower, double LBpower, double Rfpower, double RBpower){
         leftFront.setPower(LFpower);
         leftBack.setPower(LBpower);

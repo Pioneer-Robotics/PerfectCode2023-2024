@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.SelfDriving;
+package org.firstinspires.ftc.teamcode.SelfDrivingAuto;
 
 import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
@@ -21,20 +21,21 @@ public class SimpleDrive extends AbstractHardwareComponent {
 
     //forward only
     public void moveForward(double distance) {
-        setpoint = bot.getX() + distance;
+        setpoint = bot.getX() + distance;//calculates distance form target
 
-        bot.setMotorPower(.06);
+        bot.setMotorPower(.06);//initial motor ppower
+        //loop that checks if we are near point
         while (bot.getX() < setpoint - 1 && Math.abs(bot.getPower()) > 0.05 && bot.opmode.opModeIsActive() && bot.opmode.isStarted()) {
-            double error = (setpoint - bot.getX()) / distance;
-            double proportional = kp * error;
+            double error = (setpoint - bot.getX()) / distance;//distance from target
+            double proportional = kp * error;//proportion of error from target
 
-            integral += error;
+            integral += error;//sum of errors
 
-            double derivative = error - previousError;
+            double derivative = error - previousError;//chanage in errors
             double feedforward = kf * distance;
-            double output = proportional + ki * integral + kd * derivative + feedforward;
+            double output = proportional + ki * integral + kd * derivative + feedforward;//sum of all the constants
 
-            bot.setMotorPower(output);
+            bot.setMotorPower(output);//set speed
 
             bot.addData("distance", setpoint);
             bot.addData("cur", bot.getX());
@@ -42,7 +43,7 @@ public class SimpleDrive extends AbstractHardwareComponent {
 
             previousError = error;
         }
-        bot.setMotorPower(0);
+        bot.setMotorPower(0);//stop
     }
 
     //turn only

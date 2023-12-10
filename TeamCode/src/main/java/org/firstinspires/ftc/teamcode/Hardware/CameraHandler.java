@@ -7,14 +7,14 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-public class Camera extends AbstractHardwareComponent {
+public class CameraHandler extends AbstractHardwareComponent {
     private final Object lock = new Object();
     int cameraMonitorViewId;
     OpenCvCamera camera;
     WebcamName webcamName;
     OpenCVPipeline openCVPipeline;
 
-    public Camera(int camera, WebcamName name){
+    public CameraHandler(int camera, WebcamName name){
         cameraMonitorViewId = camera;
         this.camera = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         webcamName = name;
@@ -27,11 +27,11 @@ public class Camera extends AbstractHardwareComponent {
             @Override
             public void onOpened() {
                 streamCamera(openCVPipeline);
-                telemetry.addData("Camera Sat", getSaturationHigh());
+                telemetry.addData("CameraHandler Sat", getSaturationHigh());
             }
             @Override
             public void onError(int errorCode) {
-                bot.addLine("Camera Failed.");
+                bot.addLine("CameraHandler Failed.");
             }
         });
     }
@@ -41,11 +41,11 @@ public class Camera extends AbstractHardwareComponent {
             @Override
             public void onOpened() {
                 streamCamera(openCVPipeline);
-                telemetry.addData("Camera Sat", getSaturationHigh());
+                telemetry.addData("CameraHandler Sat", getSaturationHigh());
             }
             @Override
             public void onError(int errorCode) {
-                bot.addLine("Camera Failed.");
+                bot.addLine("CameraHandler Failed.");
             }
         });
         String satHigh = getSaturationHigh();

@@ -8,14 +8,14 @@ import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 /**
  * Abstract class which should be the inheritance class for every OpMode
  * Run(): input whatever you want to loop during the opMode
- * initloop(): loops the init (basically for camera and pre-run)
+ * initloop(): loops the init (basically for cameraHandler and pre-run)
  */
 public abstract class OpScript extends LinearOpMode {
-    public static Bot bot;
-    public boolean runAuto;
-    public OpScript opScript;
-    public static long cycleNumber;
-    public int location;
+    public static Bot bot;//inits bot
+    public boolean runAuto;//if auto or not
+    public OpScript opScript;//inits itself
+    public static long cycleNumber;//how many cycles ran
+    public int location;//team marker location 1-3
 
     public abstract void run();//method where you put wherever needs to be looped
 
@@ -38,16 +38,16 @@ public abstract class OpScript extends LinearOpMode {
     }
 
     /**
-     * Used to loop the camera in auto and telemetry pre-run
+     * Used to loop the cameraHandler in auto and telemetry pre-run
      */
     public void initloop() {
         opScript.runAuto = true;
         if(bot.isAuto()){
             bot.openCamera();
             location = bot.locationCamera();
-            bot.addData("Camera", bot.getSaturationHigh());
+            bot.addData("CameraHandler", bot.getSaturationHigh());
         }
-        bot.addData("Voltage", bot.getVoltage());
+        bot.addData("VoltageHandler", bot.getVoltage());
         bot.update();
     }
 

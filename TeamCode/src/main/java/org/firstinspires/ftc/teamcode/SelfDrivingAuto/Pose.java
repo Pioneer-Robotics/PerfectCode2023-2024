@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.SelfDriving;
+package org.firstinspires.ftc.teamcode.SelfDrivingAuto;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.Features.Config;
+import org.firstinspires.ftc.teamcode.Config;
 import org.firstinspires.ftc.teamcode.Helpers.bMath;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 

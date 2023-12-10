@@ -2,8 +2,12 @@ package org.firstinspires.ftc.teamcode.Hardware;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
+/**
+ * Universal Servo class that can create multiple servos that we use on the robot
+ */
 public class UniServo {
     private final Servo servo;
+    //Two positions used
     public double OpenPos;
     public double ClosePos;
 

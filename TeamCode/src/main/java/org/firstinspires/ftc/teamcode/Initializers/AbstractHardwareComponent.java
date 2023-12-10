@@ -13,9 +13,9 @@ public abstract class AbstractHardwareComponent {
     public static Telemetry telemetry;
 
     /**
-     * Must be static to initialize inside o
-     * @param bot
-     * @param telemetry
+     * Must be static to initialize inside of OpScript
+     * @param bot: reference to bot
+     * @param telemetry: solo reference to telemetry
      */
     public static void init(Bot bot, Telemetry telemetry){
         AbstractHardwareComponent.bot = bot;

@@ -27,7 +27,7 @@ public class Commands extends AbstractHardwareComponent {
     public void gearShift(Gamepad gamepad, Counter counter){counter.arithmetic(gamepad.right_bumper, gamepad.left_bumper, .1);}
 
     /**
-     * Depending on if red or blue side and what the camera sees, this method will make the robot go there
+     * Depending on if red or blue side and what the cameraHandler sees, this method will make the robot go there
      */
     public void boardSide() {
         try {

@@ -84,13 +84,13 @@ public class Pose extends HardwareHelper {
         double cos = Math.cos(-bot.angleRAD());
         double sin = Math.sin(-bot.angleRAD());
 
-//        x += dxR * cos + dyR * sin;
-//        y += -dxR * cos + dyR * cos;
+        y += -dxR*sin + dyR*cos;//y
+        x += dxR*cos + dyR*sin;//x
         //        if (Math.abs(rightDist + leftDist) > .3 || Math.abs(dxR) > 0.5) {
-        if (Math.abs(rightDist + leftDist) > 1 || Math.abs(dxR) > 1) {
-            x += dxR * cos + dyR * sin;//x
-            y += -dxR * sin + dyR * cos;//y
-        }
+//        if (Math.abs(rightDist + leftDist) > 1 || Math.abs(dxR) > 1) {
+//            x += dxR * cos + dyR * sin;//x
+//            y += -dxR * sin + dyR * cos;//y
+//        }
     }
 
     public void gruberOdoCalculations()

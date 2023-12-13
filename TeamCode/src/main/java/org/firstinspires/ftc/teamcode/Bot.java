@@ -80,6 +80,8 @@ public class Bot extends Init {
     public void wristHorizontal(){wristServo.servoClosed();}
     public void intakeUp(){intakeServo.servoOpen();}
     public void intakeDown(){intakeServo.servoClosed();}
+    public void launchAirplane(){airplaneLauncher.servoOpen();}
+    public void holdAirplane(){airplaneLauncher.servoClosed();}
 
     //SelfDriving
 //    public void drive(Movement movement){selfDriving.drive(movement);}

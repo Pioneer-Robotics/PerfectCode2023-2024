@@ -119,9 +119,9 @@ public class Drivers extends AbstractHardwareComponent {
         Class<Drivers> myClass = Drivers.class;
         StringBuilder text = new StringBuilder();
         try {
-            Method method = myClass.getDeclaredMethod("driver1", Drivers.class);
-            Method method2 = myClass.getDeclaredMethod("driver2", Drivers.class);
-            Method method3 = myClass.getDeclaredMethod("coach", Drivers.class);
+            Method method = myClass.getDeclaredMethod("driver1", Gamepad.class);
+            Method method2 = myClass.getDeclaredMethod("driver2", Gamepad.class);
+            Method method3 = myClass.getDeclaredMethod("coach");
             // Check if the method has any annotations
             Annotation[] annotations = method.getAnnotations();
             Annotation[] annotations2 = method2.getAnnotations();

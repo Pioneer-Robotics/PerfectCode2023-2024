@@ -54,16 +54,19 @@ public class Config {
     public static final double leftOpenPos = 0;
     public static final double rightOpenPos = .6;
     public static final double leftClosedPos = .6;
-    public static final double rightClosedPos = 0;
+    public static final double rightClosedPos = 0.1;
 
     //Gripper Servos
     public static final String gripperServo = "gripperServo";
     public static final String wristServo = "elevateServo";
     public static final String intakeServoForCollector = "intakeServo";
-    public static final double intakeUp = .7;
-    public static final double intakeDown = .9;
+    public static final String airplaneLauncher = "airplaneLauncher";
+    public static final double airplaneReady = .4;
+    public static final double airplaneLaunch = 1;
+    public static final double intakeUp = 0.02;
+    public static final double intakeDown = .4;
     public static final double gripperOpen = 0.65;
     public static final double gripperClosed = .78;
-    public static final double WristVertical = .95;
-    public static final double WristHorizontal = .675;
+    public static final double WristVertical = .7;
+    public static final double WristHorizontal = .45;
 }

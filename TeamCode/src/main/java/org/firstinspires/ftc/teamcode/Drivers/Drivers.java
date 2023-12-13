@@ -32,13 +32,20 @@ public class Drivers extends AbstractHardwareComponent {
             bot.resetIMU();
             //bot.resetOdometers();
         }
+
+        if(gamepad.right_bumper){
+            bot.launchAirplane();
+        }
+        else{
+            bot.holdAirplane();
+        }
     }
 
     @DriverAnnotations.Driver2.Henry
     public void driver2(Gamepad gamepad){
         //ensures pixel drop servos are up
         bot.rightDropUp();
-        bot.leftDropDown();
+        bot.leftDropUp();
         grabberToggle.toggle(gamepad.left_bumper);
         if(grabberToggle.getBool()){
             bot.gripperOpen();

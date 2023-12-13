@@ -67,6 +67,7 @@ public class Bot extends AbstractBot {
     //TeleOp
     public void teleOp(){drivers.teleOp(opmode.gamepad1, opmode.gamepad2);}
     public void example(){drivers.example();}
+    public String getWelcomeText(){return drivers.getWelcomeText();}
 
     //Driving movements
     public void coordinateLock(Counter counter) {mecanum.coordinateLockMecanum(opmode.gamepad1, counter);}

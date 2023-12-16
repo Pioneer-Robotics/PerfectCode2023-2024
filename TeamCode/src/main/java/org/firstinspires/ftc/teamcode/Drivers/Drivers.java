@@ -141,7 +141,7 @@ public class Drivers extends AbstractHardwareComponent {
         catch (Exception e){
             telemetry();
         }
-        return "Welcome, " + text.toString() + ".\nHave a great first tournament.";
+        return "Welcome, " + text + ".\nHave a great first tournament.";
     }
 
     public void example(){

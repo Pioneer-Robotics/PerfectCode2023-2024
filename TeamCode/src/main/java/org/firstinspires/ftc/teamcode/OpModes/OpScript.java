@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Bot;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
@@ -17,6 +18,7 @@ public abstract class OpScript extends LinearOpMode {
     public static long cycleNumber;//how many cycles ran
     public int location;//team marker location 1-3
     public String welcomeText;//Welcome test for start of match.
+    public ElapsedTime autoTimer;
 
     public abstract void run();//method where you put wherever needs to be looped
 
@@ -29,6 +31,8 @@ public abstract class OpScript extends LinearOpMode {
         bot = Bot.getInstance(opScript);
         AbstractHardwareComponent.init(Bot.getInstance(), telemetry);
         welcomeText = bot.getWelcomeText();
+        autoTimer = new ElapsedTime();
+        autoTimer.reset();
         while (!opScript.opModeIsActive() && !opScript.isStarted()) {opScript.initloop();}
         while (opScript.opModeIsActive() && opScript.isStarted() && bot.isRunning()) {
             opScript.run();
@@ -45,7 +49,7 @@ public abstract class OpScript extends LinearOpMode {
     public void initloop() {
         opScript.runAuto = true;
         bot.addLine(welcomeText);
-        if(bot.isAuto()){
+        if(bot.isAuto() && autoTimer.milliseconds() < 7500){
             bot.openCamera();
             location = bot.locationCamera();
             bot.addData("CameraHandler", bot.getSaturationHigh());

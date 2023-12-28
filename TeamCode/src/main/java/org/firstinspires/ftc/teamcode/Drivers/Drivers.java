@@ -58,13 +58,13 @@ public class Drivers extends AbstractHardwareComponent {
         bot.rightDropUp();
         bot.leftDropUp();
         grabberToggle.toggle(gamepad.left_bumper);
-        if (grabberToggle.getBool()) {
+        if (grabberToggle.getBool() && (bot.getSlideLevel() <= 500 || bot.getSlideLevel() >= 1000)) {
             bot.gripperOpen();
         } else {
             bot.gripperClosed();
         }
 
-        if (gamepad.right_bumper) {
+        if (gamepad.right_bumper && bot.getSlideLevelTarg() != 0) {
             bot.wristVertical();
         } else {
             bot.wristHorizontal();
@@ -83,7 +83,10 @@ public class Drivers extends AbstractHardwareComponent {
             bot.setSlideLevel(2200);
         } else if (gamepad.b) {
             bot.setSlideLevel(0);
+            bot.wristHorizontal();
+            //grabberToggle.set(false);
         }
+
         collectorToggle.toggle(gamepad.dpad_down);
 
         if (gamepad.dpad_up) {
@@ -145,6 +148,7 @@ public class Drivers extends AbstractHardwareComponent {
             }
         }
         catch (Exception e){
+
             telemetry();
         }
         return "Welcome, " + text + ".\nHave a great first tournament.";

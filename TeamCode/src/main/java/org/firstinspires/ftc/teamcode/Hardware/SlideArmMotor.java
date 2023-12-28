@@ -36,11 +36,15 @@ public class SlideArmMotor extends AbstractHardwareComponent {
         slideArm.setVelocity(speed);
     }
 
-    public void setDefaultVelocity(double speed){
+    public void setDefaultVelocity(double speed) {
         this.defaultSpeed = speed;
     }
 
-    public double getSlideLevel(){
+    public double getSlideLevel() {
         return slideArm.getCurrentPosition();
+    }
+
+    public double getTarg() {
+        return slideArm.getTargetPosition();
     }
 }

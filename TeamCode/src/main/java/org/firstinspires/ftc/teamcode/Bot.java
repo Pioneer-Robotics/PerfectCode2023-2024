@@ -51,15 +51,18 @@ public class Bot extends AbstractBot {
 
     //RedAuto
     public void runAuto() {commands.boardSide();}
+    public void redAuto(){commands.redAuto();}
     public void runAuto2() {commands.audienceSide();}
     public boolean isRunning(){return !getInstance().isAuto() || opmode.runAuto;}
     public void openCamera(){cameraHandler.openCamera();}
     public int locationCamera(){return cameraHandler.locationCamera();}
+    public int locationCamera2(){return cameraHandler.doTheMath();}
+    public void closeCam(){cameraHandler.closeCam();}
     public String getSaturationHigh(){return cameraHandler.getSaturationHigh();}
     public void startMove(double distance){simpleDrive.moveForward(distance);}
     public void startTurn(double degree){simpleDrive.moveTurn(degree);}
     public void startStrafe(double distance){simpleDrive.moveStrafe(distance);}
-    public void startStrafeNegative(double distance){simpleDrive.moveStrafe(distance);}
+    public void startStrafeNegative(double distance){simpleDrive.moveStrafeNegative(distance);}
 
     //Features
     public double getVoltage(){return voltageHandler.getVoltage(opmode.hardwareMap.voltageSensor);}

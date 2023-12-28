@@ -15,7 +15,7 @@ public class Commands extends AbstractHardwareComponent {
     private double turn = 90d;//depending on red or blue side, this turn will be flipped
 
     //Based on booleans, will move to certain parts of the board
-    boolean moveLeft = true;
+    boolean moveLeft = false;
     boolean moveRight = false;
     boolean moveMiddle = false;
 
@@ -33,14 +33,16 @@ public class Commands extends AbstractHardwareComponent {
         try {
             ElapsedTime time = new ElapsedTime();
             boolean isBlue = bot.opmode.getClass().getName().contains("Blue");
-            int leftMiddleRight = bot.locationCamera();//left is one, middle is two, and right is three
-//            if (leftMiddleRight == 1) {
-//                moveLeft = true;
-//            } else if (leftMiddleRight == 2) {
-//                moveMiddle = true;
-//            } else {
-//                moveRight = true;
-//            }
+            //int leftMiddleRight = bot.locationCamera();//left is one, middle is two, and right is three
+            //int leftMiddleRight = bot.locationCamera2();
+            int leftMiddleRight = bot.opmode.location;
+            if (leftMiddleRight == 3) {
+                moveLeft = true;
+            } else if (leftMiddleRight == 2) {
+                moveMiddle = true;
+            } else {
+                moveRight = true;
+            }
 
             //flipping turn based on if we are on red or blue side
             if(!isBlue){
@@ -113,7 +115,7 @@ public class Commands extends AbstractHardwareComponent {
                 sleep(1000);
                 bot.rightDropDown();//drop pixel
                 sleep(1000);
-                bot.startMove(74.5);//drive to board
+                bot.startMove(70.5);//drive to board
                 sleep(1000);
                 bot.startStrafe(36);//strafe right but a little over
                 sleep(1000);
@@ -144,6 +146,124 @@ public class Commands extends AbstractHardwareComponent {
             telemetry.addLine("failed");
         }
     }
+
+    public void redAuto(){
+        try {
+            ElapsedTime time = new ElapsedTime();
+            boolean isBlue = bot.opmode.getClass().getName().contains("Blue");
+            //int leftMiddleRight = bot.locationCamera();//left is one, middle is two, and right is three
+            int leftMiddleRight = bot.opmode.location;
+            if (leftMiddleRight == 3) {
+                moveLeft = true;
+            } else if (leftMiddleRight == 2) {
+                moveMiddle = true;
+            } else {
+                moveRight = true;
+            }
+
+            turn = -turn;
+            //flipping turn based on if we are on red or blue side
+
+            //not going to left side
+            if (!moveLeft) {
+                //make sure all motors and servos are in correct position
+                bot.leftDropUp();
+                bot.gripperClosed();
+
+                bot.startMove(50);//move forward one square
+                sleep(1000);//wait one second
+                if (moveRight) {
+                    //drop pixel if we are going to the right
+                    bot.leftDropDown();
+                }
+                bot.update();
+
+                sleep(1000);//one second
+                bot.startTurn(turn);//turn baseed on if red or blue side
+                sleep(1000);//wait one second
+
+                if (moveMiddle) {
+                    //drop the pixel if in middle position
+                    bot.leftDropDown();
+                }
+                sleep(1000);//wait
+                bot.startMove(65);//drive to the board
+                if (moveRight) {
+                    //strafe to the right
+                    bot.startStrafeNegative(-35);
+                }
+                if (moveMiddle) {
+                    //strafe to the right but less for middle slot
+                    bot.startStrafeNegative(-20);
+                }
+                sleep(1000);//wait
+                while (bot.getSlideLevel() != 1600) {
+                    //shoots the linear slide up and moves wrist servo
+                    bot.setSlideLevel(1600);
+                    bot.wristVertical();
+                    bot.update();
+                }
+                time.reset();
+                while (time.milliseconds() < 2000) {
+                    //opens gripper and waits
+                    bot.gripperOpen();
+                    bot.update();
+                }
+                time.reset();
+                while (time.milliseconds() < 2000) {
+                    //resets arm back to resetig position
+                    bot.wristHorizontal();
+                    bot.gripperClosed();
+                    bot.setSlideLevel(0);
+                    bot.update();
+                }
+                bot.startStrafe(50);
+            } else {
+                //ONLY LEFT SIDE
+                //reset arms and servos
+                bot.rightDropUp();
+                bot.gripperClosed();
+                bot.startMove(30);//move foward half a square
+                sleep(1000);
+                bot.startTurn(turn);//turn based on red or blue
+                sleep(1000);
+                bot.startMove(13);
+                sleep(1000);
+                bot.leftDropDown();//drop pixel
+                sleep(1000);
+                bot.startMove(70);//drive to board
+                sleep(1000);
+                bot.startStrafeNegative(-36);//strafe right but a little over
+                sleep(1000);
+                while (bot.getSlideLevel() != 1600) {
+                    //shoots arm up
+                    bot.setSlideLevel(1600);
+                    bot.wristVertical();
+                    bot.update();
+                }
+                sleep(1000);
+                time.reset();
+                while (time.milliseconds() < 2000) {
+                    //opens gripper
+                    bot.gripperOpen();
+                    bot.update();
+                }
+                time.reset();
+                while (time.milliseconds() < 2000) {
+                    //reset arm
+                    bot.wristHorizontal();
+                    bot.gripperClosed();
+                    bot.setSlideLevel(0);
+                    bot.update();
+                }
+                bot.startStrafe(50);
+            }
+        }
+        catch (Exception e){
+            telemetry.addLine("failed");
+        }
+    }
+
 
     public void audienceSide(){
         ElapsedTime time = new ElapsedTime();

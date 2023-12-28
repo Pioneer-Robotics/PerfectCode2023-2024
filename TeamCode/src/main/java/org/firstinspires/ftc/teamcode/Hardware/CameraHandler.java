@@ -8,7 +8,6 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
 public class CameraHandler extends AbstractHardwareComponent {
-    private final Object lock = new Object();
     int cameraMonitorViewId;
     OpenCvCamera camera;
     WebcamName webcamName;
@@ -23,11 +22,11 @@ public class CameraHandler extends AbstractHardwareComponent {
     }
 
     public void openCamera(){
+        camera.setPipeline(openCVPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                streamCamera(openCVPipeline);
-                telemetry.addData("CameraHandler Sat", getSaturationHigh());
+                camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             }
             @Override
             public void onError(int errorCode) {
@@ -37,11 +36,11 @@ public class CameraHandler extends AbstractHardwareComponent {
     }
 
     public int locationCamera(){
+        camera.setPipeline(openCVPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                streamCamera(openCVPipeline);
-                telemetry.addData("CameraHandler Sat", getSaturationHigh());
+                camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             }
             @Override
             public void onError(int errorCode) {
@@ -52,20 +51,16 @@ public class CameraHandler extends AbstractHardwareComponent {
         return satHigh.equals("Left") ? 1 : satHigh.equals("Right") ? 3 : 2;
     }
 
-    public void streamCamera(OpenCVPipeline openCVPipeline) {
-        synchronized (lock) {
-            camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
-            camera.setPipeline(openCVPipeline);
-
-            try {
-                lock.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    public void closeCam(){
+        camera.closeCameraDevice();
     }
 
     public String getSaturationHigh(){
         return OpenCVPipeline.saturationLeft > OpenCVPipeline.saturationMiddle ?  (OpenCVPipeline.saturationLeft > OpenCVPipeline.saturationRight ? "Left" : "Right") : OpenCVPipeline.saturationMiddle > OpenCVPipeline.saturationRight ? "Middle" : "Right";
+    }
+
+    public int doTheMath(){
+        String sat = getSaturationHigh();
+        return sat.equals("Left") ? 1 : (sat.equals("Middle") ? 2 : 3);
     }
 }

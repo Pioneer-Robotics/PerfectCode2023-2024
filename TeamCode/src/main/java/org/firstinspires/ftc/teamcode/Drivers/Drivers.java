@@ -20,6 +20,7 @@ public class Drivers extends AbstractHardwareComponent {
     private final Toggle collectorToggle = new Toggle(false);
     private final Toggle grabberToggle = new Toggle(true);
     private final Toggle intakeToggle = new Toggle(true);
+    private final Toggle airplaneLaunch = new Toggle(false);
 
     //Counter
     private final Counter scalePower = new Counter(.3, .2, 0.8);
@@ -39,7 +40,12 @@ public class Drivers extends AbstractHardwareComponent {
             //bot.resetOdometers();
         }
 
-        if (gamepad.right_bumper) {
+        if(gamepad.dpad_down){
+            collectorToggle.set(false);
+        }
+
+        airplaneLaunch.toggle(gamepad.a);
+        if (airplaneLaunch.getBool()) {
             bot.launchAirplane();
         } else {
             bot.holdAirplane();
@@ -111,7 +117,7 @@ public class Drivers extends AbstractHardwareComponent {
 
     public void teleOp(Gamepad gamepad1, Gamepad gamepad2) {
         driver1(gamepad1);
-        driver1(gamepad2);
+        driver2(gamepad2);
         telemetry();
     }
 
@@ -145,6 +151,7 @@ public class Drivers extends AbstractHardwareComponent {
     }
 
     public void example(){
+        //bot.closeCam();
         telemetry.addLine(bot.isAuto() ? "Example auto succeeded" : "Example tele succeeded");
     }
 }

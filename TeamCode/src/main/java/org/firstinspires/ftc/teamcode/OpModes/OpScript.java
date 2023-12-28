@@ -33,14 +33,19 @@ public abstract class OpScript extends LinearOpMode {
         welcomeText = bot.getWelcomeText();
         autoTimer = new ElapsedTime();
         autoTimer.reset();
-        while (!opScript.opModeIsActive() && !opScript.isStarted()) {opScript.initloop();}
-        while (opScript.opModeIsActive() && opScript.isStarted() && bot.isRunning()) {
-            opScript.run();
+        if(bot.isAuto()) {bot.openCamera();}
+        while (!opScript.opModeIsActive() && !opScript.isStarted()  && !opScript.isStopRequested()) {opScript.initloop();}
+        while (opScript.opModeIsActive() && opScript.isStarted() && !opScript.isStopRequested()) {
+            if(bot.isRunning()) {
+                opScript.run();
+            }
             opScript.runAuto = false;
             cycleNumber++;
+            bot.closeCam();
             bot.clearCache();
             opScript.telemetry.update();
         }
+        opScript.stop();
     }
 
     /**
@@ -49,10 +54,10 @@ public abstract class OpScript extends LinearOpMode {
     public void initloop() {
         opScript.runAuto = true;
         bot.addLine(welcomeText);
-        if(bot.isAuto() && autoTimer.milliseconds() < 7500){
-            bot.openCamera();
-            location = bot.locationCamera();
+        if(bot.isAuto()){
+            location = bot.locationCamera2();
             bot.addData("CameraHandler", bot.getSaturationHigh());
+            bot.addData("test cam", location);
         }
         bot.addData("VoltageHandler", bot.getVoltage());
         bot.update();

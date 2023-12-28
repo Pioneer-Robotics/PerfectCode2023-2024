@@ -7,7 +7,6 @@ import org.firstinspires.ftc.teamcode.OpModes.OpScript;
 
 @Autonomous
 public class BlueAuto extends OpScript {
-    ElapsedTime time = new ElapsedTime();
     @Override
     public void run() {
         bot.runAuto();

@@ -28,26 +28,31 @@ public class SelfDriving extends AbstractHardwareComponent {
     public void drive(Movement movement){
         movement.getCoefficients().resetForPID();//resetting value to begin loop
 
-        while(thetaCondition(movement) || xCondition(movement) ||  yCondition(movement)){
-            pose.updateOdo();
+        while((thetaCondition(movement) || xCondition(movement) ||  yCondition(movement))  && (bot.opmode.opModeIsActive() && bot.opmode.isStarted() && !bot.opmode.isStopRequested())){
+            pose.updateOdos();
             double dX = movement.getdX(), dY = movement.getdY(), dTheta = movement.getdTheta();
             double x = pose.getXX(), y = pose.getYY();
 
             //updating PID values for x, y and theta
-            xPID = movement.getCoefficients().getPID(dX - x, Math.abs(dX), Config.speed);
-            yPID = movement.getCoefficients().getPID(dY - y, Math.abs(dY), Config.speed);
-            rxPID = Config.turn.getPID(Config.turn, bMath.subtractAnglesDeg(dTheta, bot.angleDEG()), dTheta, 0.4);
+            xPID = movement.getCoefficients().PID(dX - x, Math.abs(dX), Config.speed);
+            yPID = movement.getCoefficients().PID(dY - y, Math.abs(dY), Config.speed);
+            rxPID = Config.turn.PID(Config.turn, bMath.subtractAnglesDeg(dTheta, -bot.angleDEG()), dTheta, 0.4);
 
             telemetry.addData("x:", x);
             telemetry.addData("y: ", y);
+            telemetry.addData("xPID", xPID);
+            telemetry.addData("yPID", yPID);
+            telemetry.addData("rxPID", rxPID);
             telemetry.addData("subx:", subX(movement));
             telemetry.addData("suby:", subY(movement));
             telemetry.addData("subhead", subHead(movement));
 
             movement.runExtra();//run extra if needed
-            drive(xPID, yPID, Math.copySign(rxPID, subHead(movement)));//drive there
+            drive2(xPID, yPID, Math.copySign(rxPID, subHead(movement)));//drive there
             bot.update();
         }
+        bot.setMotorPower(0);
+        bot.brake();
     }
 
     /**
@@ -69,18 +74,39 @@ public class SelfDriving extends AbstractHardwareComponent {
         bot.setPowers(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
     }
 
+    private void drive2(double x, double y, double rx) {
+        double imu_offset = Math.toRadians(bot.angleDEG());//current angle
+        double angle = (Math.toRadians(bot.angleRAD()) - imu_offset);//difference ƒrom last time
+
+        double leftDiagPower = -(((y + x) * Math.sin(angle) + ((-y + x)) * Math.cos(angle)));
+        double rightDiagPower = (((-(y -x)) * Math.sin(angle) + ((-y - x) * Math.cos(angle))));
+        double leftRotatePower =  0;
+        double rightRotatePower = 0;
+
+        telemetry.addData("left front power", (leftDiagPower+leftRotatePower));
+        telemetry.addData("left back power", (rightDiagPower+leftRotatePower));
+        telemetry.addData("right front power", (rightDiagPower+rightRotatePower));
+        telemetry.addData("right back power", (leftDiagPower+rightRotatePower) );
+
+        //left front and right back
+        bot.setPowers((leftDiagPower+leftRotatePower),
+                (rightDiagPower+leftRotatePower),
+                (rightDiagPower+rightRotatePower),
+                (leftDiagPower+rightRotatePower) );
+    }
+
     /**
      * X position condition for loop
      * @param movement object to access desired X
      * @return true or false if robot has reached its dX
      */
-    boolean xCondition(Movement movement){return Math.abs(movement.getdX() - pose.getXX()) > 0.25;}
+    boolean xCondition(Movement movement){return Math.abs(movement.getdX() - pose.getXX()) > 2;}
     /**
      * Y position condition for loop
      * @param movement object to access desired Y
      * @return true or false if robot has reached its dY
      */
-    boolean yCondition(Movement movement){return Math.abs(movement.getdY() - pose.getYY()) > 0.25;}
+    boolean yCondition(Movement movement){return Math.abs(movement.getdY() - pose.getYY()) > 2;}
     /**
      * Theta position condition for loop. Uses subtractingAnglesDeg to calculate error
      * @param movement object to access desired theta
@@ -104,46 +130,4 @@ public class SelfDriving extends AbstractHardwareComponent {
     public double getyPID() {return yPID;}
 
     public double getRxPID() {return rxPID;}
-
-    public double[] getPoseOld(){return poseOld;}
-
-
-    //OLD
-    public double[] updateOdometryJ(){
-        int[] ticks = new int[3];
-        //for (int i=0; i<3; i++) ticks[i] = bot.encoders()[i].getCurrentPosition(); //get encoder positions
-        ticks[1] = -ticks[1]; //correct for backwards odometer
-        int newRightTicks = ticks[0] - prevTicks[0];
-        int newLeftTicks =  ticks[1] - prevTicks[1];
-        int newXTicks = ticks[2] - prevTicks[2];
-        prevTicks = ticks;
-        double rightDist = newRightTicks * (Config.goBuildaOdoTicksToCm); //convert from ticks to cm
-        double leftDist = newLeftTicks * (Config.goBuildaOdoTicksToCm); //convert from ticks to cm
-        double backDist = newXTicks * (Config.goBuildaOdoTicksToCm); //convert from ticks to cm
-        double dyR = 0.5 * (rightDist + leftDist); //average of left/right odometer delta
-        //double headingChangeRadians = (rightDist - leftDist) / Config.goBuildaOdoDiameter; //incorrect formula
-        double headingChangeRadians = (rightDist - leftDist) / (Config.odoXOffset * 2);
-        //double avgHeadingRadians = pose[2] + headingChangeRadians / 2.0;//gets heading if needed
-        //double cos = Math.cos(bot.angleRAD());
-        //double sin = Math.sin(bot.angleRAD());
-        if (Math.abs(headingChangeRadians) != 0) { //if robot has turned since last update accout for turning
-            double turnRadius = Config.odoXOffset * (leftDist + rightDist) / (rightDist - leftDist);
-            double strafeRadius = backDist / headingChangeRadians - Config.odoYOffset;
-            poseOld[0] += turnRadius*Math.sin(headingChangeRadians)+strafeRadius*(1-Math.cos(headingChangeRadians)); //cumulate y axis
-            poseOld[1] -= turnRadius*(Math.cos(headingChangeRadians)-1)+strafeRadius*(headingChangeRadians); //subtract to correct direction for x axis
-            poseOld[2] = -bMath.regularizeAngleRad(poseOld[2] + headingChangeRadians); //cumulate total angle from odometry
-        } else { //simple formulas if we haven't turned
-            poseOld[1] += dyR;
-            poseOld[0] += backDist;
-        }
-        /* old incomplete formulas
-        pose[0] += -backDist*sin + dyR*cos;
-        pose[1] += backDist*cos + dyR*sin;
-        pose[2] = bMath.regularizeAngleRad(pose[2] + headingChangeRadians);*/
-        return poseOld;
-    }
-
-
-
-
 }

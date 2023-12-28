@@ -17,7 +17,10 @@ public class Pose extends AbstractHardwareComponent {
 
     private double x = 0, y = 0, theta = 0;
     private int[] prevTicks = new int[3];
-    private double rightOdoStartingAngle = 90d, leftOdoStartingAngle = -90d, xOdoStartingAngle = 0d;
+
+    private double previousAngleRAD = 0;
+    private double dX = 0, dLeft = 0, dRight = 0;
+    private double leftDistanceCM = 0, rightDistanceCM = 0, xDistanceCM;
 
 
     public Pose(DcMotorEx leftOdo, DcMotorEx middleOdo, DcMotorEx rightOdo){
@@ -68,82 +71,48 @@ public class Pose extends AbstractHardwareComponent {
 
     public DcMotorEx[] getRawOdoValues(){return odos;}
 
-    public void updateOdo(){
-        int[] ticks = new int[3];
-        for (int i=0; i<3; i++) ticks[i] = getRawOdoValues()[i].getCurrentPosition();
-        ticks[1] = -ticks[1];
-        int newLeftTicks = ticks[0] - prevTicks[0];
-        int newRightTicks = ticks[1] - prevTicks[1];
-        int newXTicks = ticks[2] - prevTicks[2];
-        prevTicks = Arrays.copyOf(ticks, ticks.length);
-        double rightDist = newRightTicks * (Config.goBuildaOdoTicksToCm);
-        double leftDist = newLeftTicks * (Config.goBuildaOdoTicksToCm);
-        double dyR = 0.5 * (rightDist + leftDist);
-        double headingChangeRadians = (rightDist - leftDist) / Config.goBuildaOdoDiameter;
-        double dxR = newXTicks * (Config.goBuildaOdoTicksToCm);
-        double cos = Math.cos(-bot.angleRAD());
-        double sin = Math.sin(-bot.angleRAD());
+    public void updateOdos() {
+        //WORKS
+        int[] currentTicks = new int[3];
+        for (int i = 0; i < 3; i++) currentTicks[i] = getRawOdoValues()[i].getCurrentPosition();
+        currentTicks[1] = -currentTicks[1]; // reverse backwards odo
 
-        y += -dxR*sin + dyR*cos;//y
-        x += dxR*cos + dyR*sin;//x
-        //        if (Math.abs(rightDist + leftDist) > .3 || Math.abs(dxR) > 0.5) {
-//        if (Math.abs(rightDist + leftDist) > 1 || Math.abs(dxR) > 1) {
-//            x += dxR * cos + dyR * sin;//x
-//            y += -dxR * sin + dyR * cos;//y
-//        }
-    }
+        //get current ticks and set previous ticks from last iteration
+        int newLeftTicks    = currentTicks[0] - prevTicks[0];
+        int newRightTicks   = currentTicks[1] - prevTicks[1];
+        int newXTicks       = currentTicks[2] - prevTicks[2];
+        prevTicks           = Arrays.copyOf(currentTicks, currentTicks.length);
 
-    public void gruberOdoCalculations()
-    {
+        //get current angle from IMU and set from last iteration
+        theta = -bot.angleRAD();
+        double dTheta = bMath.subtractAnglesRad(theta, previousAngleRAD);
+        previousAngleRAD = theta;
+
         //convert to CM
-        double leftOdoTicksToCM = leftOdo.getCurrentPosition() * Config.goBuildaOdoTicksToCm;
-        double rightOdoTicksToCM = -rightOdo.getCurrentPosition() * Config.goBuildaOdoTicksToCm;//right reversed
-        double middleOdoTicksToCM = middleOdo.getCurrentPosition() * Config.goBuildaOdoTicksToCm;
+        leftDistanceCM = newLeftTicks * Config.goBuildaOdoTicksToCm;
+        rightDistanceCM = newRightTicks * Config.goBuildaOdoTicksToCm;
+        xDistanceCM = newXTicks * Config.goBuildaOdoTicksToCm;
 
-        //Handle angle change and store previous angle
-        double currentAngleRAD = bot.angleRAD();
-//        double changeInTheta = bMath.regularizeAngleRad(currentAngleRAD - theta);
-//        theta = currentAngleRAD;//set
+        double odoTicksToCM = Config.goBuildaOdoTicksToCm;
+        double xRotation        = dTheta * (Config.x20FullRotationOdosInTicksDiv40pi * odoTicksToCM);
+        double leftRotation     = dTheta * (Config.left20FullRotationOdosInTicksDiv40pi * odoTicksToCM);
+        double rightRotation    = dTheta * (Config.right20FullRotationOdosInTicksDiv40pi * odoTicksToCM);
 
-        //Pure rotation
-        double middleOdoRotation = Config.odoXOffset * Math.cos( Math.toRadians(xOdoStartingAngle) + currentAngleRAD);
-        double rightOdoRotation = Config.odoYOffset * Math.sin( Math.toRadians(rightOdoStartingAngle) + currentAngleRAD);
-        double leftOdoRotation = Config.odoYOffset * Math.sin(  Math.toRadians(leftOdoStartingAngle) + currentAngleRAD);
+        dX = xDistanceCM - xRotation;
+        dLeft = leftDistanceCM - leftRotation;
+        dRight = rightDistanceCM + rightRotation;
+        double avgDY = (dLeft + dRight) / 2; //average the two
 
-        //Deal with y translation
-        double rightYTranslation = rightOdoTicksToCM - rightOdoRotation;
-        double leftYTranslation = leftOdoTicksToCM - leftOdoRotation;
+        telemetry.addData("ACTUAL ANGLE", Math.toDegrees(theta));
+        telemetry.addData("x distance", xDistanceCM);
+        telemetry.addData("xRotation",xRotation);
+        telemetry.addData("dX", dX);
+        telemetry.addData("y distance", leftDistanceCM);
+        telemetry.addData("yRotation",leftRotation);
+        telemetry.addData("dY", dLeft);
 
-        //Finally update current position
-        x = middleOdoTicksToCM - middleOdoRotation;
-        y = (rightYTranslation + leftYTranslation)/2;
-
-        //Must run in loop
-    }
-
-    public void newOdoCalc(){
-        int[] ticks = new int[3];
-        for (int i=0; i<3; i++) ticks[i] = getRawOdoValues()[i].getCurrentPosition(); //get encoder positions
-        ticks[1] = -ticks[1]; //correct for backwards odometer
-        int newLeftTicks = ticks[0] - prevTicks[0];
-        int newRightTicks =  ticks[1] - prevTicks[1];
-        int newXTicks = ticks[2] - prevTicks[2];
-        prevTicks = ticks;
-        double rightDist = newRightTicks * (Config.goBuildaOdoTicksToCm); //convert from ticks to cm
-        double leftDist = newLeftTicks * (Config.goBuildaOdoTicksToCm); //convert from ticks to cm
-        double backDist = newXTicks * (Config.goBuildaOdoTicksToCm); //convert from ticks to cm
-        double dyR = 0.5 * (rightDist + leftDist); //average of left/right odometer delta
-        double headingChangeRadians = (rightDist - leftDist) / (Config.odoXOffset * 2);
-        if (Math.abs(headingChangeRadians) != 0) { //if robot has turned since last update accout for turning
-            double turnRadius = Config.odoXOffset * (leftDist + rightDist) / (rightDist - leftDist);
-            double strafeRadius = backDist / headingChangeRadians - Config.odoYOffset;
-            y += turnRadius*Math.sin(headingChangeRadians)+strafeRadius*(1-Math.cos(headingChangeRadians)); //cumulate y axis
-            x -= turnRadius*(Math.cos(headingChangeRadians)-1)+strafeRadius*(headingChangeRadians); //subtract to correct direction for x axis
-            theta = -bMath.regularizeAngleRad(theta + headingChangeRadians); //cumulate total angle from odometry
-        } else { //simple formulas if we haven't turned
-            y += dyR;
-            x += backDist;
-        }
+        x += dX * Math.cos(theta) + avgDY * Math.sin(theta);
+        y += -dX * Math.sin(theta) + avgDY * Math.cos(theta);
     }
 
     public double getXX(){return x;}

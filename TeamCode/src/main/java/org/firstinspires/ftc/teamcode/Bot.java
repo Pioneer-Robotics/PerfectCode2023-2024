@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractBot;
 import org.firstinspires.ftc.teamcode.OpModes.OpScript;
+import org.firstinspires.ftc.teamcode.SelfDrivingAuto.Movement;
 
 /**
  * Singleton class that contains all of the methods we are using
@@ -37,9 +38,7 @@ public class Bot extends AbstractBot {
     public void resetY(){pose.resetY();}
     public double getXX(){return pose.getXX();}
     public double getYY(){return pose.getYY();}
-    public void updateOdos(){pose.updateOdo();}
-    public void gruberOdos(){pose.gruberOdoCalculations();}
-    public void newOdoCalc(){pose.newOdoCalc();}
+    public void updateOdos(){pose.updateOdos();}
 
 
     //Angle
@@ -63,6 +62,7 @@ public class Bot extends AbstractBot {
     public void startTurn(double degree){simpleDrive.moveTurn(degree);}
     public void startStrafe(double distance){simpleDrive.moveStrafe(distance);}
     public void startStrafeNegative(double distance){simpleDrive.moveStrafeNegative(distance);}
+    public void drive(Movement movement){selfDriving.drive(movement);}
 
     //Features
     public double getVoltage(){return voltageHandler.getVoltage(opmode.hardwareMap.voltageSensor);}

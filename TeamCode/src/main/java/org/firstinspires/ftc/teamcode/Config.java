@@ -33,6 +33,23 @@ public class Config {
     public static final double odoXOffset = 16.65; //distance in cm from center of robot to odometers on left/right side
     public static final double odoYOffset = 12.4; //distance in cm from center of robot to odometers on back side
 
+    //ODO CALCULATIONS CONSTANTS
+    public static final double yOdoDistanceFromCenterCM = 13.25; //distance in cm from center of robot to odometers on left/right side
+    public static final double xOdoDistanceFromCenterCM = 7.45; //distance in cm from center of robot to odometers on back side
+    public static final double yOdoAngleFromCenterRAD = Math.atan(13/8.5);
+    public static final double xOdoAngleFromCenterRAD = Math.atan(1/15);
+    public static final double newyOdoDistanceFromCenterCM = Math.sqrt( (13*13) + (9*9) );
+    public static final double newxOdoDistanceFromCenterCM = Math.sqrt( (1) + (15.5*15.5) );
+    public static final double xRotationOdosInTicksDiv20pi = 120593 / (20 * Math.PI);
+    public static final double leftRotationOdosInTicksDiv20pi = 119563 / (20 * Math.PI);
+    public static final double rightRotationOdosInTicksDiv20pi = 102635 / (20 * Math.PI);
+    public static final double x15FullRotationOdosInTicksDiv30pi = 176760 / (30 * Math.PI);
+    public static final double left15FullRotationOdosInTicksDiv30pi = 174117 / (30 * Math.PI);
+    public static final double right15FullRotationOdosInTicksDiv30pi = 159455 / (30 * Math.PI);
+    public static final double x20FullRotationOdosInTicksDiv40pi = 238278 / (40 * Math.PI);
+    public static final double left20FullRotationOdosInTicksDiv40pi = 238269 / (40 * Math.PI);
+    public static final double right20FullRotationOdosInTicksDiv40pi = 206129 / (40 * Math.PI);
+
     //Motor encoder
     public static final double encoderRatio = 2800d;
 

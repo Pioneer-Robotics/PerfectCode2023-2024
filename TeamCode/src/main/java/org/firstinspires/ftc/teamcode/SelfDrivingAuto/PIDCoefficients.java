@@ -34,34 +34,60 @@ public class PIDCoefficients {
      */
     public double getPID(double error, double target, double speed){
         if(target == 0) {target += 0.01;}
-            double currentTime = System.nanoTime();
-            //pid calculation
-            errorSum += (error / target) * ((currentTime - lastTime) / 1000000000); // Update integral accumulator
-            dError = (((currentTime - lastTime) / 1000000000) > .001) ? ((error / target) - lastError) / ((currentTime - lastTime) / 1000000000) : 0;
-            lastError = error / target; // Update previous error
-            lastTime = currentTime;
+        double currentTime = System.nanoTime();
+        //pid calculation
+        errorSum += (error / target) * ((currentTime - lastTime) / 1000000000); // Update integral accumulator
+        dError = (((currentTime - lastTime) / 1000000000) > .001) ? ((error / target) - lastError) / ((currentTime - lastTime) / 1000000000) : 0;
+        lastError = error / target; // Update previous error
+        lastTime = currentTime;
 
-            kP = P * (error / target);
-            kI = I * errorSum;
-            kD = D * dError;
-            kF = 0d;
-            return (kP + kI + kD) * speed;
+        kP = P * (error / target);
+        kI = I * errorSum;
+        kD = D * dError;
+        kF = 0d;
+        return (kP + kI + kD) * speed;
     }
     //same as above except takes in pidCoef object. Used for specific things
     public double getPID(PIDCoefficients pidCoefficients, double error, double target, double speed){
         if(target == 0) {target += 0.01;}
-            double currentTime = System.nanoTime();
-            //pid calculation
-            errorSum += (error / target) * ((currentTime - lastTime) / 1000000000); // Update integral accumulator
-            dError = (((currentTime - lastTime) / 1000000000) > .001) ? ((error / target) - lastError) / ((currentTime - lastTime) / 1000000000) : 0;
-            lastError = error / target; // Update previous error
-            lastTime = currentTime;
+        double currentTime = System.nanoTime();
+        //pid calculation
+        errorSum += (error / target) * ((currentTime - lastTime) / 1000000000); // Update integral accumulator
+        dError = (((currentTime - lastTime) / 1000000000) > .001) ? ((error / target) - lastError) / ((currentTime - lastTime) / 1000000000) : 0;
+        lastError = error / target; // Update previous error
+        lastTime = currentTime;
 
-            kP = pidCoefficients.getP() * (error / target);
-            kI = pidCoefficients.getI() * errorSum;
-            kD = pidCoefficients.getD() * dError;
-            kF = 0d;
-            return (kP + kI + kD) * speed;
+        kP = pidCoefficients.getP() * (error / target);
+        kI = pidCoefficients.getI() * errorSum;
+        kD = pidCoefficients.getD() * dError;
+        kF = 0d;
+        return (kP + kI + kD) * speed;
+    }
+
+    public double PID(double error, double target, double speed){
+        if(target == 0) {target += 0.01;}
+        errorSum += error;
+        dError = error - lastError;
+        lastError = error / target; // Update previous error
+
+        kP = P * (error/target);
+        kI = I * errorSum;
+        kD = D * dError;
+
+        return (kP + kI + kD) * speed;
+    }
+
+    public double PID(PIDCoefficients pidCoefficients, double error, double target, double speed){
+        if(target == 0) {target += 0.01;}
+        errorSum += error;
+        dError = error - lastError;
+        lastError = error / target; // Update previous error
+
+        kP = pidCoefficients.getP() * (error/target);
+        kI = pidCoefficients.getI() * errorSum;
+        kD = pidCoefficients.getD() * dError;
+
+        return (kP + kI + kD) * speed;
     }
 
     /**

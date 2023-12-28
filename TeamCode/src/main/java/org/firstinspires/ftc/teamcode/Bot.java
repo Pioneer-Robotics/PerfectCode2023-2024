@@ -97,7 +97,13 @@ public class Bot extends AbstractBot {
     public void setSlideLevel(int level){slideArmMotor.setLevel(level);}
     public void slideVelocity(double speed){slideArmMotor.setVelocity(speed);}
     public void resetSlideVelocity(double speed){slideArmMotor.setDefaultVelocity(speed);}
-    public double getSlideLevel(){return slideArmMotor.getSlideLevel();}
+    public double getSlideLevel() {
+        return slideArmMotor.getSlideLevel();
+    }
+
+    public double getSlideLevelTarg() {
+        return slideArmMotor.getTarg();
+    }
 
     //Collector Arm
     public void moveCollectorBack(){collector.moveCollectorBack();}

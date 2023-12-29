@@ -7,7 +7,6 @@ import org.firstinspires.ftc.teamcode.Helpers.Counter;
 import org.firstinspires.ftc.teamcode.Helpers.Toggle;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
@@ -25,7 +24,7 @@ public class Drivers extends AbstractHardwareComponent {
     //Counter
     private final Counter scalePower = new Counter(.3, .2, 0.8);
 
-    @DriverAnnotations.Driver1.Seth
+    @DriverAnnotations.Driver1(name = "Seth")
     public void driver1(Gamepad gamepad) {
         mecanumToggle.toggle(gamepad.y);//toggles between regular and coordinate lock mecanum
 
@@ -52,13 +51,13 @@ public class Drivers extends AbstractHardwareComponent {
         }
     }
 
-    @DriverAnnotations.Driver2.Henry
+    @DriverAnnotations.Driver2(name = "Henry")
     public void driver2(Gamepad gamepad) {
         //ensures pixel drop servos are up
         bot.rightDropUp();
         bot.leftDropUp();
         grabberToggle.toggle(gamepad.left_bumper);
-        if (grabberToggle.getBool() && (bot.getSlideLevel() <= 500 || bot.getSlideLevel() >= 1000)) {
+        if (grabberToggle.getBool() && (bot.getSlideLevel() <= 600 || bot.getSlideLevel() >= 1000)) {
             bot.gripperOpen();
         } else {
             bot.gripperClosed();
@@ -100,13 +99,12 @@ public class Drivers extends AbstractHardwareComponent {
         }
     }
 
-    @DriverAnnotations.Coach.Christian
+    @DriverAnnotations.Coach(name = "Christian/Owen")
     public void coach(){
         //this is where we keep track of who is the coach
     }
 
     public void telemetry(){
-        bot.newOdoCalc();
         telemetry.addData("Scale Power", scalePower.getNum());
         telemetry.addData("Coordinate Lock Mecanum:", mecanumToggle.getBool());
         telemetry.addData("Angle:", bot.angleDEG());
@@ -124,34 +122,40 @@ public class Drivers extends AbstractHardwareComponent {
         telemetry();
     }
 
-    public String getWelcomeText(){
-        Class<Drivers> myClass = Drivers.class;
+    public String getWelcomeText() {
+        Class myClass = Drivers.class;
         StringBuilder text = new StringBuilder();
+        String name1 = "";
+        String name2 = "";
+        String name3 = "";
         try {
-            Method method = myClass.getDeclaredMethod("driver1", Gamepad.class);
-            Method method2 = myClass.getDeclaredMethod("driver2", Gamepad.class);
-            Method method3 = myClass.getDeclaredMethod("coach");
-            // Check if the method has any annotations
-            Annotation[] annotations = method.getAnnotations();
-            Annotation[] annotations2 = method2.getAnnotations();
-            Annotation[] annotations3 = method3.getAnnotations();
-
-            // Iterate through the annotations and print their names
-            for (Annotation annotation : annotations) {
-                text.append(annotation.annotationType().getSimpleName());
+            Method[] methods = myClass.getMethods();
+            Method method = null;
+            Method method2 = null;
+            Method method3 = null;
+            for (Method m : methods) {
+                if (m.getName().equals("driver1")) {
+                    method = m;
+                } else if (m.getName().equals("driver2")) {
+                    method2 = m;
+                } else if (m.getName().equals("coach")) {
+                    method3 = m;
+                }
             }
-            for (Annotation annotation : annotations2) {
-                text.append(", ").append(annotation.annotationType().getSimpleName());
-            }
-            for (Annotation annotation : annotations3) {
-                text.append(", and ").append(annotation.annotationType().getSimpleName());
-            }
+            assert method != null;
+            DriverAnnotations.Driver1 anno = method.getAnnotation(DriverAnnotations.Driver1.class);
+            name1 = anno.name();
+            assert method2 != null;
+            DriverAnnotations.Driver2 anno2 = method2.getAnnotation(DriverAnnotations.Driver2.class);
+            name2 = anno2.name();
+            assert method3 != null;
+            DriverAnnotations.Coach anno3 = method3.getAnnotation(DriverAnnotations.Coach.class);
+            name3 = anno3.name();
         }
         catch (Exception e){
-
-            telemetry();
+            //telemetry();
         }
-        return "Welcome, " + text + ".\nHave a great first tournament.";
+        return "Welcome, " + name1 + ", " + name2 + ", and " + name3 + ".\nHave a great second tournament.";
     }
 
     public void example(){

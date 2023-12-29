@@ -93,11 +93,13 @@ public class Pose extends AbstractHardwareComponent {
         rightDistanceCM = newRightTicks * Config.goBuildaOdoTicksToCm;
         xDistanceCM = newXTicks * Config.goBuildaOdoTicksToCm;
 
+        //solve for arc length in each odometer
         double odoTicksToCM = Config.goBuildaOdoTicksToCm;
         double xRotation        = dTheta * (Config.x20FullRotationOdosInTicksDiv40pi * odoTicksToCM);
         double leftRotation     = dTheta * (Config.left20FullRotationOdosInTicksDiv40pi * odoTicksToCM);
         double rightRotation    = dTheta * (Config.right20FullRotationOdosInTicksDiv40pi * odoTicksToCM);
 
+        //take out the distance traveled in rotation from total distance to only get translation
         dX = xDistanceCM - xRotation;
         dLeft = leftDistanceCM - leftRotation;
         dRight = rightDistanceCM + rightRotation;
@@ -111,6 +113,7 @@ public class Pose extends AbstractHardwareComponent {
         telemetry.addData("yRotation",leftRotation);
         telemetry.addData("dY", dLeft);
 
+        //add distances onto x,y using trig
         x += dX * Math.cos(theta) + avgDY * Math.sin(theta);
         y += -dX * Math.sin(theta) + avgDY * Math.cos(theta);
     }

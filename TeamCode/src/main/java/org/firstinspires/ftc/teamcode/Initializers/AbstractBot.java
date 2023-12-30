@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Drivers.Drivers;
 import org.firstinspires.ftc.teamcode.Drivers.Mecanum;
+import org.firstinspires.ftc.teamcode.Helpers.Timer;
 import org.firstinspires.ftc.teamcode.SelfDrivingAuto.Commands;
 import org.firstinspires.ftc.teamcode.Config;
 import org.firstinspires.ftc.teamcode.Hardware.VoltageHandler;
@@ -43,6 +44,7 @@ public abstract class AbstractBot {
     public Pose pose;
     public Collector collector;
     public SimpleDrive simpleDrive;
+    public Timer timer;
 
     /**
      * Method used to create all instantiated objects
@@ -76,5 +78,6 @@ public abstract class AbstractBot {
         drivers             = new Drivers();
         voltageHandler      = new VoltageHandler();
         selfDriving         = new SelfDriving(pose);
+        timer               = new Timer();
     }
 }

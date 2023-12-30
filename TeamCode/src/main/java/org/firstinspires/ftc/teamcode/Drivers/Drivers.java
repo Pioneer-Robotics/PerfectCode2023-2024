@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Drivers;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Annotations.DriverAnnotations;
+import org.firstinspires.ftc.teamcode.Config;
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
 import org.firstinspires.ftc.teamcode.Helpers.Toggle;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
@@ -23,13 +24,14 @@ public class Drivers extends AbstractHardwareComponent {
 
     //Counter
     private final Counter scalePower = new Counter(.3, .2, 0.8);
+    private final Counter p = new Counter(1,0.2,5);
 
     @DriverAnnotations.Driver1(name = "Seth")
     public void driver1(Gamepad gamepad) {
         mecanumToggle.toggle(gamepad.y);//toggles between regular and coordinate lock mecanum
 
         if (mecanumToggle.getBool()) {
-            bot.coordinateLock(scalePower);
+            bot.fieldCentricTest(scalePower);
         } else {
             bot.regularMecanum(scalePower);
         }
@@ -81,7 +83,7 @@ public class Drivers extends AbstractHardwareComponent {
         } else if (gamepad.y) {
             bot.setSlideLevel(2200);
         } else if (gamepad.b) {
-            bot.setSlideLevel(0);
+            bot.setSlideLevel(50);
             bot.wristHorizontal();
             //grabberToggle.set(false);
         }
@@ -105,6 +107,7 @@ public class Drivers extends AbstractHardwareComponent {
     }
 
     public void telemetry(){
+        bot.updateOdos();
         telemetry.addData("Scale Power", scalePower.getNum());
         telemetry.addData("Coordinate Lock Mecanum:", mecanumToggle.getBool());
         telemetry.addData("Angle:", bot.angleDEG());
@@ -114,6 +117,9 @@ public class Drivers extends AbstractHardwareComponent {
         telemetry.addData("left", bot.getRawOdos()[0].getCurrentPosition());
         telemetry.addData("right", -bot.getRawOdos()[1].getCurrentPosition());
         telemetry.addData("middle", bot.getRawOdos()[2].getCurrentPosition());
+        telemetry.addData("sub x", bot.subX(Config.dropOffPixelMiddle));
+        telemetry.addData("sub y", bot.subY(Config.dropOffPixelMiddle));
+        telemetry.addData("PID", bot.getPID(bot.subY(Config.dropOffPixelMiddle), Config.dropOffPixelMiddle.getdY(), Config.speed));
     }
 
     public void teleOp(Gamepad gamepad1, Gamepad gamepad2) {

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.SelfDrivingAuto;
 
+import org.firstinspires.ftc.teamcode.Config;
+
 /**
  * PID class that initializes PIDF coefficients and does PID calculations
  */
@@ -26,60 +28,30 @@ public class PIDCoefficients {
     }
 
     /**
-     * PID calculator. Use inside of loop to work lol.
-     * @param error error from target
-     * @param target target position
-     * @param speed max speed that will return--scaler
-     * @return the speed based off PID calculations
+     * PID method that scales power based on distance from target
+     * @param error distance from target
+     * @param target target value
+     * @param speed maximum speed value
+     * @return proportional value based on error and target
      */
-    public double getPID(double error, double target, double speed){
-        if(target == 0) {target += 0.01;}
-        double currentTime = System.nanoTime();
-        //pid calculation
-        errorSum += (error / target) * ((currentTime - lastTime) / 1000000000); // Update integral accumulator
-        dError = (((currentTime - lastTime) / 1000000000) > .001) ? ((error / target) - lastError) / ((currentTime - lastTime) / 1000000000) : 0;
+    public double PID(double error, double target, double speed){
+        if(Math.abs(error) < Config.drivingThresholdCM) {return 0;}
+
+        errorSum += error / target;
+        dError = error - lastError;
         lastError = error / target; // Update previous error
-        lastTime = currentTime;
 
         kP = P * (error / target);
         kI = I * errorSum;
         kD = D * dError;
-        kF = 0d;
-        return (kP + kI + kD) * speed;
-    }
-    //same as above except takes in pidCoef object. Used for specific things
-    public double getPID(PIDCoefficients pidCoefficients, double error, double target, double speed){
-        if(target == 0) {target += 0.01;}
-        double currentTime = System.nanoTime();
-        //pid calculation
-        errorSum += (error / target) * ((currentTime - lastTime) / 1000000000); // Update integral accumulator
-        dError = (((currentTime - lastTime) / 1000000000) > .001) ? ((error / target) - lastError) / ((currentTime - lastTime) / 1000000000) : 0;
-        lastError = error / target; // Update previous error
-        lastTime = currentTime;
-
-        kP = pidCoefficients.getP() * (error / target);
-        kI = pidCoefficients.getI() * errorSum;
-        kD = pidCoefficients.getD() * dError;
-        kF = 0d;
-        return (kP + kI + kD) * speed;
-    }
-
-    public double PID(double error, double target, double speed){
-        if(target == 0) {target += 0.01;}
-        errorSum += error;
-        dError = error - lastError;
-        lastError = error / target; // Update previous error
-
-        kP = P * (error/target);
-        kI = I * errorSum;
-        kD = D * dError;
 
         return (kP + kI + kD) * speed;
     }
 
+    //same as above but can input your own PID coef
     public double PID(PIDCoefficients pidCoefficients, double error, double target, double speed){
-        if(target == 0) {target += 0.01;}
-        errorSum += error;
+        if(Math.abs(error) < Config.turningThresholdDEG) {return 0;}
+        errorSum += error / target;
         dError = error - lastError;
         lastError = error / target; // Update previous error
 

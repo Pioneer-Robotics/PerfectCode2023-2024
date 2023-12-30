@@ -5,16 +5,24 @@ import org.firstinspires.ftc.teamcode.Helpers.bMath;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
 public class SelfDriving extends AbstractHardwareComponent {
-    //PIDs for x,y, and turning inputs
-    double xPID, yPID, rxPID;
+    private double xPID, yPID, rxPID; //PIDs for x,y, and turning inputs
+    private double iX, iY, iTheta; //storing initial x,y values before driving
 
-    public int[] prevTicks = new int[3];
-    public double[] poseOld = new double[3];
-
-    private Pose pose;
+    private Pose pose; //position object
 
     public SelfDriving(Pose pose){
         this.pose = pose;
+    }
+
+    public boolean run(Movement movement){
+        boolean run = false;
+        if(movement.getdTheta() == -10000){
+            run = yCondition(movement) || xCondition(movement);
+        }
+        else{
+            run = (thetaCondition(movement) || xCondition(movement) ||  yCondition(movement));
+        }
+        return run;
     }
 
     /**
@@ -27,16 +35,66 @@ public class SelfDriving extends AbstractHardwareComponent {
      */
     public void drive(Movement movement){
         movement.getCoefficients().resetForPID();//resetting value to begin loop
+        //store the initial x,y values for PID
+        iX = pose.getXX();
+        iY = pose.getYY();
+        iTheta = -bot.angleDEG();
 
         while((thetaCondition(movement) || xCondition(movement) ||  yCondition(movement))  && (bot.opmode.opModeIsActive() && bot.opmode.isStarted() && !bot.opmode.isStopRequested())){
-            pose.updateOdos();
-            double dX = movement.getdX(), dY = movement.getdY(), dTheta = movement.getdTheta();
-            double x = pose.getXX(), y = pose.getYY();
+            pose.updateOdos(); //update odos
+            double dX = movement.getdX(), dY = movement.getdY(), dTheta = movement.getdTheta(); //get x,y,theta from desired movement
+            double x = pose.getXX(), y = pose.getYY(), theta = -bot.angleDEG(); // get x,y,theta current
 
             //updating PID values for x, y and theta
-            xPID = movement.getCoefficients().PID(dX - x, Math.abs(dX), Config.speed);
-            yPID = movement.getCoefficients().PID(dY - y, Math.abs(dY), Config.speed);
-            rxPID = Config.turn.PID(Config.turn, bMath.subtractAnglesDeg(dTheta, -bot.angleDEG()), dTheta, 0.4);
+            if(Math.abs(iX - dX) > Config.drivingThresholdCM) {
+                xPID = movement.getCoefficients().PID(dX - x, Math.abs(iX - dX), Config.speed);
+            }
+            if(Math.abs(iY - dY) > Config.drivingThresholdCM){
+                yPID = movement.getCoefficients().PID(dY - y, Math.abs(iY - dY), Config.speed);
+            }
+            if(Math.abs(bMath.subtractAnglesDeg(iTheta,dTheta)) > Config.turningThresholdDEG) {
+                rxPID = Config.turn.PID(Config.turn, bMath.subtractAnglesDeg(dTheta, theta), Math.abs(bMath.subtractAnglesDeg(iTheta, dTheta)), Config.speed);
+            }
+
+            telemetry.addData("x:", x);
+            telemetry.addData("y: ", y);
+            telemetry.addData("xPID", xPID);
+            telemetry.addData("yPID", yPID);
+            telemetry.addData("rxPID", rxPID);
+            telemetry.addData("target angle", Math.abs(bMath.subtractAnglesDeg(iTheta , dTheta)));
+            telemetry.addData("subtact angles", bMath.subtractAnglesDeg(dTheta, theta));
+            telemetry.addData("subx:", subX(movement));
+            telemetry.addData("suby:", subY(movement));
+            telemetry.addData("subhead", subHead(movement));
+
+            movement.doWhileMoving();//run extra if needed
+            newDriveRobot(xPID, yPID, Math.copySign(rxPID, subHead(movement)));//drive there
+            bot.update();
+        }
+        telemetry.addLine("DONE");
+        bot.setMotorPower(0);
+        bot.brake();
+    }
+
+    public void drive2(Movement movement){
+        movement.getCoefficients().resetForPID();//resetting value to begin loop
+        //store the initial x,y values for PID
+        iX = pose.getXX();
+        iY = pose.getYY();
+        iTheta = -bot.angleDEG();
+
+        while(run(movement)  && (bot.opmode.opModeIsActive() && bot.opmode.isStarted() && !bot.opmode.isStopRequested())){
+            pose.updateOdos(); //update odos
+            double dX = movement.getdX(), dY = movement.getdY(); //get x,y,theta from desired movement
+            double x = pose.getXX(), y = pose.getYY(), theta = -bot.angleDEG(); // get x,y,theta current
+
+            //updating PID values for x, y and theta
+            if(Math.abs(iX - dX) > Config.drivingThresholdCM) {
+                xPID = movement.getCoefficients().PID(dX - x, Math.abs(iX - dX), Config.speed);
+            }
+            if(Math.abs(iY - dY) > Config.drivingThresholdCM){
+                yPID = movement.getCoefficients().PID(dY - y, Math.abs(iY - dY), Config.speed);
+            }
 
             telemetry.addData("x:", x);
             telemetry.addData("y: ", y);
@@ -47,10 +105,11 @@ public class SelfDriving extends AbstractHardwareComponent {
             telemetry.addData("suby:", subY(movement));
             telemetry.addData("subhead", subHead(movement));
 
-            movement.runExtra();//run extra if needed
-            drive2(xPID, yPID, Math.copySign(rxPID, subHead(movement)));//drive there
+            movement.doWhileMoving();//run extra if needed
+            newDriveRobot(xPID, yPID, Math.copySign(rxPID, subHead(movement)));//drive there
             bot.update();
         }
+        telemetry.addLine("DONE");
         bot.setMotorPower(0);
         bot.brake();
     }
@@ -62,37 +121,50 @@ public class SelfDriving extends AbstractHardwareComponent {
      * @param y y input
      * @param rx turn input
      */
-    private void drive(double x, double y, double rx){
-        double rotX = x * Math.cos(bot.angleRAD()) - y * Math.sin(bot.angleRAD());
-        double rotY = x * Math.sin(bot.angleRAD()) + y * Math.cos(bot.angleRAD());
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        double frontLeftPower = (rotY + rotX + rx) / denominator;
-        double backLeftPower = (rotY - rotX + rx) / denominator;
-        double frontRightPower = (rotY - rotX - rx) / denominator;
-        double backRightPower = (rotY + rotX - rx) / denominator;
-
-        bot.setPowers(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
-    }
-
-    private void drive2(double x, double y, double rx) {
+    private void drive(double x, double y, double rx) {
         double imu_offset = Math.toRadians(bot.angleDEG());//current angle
         double angle = (Math.toRadians(bot.angleRAD()) - imu_offset);//difference ƒrom last time
 
-        double leftDiagPower = -(((y + x) * Math.sin(angle) + ((-y + x)) * Math.cos(angle)));
-        double rightDiagPower = (((-(y -x)) * Math.sin(angle) + ((-y - x) * Math.cos(angle))));
-        double leftRotatePower =  0;
-        double rightRotatePower = 0;
+        double leftDiagPower = -(((y - x) * Math.sin(angle) + ((-y - x)) * Math.cos(angle)));
+        double rightDiagPower = -(((-(y + x)) * Math.sin(angle) + ((-y +  x) * Math.cos(angle))));
+        double leftRotatePower =  rx;
+        double rightRotatePower = -rx;
 
         telemetry.addData("left front power", (leftDiagPower+leftRotatePower));
         telemetry.addData("left back power", (rightDiagPower+leftRotatePower));
         telemetry.addData("right front power", (rightDiagPower+rightRotatePower));
         telemetry.addData("right back power", (leftDiagPower+rightRotatePower) );
 
-        //left front and right back
+        //left back and right front
         bot.setPowers((leftDiagPower+leftRotatePower),
                 (rightDiagPower+leftRotatePower),
                 (rightDiagPower+rightRotatePower),
                 (leftDiagPower+rightRotatePower) );
+    }
+
+    public void newDriveRobot(double x, double y, double rx){
+        double botHeading = bot.angleRAD();
+
+        // Rotate the movement direction counter to the bot's rotation
+        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+
+        rotX = rotX * 2.1;  // Counteract imperfect strafing
+
+        // Denominator is the largest motor power (absolute value) or 1
+        // This ensures all the powers maintain the same ratio,
+        // but only if at least one is out of the range [-1, 1]
+        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+        double frontLeftPower = (rotY + rotX + rx) / denominator;
+        double backLeftPower = (rotY - rotX + rx) / denominator;
+        double frontRightPower = (rotY - rotX - rx) / denominator;
+        double backRightPower = (rotY + rotX - rx) / denominator;
+
+        bot.setPowers(
+                frontLeftPower,
+                backLeftPower,
+                frontRightPower,
+                backRightPower);
     }
 
     /**
@@ -100,26 +172,26 @@ public class SelfDriving extends AbstractHardwareComponent {
      * @param movement object to access desired X
      * @return true or false if robot has reached its dX
      */
-    boolean xCondition(Movement movement){return Math.abs(movement.getdX() - pose.getXX()) > 2;}
+    boolean xCondition(Movement movement){return Math.abs(movement.getdX() - pose.getXX()) > Config.drivingThresholdCM;}
     /**
      * Y position condition for loop
      * @param movement object to access desired Y
      * @return true or false if robot has reached its dY
      */
-    boolean yCondition(Movement movement){return Math.abs(movement.getdY() - pose.getYY()) > 2;}
+    boolean yCondition(Movement movement){return Math.abs(movement.getdY() - pose.getYY()) > Config.drivingThresholdCM;}
     /**
      * Theta position condition for loop. Uses subtractingAnglesDeg to calculate error
      * @param movement object to access desired theta
      * @return true or false if robot has reached its dTheta
      */
-    boolean thetaCondition(Movement movement){return Math.abs(bMath.subtractAnglesDeg(movement.getdTheta(), bot.angleDEG())) > 1;}
+    boolean thetaCondition(Movement movement){return Math.abs(bMath.subtractAnglesDeg(movement.getdTheta(), -bot.angleDEG())) > Config.turningThresholdDEG;}
 
     /**
      *
      * @param movement
      * @return current pos
      */
-    public double subHead(Movement movement){return bMath.subtractAnglesDeg(movement.getdTheta(), bot.angleDEG());}
+    public double subHead(Movement movement){return bMath.subtractAnglesDeg(movement.getdTheta(), -bot.angleDEG());}
 
     public double subX(Movement movement){return movement.getdX() - pose.getXX();}
 

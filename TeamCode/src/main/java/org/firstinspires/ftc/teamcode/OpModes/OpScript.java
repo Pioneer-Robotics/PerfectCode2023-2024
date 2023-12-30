@@ -35,6 +35,7 @@ public abstract class OpScript extends LinearOpMode {
         autoTimer.reset();
         if(bot.isAuto()) {bot.openCamera();}
         while (!opScript.opModeIsActive() && !opScript.isStarted()  && !opScript.isStopRequested()) {opScript.initloop();}
+        setForTeleOp();
         while (opScript.opModeIsActive() && opScript.isStarted() && !opScript.isStopRequested()) {
             if(bot.isRunning()) {
                 opScript.run();
@@ -46,6 +47,10 @@ public abstract class OpScript extends LinearOpMode {
             opScript.telemetry.update();
         }
         opScript.stop();
+    }
+
+    public void setForTeleOp(){
+        bot.setSlideLevel(50);
     }
 
     /**

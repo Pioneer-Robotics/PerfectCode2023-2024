@@ -29,6 +29,7 @@ public class Bot extends AbstractBot {
     public void setPowerBehavior(DcMotorEx.ZeroPowerBehavior Lbehavior, DcMotorEx.ZeroPowerBehavior Rbehavior) {driveMotors.setPowerBehavior(Lbehavior, Rbehavior);}
     public void brake() {driveMotors.brake();}
     public void gearShift(Counter counter) {commands.gearShift(opmode.gamepad1, counter);}
+    public void pShift(Counter counter){commands.pShift(opmode.gamepad1, counter);}
 
     //Odometers
     public DcMotorEx[] getRawOdos(){return pose.getRawOdoValues();}
@@ -39,6 +40,9 @@ public class Bot extends AbstractBot {
     public double getXX(){return pose.getXX();}
     public double getYY(){return pose.getYY();}
     public void updateOdos(){pose.updateOdos();}
+    public double subY(Movement movement){return selfDriving.subY(movement);}
+    public double subX(Movement movement){return selfDriving.subX(movement);}
+    public double getPID(double error, double target, double speed){return Config.dropOffPixelMiddle.getCoefficients().PID(error, target, speed);}
 
 
     //Angle
@@ -49,7 +53,7 @@ public class Bot extends AbstractBot {
     public void resetIMU() {imu.resetYaw();}
 
     //RedAuto
-    public void runAuto() {commands.boardSide();}
+    public void runAuto() {commands.runMiddle();}
     public void redAuto(){commands.redAuto();}
     public void runAuto2() {commands.audienceSide();}
     public boolean isRunning(){return !getInstance().isAuto() || opmode.runAuto;}
@@ -63,6 +67,7 @@ public class Bot extends AbstractBot {
     public void startStrafe(double distance){simpleDrive.moveStrafe(distance);}
     public void startStrafeNegative(double distance){simpleDrive.moveStrafeNegative(distance);}
     public void drive(Movement movement){selfDriving.drive(movement);}
+    public void drive2(Movement movement){selfDriving.drive2(movement);}
 
     //Features
     public double getVoltage(){return voltageHandler.getVoltage(opmode.hardwareMap.voltageSensor);}
@@ -75,6 +80,7 @@ public class Bot extends AbstractBot {
     //Driving movements
     public void coordinateLock(Counter counter) {mecanum.coordinateLockMecanum(opmode.gamepad1, counter);}
     public void regularMecanum(Counter counter) {mecanum.mecanumDrive(opmode.gamepad1, counter);}
+    public void fieldCentricTest(Counter counter){mecanum.fieldCentricMecanumTest(opmode.gamepad1, counter);}
 
     //Servos
     public void leftDropUp(){leftDropServo.servoOpen();}
@@ -110,6 +116,9 @@ public class Bot extends AbstractBot {
     public void moveCollector(){collector.moveCollector();}
     public void stopCollector(){collector.stopCollector();}
     public void setCollectorVelocitySpeed(double speed){collector.setVelocity(speed);}
+
+    //timer
+    public void timerSleep(long seconds){timer.sleep(seconds);}
 
     //Telemetry and Bulkreader
     public void update(){opmode.update();}

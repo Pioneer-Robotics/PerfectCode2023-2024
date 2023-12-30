@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 import org.firstinspires.ftc.teamcode.SelfDrivingAuto.Movement;
 import org.firstinspires.ftc.teamcode.SelfDrivingAuto.PIDCoefficients;
 
 /**
  * Contains all of our strings for servos and motors and any reusable constants
  */
-public class Config {
+public class Config extends AbstractHardwareComponent {
     //Motor names
     public static final String motorLF = "LF";//Right Odometer
     public static final String motorLB = "LB";//Left Odometer
@@ -54,16 +55,36 @@ public class Config {
     public static final double encoderRatio = 2800d;
 
     //Speeds
-    public static final double speed = 0.5;
-//FTCGP-21
-    //PID
-    public static PIDCoefficients drive = new PIDCoefficients(0.5,0,0, 0);
-    public static PIDCoefficients drive2 = new PIDCoefficients(3,0,0, 0);
-    public static PIDCoefficients turn = new PIDCoefficients(1,0,0,0);
-    public static Movement movement = new Movement(0,20,0, drive) {
+    public static final double speed = 0.3;
+
+    //PID Coef
+    public static PIDCoefficients turnByItSelf = new PIDCoefficients(1,0.0065,0, 0);
+    public static PIDCoefficients dropOffPixelPID = new PIDCoefficients(1.75,0.007,0, 0);
+    public static PIDCoefficients strafeAvoidPID = new PIDCoefficients(1,0.005,0,0);
+    public static PIDCoefficients turn = new PIDCoefficients(1.5,0.01,0,0);
+    public static PIDCoefficients goToBoardPID = new PIDCoefficients(2.1, 0.012,0,0);
+
+    //Movement
+    public static Movement dropOffPixelMiddle = new Movement(0,70,-90, dropOffPixelPID) {
         @Override
-        public void runExtra() {}
+        public void doWhileMoving() {}
     };
+    public static Movement goToBoardMiddle = new Movement(-95,70, goToBoardPID) {
+        @Override
+        public void doWhileMoving() {
+            bot.setSlideLevel(2000);
+            bot.wristVertical();
+        }
+    };
+    public static Movement strafeToAvoidTeammate = new Movement(-95, 100, strafeAvoidPID) {
+        @Override
+        public void doWhileMoving() {
+            bot.setSlideLevel(1250);
+            bot.wristHorizontal();
+        }
+    };
+    public static double drivingThresholdCM = 2;
+    public static double turningThresholdDEG = 1;
 
     //Pixel Servos
     public static final String leftDropServo = "PixelDropLeft";
@@ -82,8 +103,8 @@ public class Config {
     public static final double airplaneLaunch = 1;
     public static final double intakeUp = 0.02;
     public static final double intakeDown = .4;
-    public static final double gripperOpen = 0.65;
-    public static final double gripperClosed = .83;
+    public static final double gripperOpen = .75;
+    public static final double gripperClosed = 0;
     public static final double WristVertical = .7;
     public static final double WristHorizontal = .5;
 }

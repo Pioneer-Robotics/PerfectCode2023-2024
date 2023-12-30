@@ -5,6 +5,7 @@ import static java.lang.Thread.sleep;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Config;
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
@@ -25,6 +26,7 @@ public class Commands extends AbstractHardwareComponent {
      * @param counter: this is the object that will handle that math
      */
     public void gearShift(Gamepad gamepad, Counter counter){counter.arithmetic(gamepad.right_bumper, gamepad.left_bumper, .1);}
+    public void pShift(Gamepad gamepad, Counter counter){counter.arithmetic(gamepad.dpad_left, gamepad.dpad_right, 0.05);}
 
     /**
      * Depending on if red or blue side and what the cameraHandler sees, this method will make the robot go there
@@ -303,5 +305,40 @@ public class Commands extends AbstractHardwareComponent {
             telemetry.addLine("failed");
         }
 
+    }
+
+    public void runMiddle(){
+        bot.drive(Config.dropOffPixelMiddle);
+        bot.timerSleep(2);
+        bot.rightDropDown();
+        bot.timerSleep(1);
+        bot.drive2(Config.goToBoardMiddle);
+        bot.timerSleep(2);
+        bot.gripperOpen();
+        bot.drive2(Config.strafeToAvoidTeammate);
+    }
+
+    public void runLeft(){
+        bot.drive(Config.dropOffPixelMiddle);
+        bot.timerSleep(2);
+        bot.rightDropDown();
+        bot.timerSleep(1);
+        bot.drive(Config.goToBoardMiddle);
+        bot.setSlideLevel(2000);
+        bot.wristVertical();
+        bot.timerSleep(2);
+        bot.gripperOpen();
+    }
+
+    public void runRight(){
+        bot.drive(Config.dropOffPixelMiddle);
+        bot.timerSleep(2);
+        bot.rightDropDown();
+        bot.timerSleep(1);
+        bot.drive(Config.goToBoardMiddle);
+        bot.setSlideLevel(2000);
+        bot.wristVertical();
+        bot.timerSleep(2);
+        bot.gripperOpen();
     }
 }

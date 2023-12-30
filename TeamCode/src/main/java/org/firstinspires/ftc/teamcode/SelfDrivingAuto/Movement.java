@@ -11,7 +11,7 @@ public abstract class Movement {
      * Used in AutoDive, this method will be called every iteration in the loop.
      * Put actions in here to run even inside of while loop
      */
-    public abstract void runExtra();
+    public abstract void doWhileMoving();
     private double dX, dY, dTheta, speed, threshold;//desired values for AutoDrive
 
     /**
@@ -27,6 +27,13 @@ public abstract class Movement {
         this.dX = dX;
         this.dY = dY;
         this.dTheta = dTheta;
+        speed = 0.5;
+        this.coefficients = coefficients;
+    }
+    public Movement(double dX, double dY, PIDCoefficients coefficients){
+        this.dX = dX;
+        this.dY = dY;
+        this.dTheta = -10000;
         speed = 0.5;
         this.coefficients = coefficients;
     }

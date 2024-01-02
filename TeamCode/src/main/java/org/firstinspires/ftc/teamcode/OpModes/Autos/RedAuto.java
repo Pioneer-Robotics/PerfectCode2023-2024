@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.OpModes.OpScript;
 public class RedAuto extends OpScript {
     @Override
     public void run() {
-        bot.redAuto();
+        bot.runAuto();
     }
 
     @Override

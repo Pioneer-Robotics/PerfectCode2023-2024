@@ -64,6 +64,7 @@ public abstract class OpScript extends LinearOpMode {
             bot.addData("CameraHandler", bot.getSaturationHigh());
             bot.addData("test cam", location);
         }
+        bot.addData("Angle: ", -bot.angleDEG());
         bot.addData("VoltageHandler", bot.getVoltage());
         bot.update();
     }

@@ -31,7 +31,7 @@ public class Drivers extends AbstractHardwareComponent {
         mecanumToggle.toggle(gamepad.y);//toggles between regular and coordinate lock mecanum
 
         if (mecanumToggle.getBool()) {
-            bot.fieldCentricTest(scalePower);
+            bot.teleOpFieldCentric(scalePower);
         } else {
             bot.regularMecanum(scalePower);
         }
@@ -110,16 +110,13 @@ public class Drivers extends AbstractHardwareComponent {
         bot.updateOdos();
         telemetry.addData("Scale Power", scalePower.getNum());
         telemetry.addData("Coordinate Lock Mecanum:", mecanumToggle.getBool());
-        telemetry.addData("Angle:", bot.angleDEG());
+        telemetry.addData("Angle:", -bot.angleDEG());
         telemetry.addData("arm pos", bot.getSlideLevel());
         telemetry.addData("X in cm", bot.getXX());
         telemetry.addData("Y in cm", bot.getYY());
         telemetry.addData("left", bot.getRawOdos()[0].getCurrentPosition());
         telemetry.addData("right", -bot.getRawOdos()[1].getCurrentPosition());
         telemetry.addData("middle", bot.getRawOdos()[2].getCurrentPosition());
-        telemetry.addData("sub x", bot.subX(Config.dropOffPixelMiddle));
-        telemetry.addData("sub y", bot.subY(Config.dropOffPixelMiddle));
-        telemetry.addData("PID", bot.getPID(bot.subY(Config.dropOffPixelMiddle), Config.dropOffPixelMiddle.getdY(), Config.speed));
     }
 
     public void teleOp(Gamepad gamepad1, Gamepad gamepad2) {

@@ -53,9 +53,7 @@ public class Bot extends AbstractBot {
     public void resetIMU() {imu.resetYaw();}
 
     //RedAuto
-    public void runAuto() {commands.runMiddle();}
-    public void redAuto(){commands.redAuto();}
-    public void runAuto2() {commands.audienceSide();}
+    public void runAuto() {commands.runLeft();}
     public boolean isRunning(){return !getInstance().isAuto() || opmode.runAuto;}
     public void openCamera(){cameraHandler.openCamera();}
     public int locationCamera(){return cameraHandler.locationCamera();}
@@ -67,7 +65,6 @@ public class Bot extends AbstractBot {
     public void startStrafe(double distance){simpleDrive.moveStrafe(distance);}
     public void startStrafeNegative(double distance){simpleDrive.moveStrafeNegative(distance);}
     public void drive(Movement movement){selfDriving.drive(movement);}
-    public void drive2(Movement movement){selfDriving.drive2(movement);}
 
     //Features
     public double getVoltage(){return voltageHandler.getVoltage(opmode.hardwareMap.voltageSensor);}
@@ -78,9 +75,9 @@ public class Bot extends AbstractBot {
     public String getWelcomeText(){return drivers.getWelcomeText();}
 
     //Driving movements
-    public void coordinateLock(Counter counter) {mecanum.coordinateLockMecanum(opmode.gamepad1, counter);}
+    public void autoFieldCentricDriving(double x, double y, double rx){mecanum.autoFieldCentricDriving(x, y, rx);}
     public void regularMecanum(Counter counter) {mecanum.mecanumDrive(opmode.gamepad1, counter);}
-    public void fieldCentricTest(Counter counter){mecanum.fieldCentricMecanumTest(opmode.gamepad1, counter);}
+    public void teleOpFieldCentric(Counter counter){mecanum.teleOpFieldCentricMecanum(opmode.gamepad1, counter);}
 
     //Servos
     public void leftDropUp(){leftDropServo.servoOpen();}

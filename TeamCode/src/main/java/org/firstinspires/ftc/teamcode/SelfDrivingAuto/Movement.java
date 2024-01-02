@@ -6,13 +6,13 @@ package org.firstinspires.ftc.teamcode.SelfDrivingAuto;
  */
 public abstract class Movement {
     private PIDCoefficients coefficients;//PIDcoef object set in constructor
-    private PIDCoefficients pidX, pidY, pidTheta;
+    private PIDCoefficients pidXY, pidTheta;
     /**
      * Used in AutoDive, this method will be called every iteration in the loop.
      * Put actions in here to run even inside of while loop
      */
     public abstract void doWhileMoving();
-    private double dX, dY, dTheta, speed, threshold;//desired values for AutoDrive
+    private double dX, dY, dTheta, speed;//desired values for AutoDrive
 
     /**
      * Constructor that will tell what AutoDrive to do.
@@ -21,34 +21,33 @@ public abstract class Movement {
      * @param dX desired x absolute position
      * @param dY desired y absolute position
      * @param dTheta desired theta absolute position
-     * @param coefficients used to input PIDF coefficients and do PID calculations
+     * @param pidXY used to input PIDF coefficients and do PID calculations
+     * @param pidTheta used to input PIDF coefficents
      */
-    public Movement(double dX, double dY, double dTheta, PIDCoefficients coefficients){
+    public Movement(double dX, double dY, double dTheta, PIDCoefficients pidXY, PIDCoefficients pidTheta){
         this.dX = dX;
         this.dY = dY;
         this.dTheta = dTheta;
         speed = 0.5;
-        this.coefficients = coefficients;
+        this.pidXY = pidXY;
+        this.pidTheta = pidTheta;
     }
-    public Movement(double dX, double dY, PIDCoefficients coefficients){
-        this.dX = dX;
-        this.dY = dY;
-        this.dTheta = -10000;
-        speed = 0.5;
-        this.coefficients = coefficients;
-    }
-    public Movement(double dX, double dY, double dTheta, double speed, double threshold){
-        this.dX = dX;
-        this.dY = dY;
-        this.dTheta = dTheta;
-        this.speed = speed;
-        this.threshold = threshold;
+
+    //setters
+    public void setdX(double dX){this.dX = dX;}
+    public void setdY(double dY){this.dY = dY;}
+    public void setdTheta(double dTheta){this.dTheta = dTheta;}
+    public void setPosition(double dX, double dY, double dTheta){
+        setdX(dX);
+        setdY(dY);
+        setdTheta(dTheta);
     }
     //getters
     public PIDCoefficients getCoefficients() {return coefficients;}
+    public PIDCoefficients getPidXY(){return pidXY;}
+    public PIDCoefficients getPidTheta(){return pidTheta;}
     public double getdX(){return dX;}
     public double getdY(){return dY;}
     public double getdTheta(){return dTheta;}
     public double getSpeed(){return speed;}
-    public double getThreshold(){return threshold;}
 }

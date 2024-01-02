@@ -24,7 +24,7 @@ public class Drivers extends AbstractHardwareComponent {
 
     //Counter
     private final Counter scalePower = new Counter(.3, .2, 0.8);
-    private final Counter p = new Counter(1,0.2,5);
+    private final Counter intakePos = new Counter(0, 0, 4);
 
     @DriverAnnotations.Driver1(name = "Seth")
     public void driver1(Gamepad gamepad) {
@@ -55,6 +55,8 @@ public class Drivers extends AbstractHardwareComponent {
 
     @DriverAnnotations.Driver2(name = "Henry")
     public void driver2(Gamepad gamepad) {
+        intakePos.arithmetic(gamepad.dpad_right, gamepad.dpad_left);
+
         //ensures pixel drop servos are up
         bot.rightDropUp();
         bot.leftDropUp();
@@ -71,9 +73,9 @@ public class Drivers extends AbstractHardwareComponent {
             bot.wristHorizontal();
         }
 
-        intakeToggle.toggle(gamepad.dpad_left);
+        intakeToggle.toggle(gamepad.a);
         if (intakeToggle.getBool()) {
-            bot.intakeUp();
+            bot.intakeCounter(intakePos.getNum());
         } else {
             bot.intakeDown();
         }
@@ -89,7 +91,6 @@ public class Drivers extends AbstractHardwareComponent {
         }
 
         collectorToggle.toggle(gamepad.dpad_down);
-
         if (gamepad.dpad_up) {
             bot.moveCollectorBack();
         } else {

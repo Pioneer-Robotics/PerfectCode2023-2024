@@ -88,6 +88,7 @@ public class Bot extends AbstractBot {
     public void gripperClosed(){gripperServo.servoClosed();}
     public void wristVertical(){wristServo.servoOpen();}
     public void wristHorizontal(){wristServo.servoClosed();}
+    public void intakeCounter(double pos){intakeServo.servoCounter(pos);}
     public void intakeUp(){intakeServo.servoOpen();}
     public void intakeDown(){intakeServo.servoClosed();}
     public void launchAirplane(){airplaneLauncher.servoOpen();}

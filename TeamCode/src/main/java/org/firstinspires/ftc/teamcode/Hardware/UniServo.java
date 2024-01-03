@@ -23,6 +23,7 @@ public class UniServo {
 
     public void servoClosed() {servo.setPosition(closePos);}
     public void servoOpen(){servo.setPosition(openPos);}
+    public void setServo(double pos){servo.setPosition(pos);}
     public void servoCounter(double pos){
         if(pos == 0){servo.setPosition(openPos);}
         else if(pos == 1){servo.setPosition(pos1);}

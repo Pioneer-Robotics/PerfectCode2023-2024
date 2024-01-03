@@ -41,7 +41,7 @@ public class Drivers extends AbstractHardwareComponent {
             //bot.resetOdometers();
         }
 
-        if(gamepad.dpad_down){
+        if(gamepad.left_stick_button){
             collectorToggle.set(false);
         }
 
@@ -61,16 +61,27 @@ public class Drivers extends AbstractHardwareComponent {
         bot.rightDropUp();
         bot.leftDropUp();
         grabberToggle.toggle(gamepad.left_bumper);
-        if (grabberToggle.getBool() && (bot.getSlideLevel() <= 600 || bot.getSlideLevel() >= 1000)) {
+        if(bot.getSlideLevelTarg() == 0){
+            grabberToggle.set(false);
+        }
+
+        if (grabberToggle.getBool() && (bot.getSlideLevel() <= 99 || bot.getSlideLevel() >= 900)) {
             bot.gripperOpen();
-        } else {
+        } else if((bot.getSlideLevel() <= 99 || bot.getSlideLevel() >= 900)){
             bot.gripperClosed();
         }
 
-        if (gamepad.right_bumper && bot.getSlideLevelTarg() != 0) {
+//        if((bot.getSlideLevel() >= 300 && bot.getSlideLevel() <= 900) && bot.getSlideLevelTarg() > 100){
+//            bot.gripperClosed();
+//        }
+
+        if (gamepad.right_bumper && bot.getSlideLevelTarg() != 0 && (bot.getSlideLevel() <= 99 || bot.getSlideLevel() >= 900)) {
             bot.wristVertical();
-        } else {
+        } else if(bot.getSlideLevelTarg() < 100){
             bot.wristHorizontal();
+        }
+        else if(bot.getSlideLevelTarg() > 100) {
+            bot.setWrist(Config.WristCloseDoor);
         }
 
         intakeToggle.toggle(gamepad.a);
@@ -85,12 +96,15 @@ public class Drivers extends AbstractHardwareComponent {
         } else if (gamepad.y) {
             bot.setSlideLevel(2200);
         } else if (gamepad.b) {
-            bot.setSlideLevel(50);
+            bot.setSlideLevel(0);
             bot.wristHorizontal();
-            //grabberToggle.set(false);
         }
 
         collectorToggle.toggle(gamepad.dpad_down);
+        if(bot.getSlideLevelTarg() > 0){
+            collectorToggle.set(false);
+        }
+
         if (gamepad.dpad_up) {
             bot.moveCollectorBack();
         } else {

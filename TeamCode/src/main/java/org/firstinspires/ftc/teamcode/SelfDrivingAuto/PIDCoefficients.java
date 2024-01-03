@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.SelfDrivingAuto;
 
-import org.firstinspires.ftc.teamcode.Config;
 
 /**
  * PID class that initializes PIDF coefficients and does PID calculations
@@ -35,7 +34,7 @@ public class PIDCoefficients {
      * @return proportional value based on error and target
      */
     public double PID(double error, double target, double speed){
-        if(Math.abs(error) < Config.drivingThresholdCM) {return 0;}
+        if(Math.abs(error) < AutoConfig.drivingThresholdCM) {return 0;}
 
         errorSum += error / target;
         dError = error - lastError;
@@ -50,7 +49,7 @@ public class PIDCoefficients {
 
     //same as above but can input your own PID coef
     public double PID(PIDCoefficients pidCoefficients, double error, double target, double speed){
-        if(Math.abs(error) < Config.turningThresholdDEG) {return 0;}
+        if(Math.abs(error) < AutoConfig.turningThresholdDEG) {return 0;}
         errorSum += error / target;
         dError = error - lastError;
         lastError = error / target; // Update previous error

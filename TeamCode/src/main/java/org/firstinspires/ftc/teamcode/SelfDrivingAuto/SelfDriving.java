@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.SelfDrivingAuto;
 
-import org.firstinspires.ftc.teamcode.Config;
 import org.firstinspires.ftc.teamcode.Helpers.bMath;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
@@ -31,21 +30,21 @@ public class SelfDriving extends AbstractHardwareComponent {
         iY = pose.getYY();
         iTheta = -bot.angleDEG();
 
-        while((thetaCondition(movement) || xCondition(movement) ||  yCondition(movement))  && (bot.opmode.opModeIsActive() && bot.opmode.isStarted() && !bot.opmode.isStopRequested())){
+        while((thetaCondition(movement) || xCondition(movement) ||  yCondition(movement))  && (bot.opmode.opModeIsActive() && !bot.opmode.isStopRequested())){
             pose.updateOdos(); //update odos
             double dX = movement.getdX(), dY = movement.getdY(), dTheta = movement.getdTheta(); //get x,y,theta from desired movement
             double x = pose.getXX(), y = pose.getYY(), theta = -bot.angleDEG(); // get x,y,theta current
             PIDCoefficients pidXY = movement.getPidXY(), pidTheta = movement.getPidTheta();
 
             //updating PID values for x, y and theta
-            if(Math.abs(iX - dX) > Config.drivingThresholdCM) {
-                xPID = pidXY.PID(dX - x, Math.abs(iX - dX), Config.speed);
+            if(Math.abs(iX - dX) > AutoConfig.drivingThresholdCM) {
+                xPID = pidXY.PID(dX - x, Math.abs(iX - dX), AutoConfig.speed);
             }
-            if(Math.abs(iY - dY) > Config.drivingThresholdCM){
-                yPID = pidXY.PID(dY - y, Math.abs(iY - dY), Config.speed);
+            if(Math.abs(iY - dY) > AutoConfig.drivingThresholdCM){
+                yPID = pidXY.PID(dY - y, Math.abs(iY - dY), AutoConfig.speed);
             }
-            if(Math.abs(bMath.subtractAnglesDeg(iTheta,dTheta)) > Config.turningThresholdDEG) {
-                rxPID = pidTheta.PID(bMath.subtractAnglesDeg(dTheta, theta), Math.abs(bMath.subtractAnglesDeg(iTheta, dTheta)), Config.speed);
+            if(Math.abs(bMath.subtractAnglesDeg(iTheta,dTheta)) > AutoConfig.turningThresholdDEG) {
+                rxPID = pidTheta.PID(bMath.subtractAnglesDeg(dTheta, theta), Math.abs(bMath.subtractAnglesDeg(iTheta, dTheta)), AutoConfig.speed);
             }
 
             telemetry.addData("x:", x);
@@ -74,10 +73,10 @@ public class SelfDriving extends AbstractHardwareComponent {
      * @return true or false if robot has reached its dX
      */
     boolean xCondition(Movement movement){
-        if (Math.abs(iX - movement.getdX()) < Config.drivingThresholdCM){
+        if (Math.abs(iX - movement.getdX()) < AutoConfig.drivingThresholdCM){
             return false;
         }
-        return Math.abs(movement.getdX() - pose.getXX()) > Config.drivingThresholdCM;
+        return Math.abs(movement.getdX() - pose.getXX()) > AutoConfig.drivingThresholdCM;
     }
     /**
      * Y position condition for loop
@@ -85,10 +84,10 @@ public class SelfDriving extends AbstractHardwareComponent {
      * @return true or false if robot has reached its dY
      */
     boolean yCondition(Movement movement){
-        if (Math.abs(iY - movement.getdY()) < Config.drivingThresholdCM){
+        if (Math.abs(iY - movement.getdY()) < AutoConfig.drivingThresholdCM){
             return false;
         }
-        return Math.abs(movement.getdY() - pose.getYY()) > Config.drivingThresholdCM;
+        return Math.abs(movement.getdY() - pose.getYY()) > AutoConfig.drivingThresholdCM;
     }
     /**
      * Theta position condition for loop. Uses subtractingAnglesDeg to calculate error
@@ -96,10 +95,10 @@ public class SelfDriving extends AbstractHardwareComponent {
      * @return true or false if robot has reached its dTheta
      */
     boolean thetaCondition(Movement movement){
-        if(Math.abs(bMath.subtractAnglesDeg(iTheta, movement.getdTheta())) < Config.turningThresholdDEG){
+        if(Math.abs(bMath.subtractAnglesDeg(iTheta, movement.getdTheta())) < AutoConfig.turningThresholdDEG){
             return false;
         }
-        return Math.abs(bMath.subtractAnglesDeg(movement.getdTheta(), -bot.angleDEG())) > Config.turningThresholdDEG;
+        return Math.abs(bMath.subtractAnglesDeg(movement.getdTheta(), -bot.angleDEG())) > AutoConfig.turningThresholdDEG;
     }
 
     /**

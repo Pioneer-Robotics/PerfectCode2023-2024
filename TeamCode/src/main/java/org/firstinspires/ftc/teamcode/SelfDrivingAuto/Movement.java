@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.SelfDrivingAuto;
 
+import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
+
 /**
  * Abstract class which you should make multiple objects of. These objects are input inside of
  * AutoDrive. These objects are what make the robot move around the field
  */
-public abstract class Movement {
+public abstract class Movement extends AbstractHardwareComponent {
     private PIDCoefficients coefficients;//PIDcoef object set in constructor
     private PIDCoefficients pidXY, pidTheta;
     /**
@@ -31,6 +33,9 @@ public abstract class Movement {
         speed = 0.5;
         this.pidXY = pidXY;
         this.pidTheta = pidTheta;
+        if(bot.isRed()){
+            this.dX *= -1;
+        }
     }
 
     //setters

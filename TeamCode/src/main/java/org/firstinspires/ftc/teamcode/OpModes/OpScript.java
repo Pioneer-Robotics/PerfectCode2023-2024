@@ -50,7 +50,7 @@ public abstract class OpScript extends LinearOpMode {
     }
 
     public void setForTeleOp(){
-        bot.setSlideLevel(50);
+        bot.setSlideLevel(0);
     }
 
     /**

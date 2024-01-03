@@ -59,7 +59,7 @@ public abstract class AbstractBot {
         slideArmMotor       = new SlideArmMotor(opMode.hardwareMap.get(DcMotorEx.class, Config.slideArm));
         collector           = new Collector(opMode.hardwareMap.get(DcMotorEx.class, Config.collectorMotor));
         leftDropServo       = new UniServo(opMode.hardwareMap.get(Servo.class, Config.leftDropServo), Config.leftClosedPos, Config.leftOpenPos);
-        rightDropServo      = new UniServo(opMode.hardwareMap.get(Servo.class, Config.rightDropServo),Config.rightClosedPos , Config.rightOpenPos);
+        rightDropServo      = new UniServo(opMode.hardwareMap.get(Servo.class, Config.rightDropServo), Config.rightClosedPos , Config.rightOpenPos);
         airplaneLauncher    = new UniServo(opMode.hardwareMap.get(Servo.class, Config.airplaneLauncher), Config.airplaneReady, Config.airplaneLaunch);
         gripperServo        = new UniServo(opMode.hardwareMap.get(Servo.class, Config.gripperServo), Config.gripperOpen, Config.gripperClosed);
         intakeServo         = new UniServo(opMode.hardwareMap.get(Servo.class, Config.intakeServoForCollector), Config.intakeUp, Config.intakeDown);

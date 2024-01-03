@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractBot;
 import org.firstinspires.ftc.teamcode.OpModes.OpScript;
+import org.firstinspires.ftc.teamcode.SelfDrivingAuto.AutoConfig;
 import org.firstinspires.ftc.teamcode.SelfDrivingAuto.Movement;
 
 /**
@@ -16,6 +17,7 @@ public class Bot extends AbstractBot {
     public static Bot getInstance(OpScript op) {return new Bot(op);}//returns a new instance of itself
     public static Bot getInstance() {return OpScript.bot;}//gets itself
     public boolean isAuto() {return opmode.getClass().isAnnotationPresent(Autonomous.class);}//used to see if we are in auto or not
+    public boolean isRed(){return opmode.getClass().getName().contains("Red");}
 
     //Motors
     public void setPowers(double LFspeed, double LBspeed, double RFspeed, double RBspeed) {driveMotors.setPowers(LFspeed, LBspeed, RFspeed, RBspeed);}
@@ -42,7 +44,7 @@ public class Bot extends AbstractBot {
     public void updateOdos(){pose.updateOdos();}
     public double subY(Movement movement){return selfDriving.subY(movement);}
     public double subX(Movement movement){return selfDriving.subX(movement);}
-    public double getPID(double error, double target, double speed){return Config.dropOffPixelMiddle.getCoefficients().PID(error, target, speed);}
+    public double getPID(double error, double target, double speed){return AutoConfig.dropOffPixelMiddle.getCoefficients().PID(error, target, speed);}
 
 
     //Angle
@@ -53,11 +55,12 @@ public class Bot extends AbstractBot {
     public void resetIMU() {imu.resetYaw();}
 
     //RedAuto
-    public void runAuto() {commands.runLeft();}
+    public void runAuto() {commands.boardSideAuto();}
     public boolean isRunning(){return !getInstance().isAuto() || opmode.runAuto;}
     public void openCamera(){cameraHandler.openCamera();}
     public int locationCamera(){return cameraHandler.locationCamera();}
     public int locationCamera2(){return cameraHandler.doTheMath();}
+    public int getTeamMarkerLocation(){return opmode.location;}
     public void closeCam(){cameraHandler.closeCam();}
     public String getSaturationHigh(){return cameraHandler.getSaturationHigh();}
     public void startMove(double distance){simpleDrive.moveForward(distance);}
@@ -88,6 +91,7 @@ public class Bot extends AbstractBot {
     public void gripperClosed(){gripperServo.servoClosed();}
     public void wristVertical(){wristServo.servoOpen();}
     public void wristHorizontal(){wristServo.servoClosed();}
+    public void setWrist(double pos){wristServo.setServo(pos);}
     public void intakeCounter(double pos){intakeServo.servoCounter(pos);}
     public void intakeUp(){intakeServo.servoOpen();}
     public void intakeDown(){intakeServo.servoClosed();}

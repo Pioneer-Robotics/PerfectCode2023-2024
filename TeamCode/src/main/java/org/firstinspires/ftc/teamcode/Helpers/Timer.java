@@ -8,14 +8,24 @@ public class Timer extends AbstractHardwareComponent {
     static boolean firsttime = true;
     static ElapsedTime time = new ElapsedTime();
 
+//    public void sleep(long seconds){
+//        try{
+//            Thread.sleep((Long) seconds * 1000);
+//        }
+//        catch (InterruptedException e){
+//            System.out.println("something failed");
+//        }
+//    }
+
     public void sleep(long seconds){
-        try{
-            Thread.sleep((Long) seconds * 1000);
-        }
-        catch (InterruptedException e){
-            System.out.println("something failed");
+        ElapsedTime elapsedTime = new ElapsedTime();
+        elapsedTime.reset();
+        while(elapsedTime.seconds() < seconds &&  (bot.opmode.opModeIsActive() && !bot.opmode.isStopRequested())){
+            telemetry.addData("In sleep thread", elapsedTime.seconds());
+            bot.update();
         }
     }
+
     public void sleepHalfSeconds(long seconds){
         try{
             Thread.sleep((Long) seconds * 100);

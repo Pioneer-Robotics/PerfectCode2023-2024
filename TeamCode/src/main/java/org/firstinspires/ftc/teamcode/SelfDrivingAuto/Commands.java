@@ -22,7 +22,6 @@ public class Commands extends AbstractHardwareComponent {
      */
     public void boardSideAuto(){
         int location = bot.getTeamMarkerLocation(); //get team marker location
-        location = 3;
 
         //run program based on marker location
         if(location == 1){
@@ -42,8 +41,8 @@ public class Commands extends AbstractHardwareComponent {
         dropPixelBasedOnAlliance();
         bot.drive(AutoConfig.goForwardForBoardLeft);
         bot.drive(AutoConfig.goToBoardLeft);
+        bot.gripperClosed();
         bot.timerSleep(2);
-        bot.gripperOpen();
         bot.drive(AutoConfig.strafeToAvoidTeammate);
     }
 
@@ -51,8 +50,8 @@ public class Commands extends AbstractHardwareComponent {
         bot.drive(AutoConfig.dropOffPixelMiddle);
         dropPixelBasedOnAlliance();
         bot.drive(AutoConfig.goToBoardMiddle);
+        bot.gripperClosed();
         bot.timerSleep(2);
-        bot.gripperOpen();
         bot.drive(AutoConfig.strafeToAvoidTeammate);
     }
 
@@ -60,8 +59,8 @@ public class Commands extends AbstractHardwareComponent {
         bot.drive(AutoConfig.dropOffPixelRight);
         dropPixelBasedOnAlliance();
         bot.drive(AutoConfig.goToBoardRight);
+        bot.gripperClosed();
         bot.timerSleep(2);
-        bot.gripperOpen();
         bot.drive(AutoConfig.strafeToAvoidTeammate);
     }
 

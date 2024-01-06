@@ -17,7 +17,7 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static final double turningThresholdDEG = 1.5;
 
     //Movement and PID objects
-    public static double xPosForBoard = -90;
+    public static double xPosForBoard = -98;
     public static double yPosForLeftSideOfBoard = 52;
     public static double yPosForRightSideOFBoard = 87;
     public static double robotTurn = -90;
@@ -36,7 +36,7 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static Movement goToBoardMiddle = new Movement(xPosForBoard,67, robotTurn, goToBoardMiddlePID, smallAngleTestTurn) {
         @Override
         public void doWhileMoving() {
-            bot.setSlideLevel(2000);
+            bot.setSlideLevel(1500);
             bot.wristVertical();
         }
     };
@@ -51,14 +51,14 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static Movement goForwardForBoardLeft = new Movement(-70,dropOffPixelLeft.getdY(),robotTurn, goToBoardLeftPID, smallAngleTestTurn) {
         @Override
         public void doWhileMoving() {
-            bot.setSlideLevel(2000);
+            bot.setSlideLevel(1500);
             bot.wristVertical();
         }
     };
     public static Movement goToBoardLeft = new Movement(xPosForBoard,52,robotTurn, goToBoardLeftPID, smallAngleTestTurn) {
         @Override
         public void doWhileMoving() {
-            bot.setSlideLevel(2000);
+            bot.setSlideLevel(1500);
             bot.wristVertical();
         }
     };
@@ -73,7 +73,7 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static Movement goToBoardRight = new Movement(xPosForBoard,85,robotTurn, goToBoardRightPID, pidTurn) {
         @Override
         public void doWhileMoving() {
-            bot.setSlideLevel(2000);
+            bot.setSlideLevel(1500);
             bot.wristVertical();
         }
     };

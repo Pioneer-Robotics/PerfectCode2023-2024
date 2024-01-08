@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.SelfDrivingAuto;
+import android.media.tv.AitInfo;
+
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.Config;
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
@@ -22,12 +25,22 @@ public class Commands extends AbstractHardwareComponent {
      */
     public void boardSideAuto(){
         int location = bot.getTeamMarkerLocation(); //get team marker location
+        bot.gripperClosed();
+        bot.intakeDown();
 
         //run program based on marker location
         if(location == 1){
-            runBoardSideLeft();
+            if (bot.isRed()) {
+                runBoardSideRight();
+            } else{
+                runBoardSideLeft();
+            }
         } else if(location == 3){
-            runBoardSideRight();
+            if(bot.isRed()){
+                runBoardSideLeft();
+            } else {
+                runBoardSideRight();
+            }
         } else{
             runBoardSideMiddle();
         }
@@ -41,8 +54,8 @@ public class Commands extends AbstractHardwareComponent {
         dropPixelBasedOnAlliance();
         bot.drive(AutoConfig.goForwardForBoardLeft);
         bot.drive(AutoConfig.goToBoardLeft);
-        bot.gripperClosed();
-        bot.timerSleep(2);
+        closeGripperAndWait();
+        AutoConfig.elapsedTime.reset();
         bot.drive(AutoConfig.strafeToAvoidTeammate);
     }
 
@@ -50,8 +63,8 @@ public class Commands extends AbstractHardwareComponent {
         bot.drive(AutoConfig.dropOffPixelMiddle);
         dropPixelBasedOnAlliance();
         bot.drive(AutoConfig.goToBoardMiddle);
-        bot.gripperClosed();
-        bot.timerSleep(2);
+        closeGripperAndWait();
+        AutoConfig.elapsedTime.reset();
         bot.drive(AutoConfig.strafeToAvoidTeammate);
     }
 
@@ -59,8 +72,8 @@ public class Commands extends AbstractHardwareComponent {
         bot.drive(AutoConfig.dropOffPixelRight);
         dropPixelBasedOnAlliance();
         bot.drive(AutoConfig.goToBoardRight);
-        bot.gripperClosed();
-        bot.timerSleep(2);
+        closeGripperAndWait();
+        AutoConfig.elapsedTime.reset();
         bot.drive(AutoConfig.strafeToAvoidTeammate);
     }
 
@@ -94,5 +107,10 @@ public class Commands extends AbstractHardwareComponent {
         bot.leftDropUp();
     }
 
-
+    public void closeGripperAndWait(){
+        bot.gripperOpen();
+        bot.timerSleep(2);
+        bot.setSlideLevel(Config.secondLinePos);
+        bot.timerSleep(2);
+    }
 }

@@ -30,12 +30,14 @@ public abstract class Movement extends AbstractHardwareComponent {
         this.dX = dX;
         this.dY = dY;
         this.dTheta = dTheta;
-        speed = 0.5;
         this.pidXY = pidXY;
         this.pidTheta = pidTheta;
-        if(bot.isRed()){
-            this.dX *= -1;
+        if(AutoConfig.isRedAuto){
+            //mirror blue based on alliance side. X and Theta values are reversed in sign
+            this.dX = this.dX * -1;
+            this.dTheta = this.dTheta * -1;
         }
+        speed = 0.5;
     }
 
     //setters

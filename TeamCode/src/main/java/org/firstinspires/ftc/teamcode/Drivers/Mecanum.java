@@ -39,7 +39,7 @@ public class Mecanum extends AbstractHardwareComponent {
         double backRightPower = (rotY + rotX - rx) / denominator;
 
         bot.gearShift(scalePower);
-        bot.setPowers(
+        bot.setVelocity(
                 scalePower.getNum() * frontLeftPower,
                 scalePower.getNum() * backLeftPower,
                 scalePower.getNum() * frontRightPower,
@@ -64,7 +64,7 @@ public class Mecanum extends AbstractHardwareComponent {
         double frontRightPower = (rotY - rotX - rx) / denominator;
         double backRightPower = (rotY + rotX - rx) / denominator;
 
-        bot.setPowers(
+        bot.setVelocity(
                 frontLeftPower,
                 backLeftPower,
                 frontRightPower,
@@ -78,7 +78,7 @@ public class Mecanum extends AbstractHardwareComponent {
         rightRotatePower = -gamepad.right_stick_x;
 
         bot.gearShift(scalePower);
-        bot.setPowers(scalePower.getNum() * (leftDiagPower+leftRotatePower),
+        bot.setVelocity(scalePower.getNum() * (leftDiagPower+leftRotatePower),
                 scalePower.getNum() * (rightDiagPower+leftRotatePower),
                 scalePower.getNum() * (rightDiagPower+rightRotatePower),
                 scalePower.getNum() * (leftDiagPower+rightRotatePower));

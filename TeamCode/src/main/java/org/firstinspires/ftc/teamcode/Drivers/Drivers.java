@@ -66,9 +66,9 @@ public class Drivers extends AbstractHardwareComponent {
         }
 
         if (grabberToggle.getBool() && (bot.getSlideLevel() <= 99 || bot.getSlideLevel() >= 900)) {
-            bot.gripperOpen();
-        } else if((bot.getSlideLevel() <= 99 || bot.getSlideLevel() >= 900)){
             bot.gripperClosed();
+        } else if((bot.getSlideLevel() <= 99 || bot.getSlideLevel() >= 900)){
+            bot.gripperOpen();
         }
 
 //        if((bot.getSlideLevel() >= 300 && bot.getSlideLevel() <= 900) && bot.getSlideLevelTarg() > 100){

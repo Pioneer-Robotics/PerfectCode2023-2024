@@ -47,13 +47,12 @@ public class SelfDriving extends AbstractHardwareComponent {
                 rxPID = pidTheta.PID(bMath.subtractAnglesDeg(dTheta, theta), Math.abs(bMath.subtractAnglesDeg(iTheta, dTheta)), AutoConfig.speed);
             }
 
-            telemetry.addData("x:", x);
-            telemetry.addData("y: ", y);
+            telemetry.addData("desiredX", dX);
+            telemetry.addData("desiredY", dY);
+            telemetry.addData("desiredTheta", dTheta);
             telemetry.addData("xPID", xPID);
             telemetry.addData("yPID", yPID);
             telemetry.addData("rxPID", rxPID);
-            telemetry.addData("target angle", Math.abs(bMath.subtractAnglesDeg(iTheta , dTheta)));
-            telemetry.addData("subtact angles", bMath.subtractAnglesDeg(dTheta, theta));
             telemetry.addData("subx:", subX(movement));
             telemetry.addData("suby:", subY(movement));
             telemetry.addData("subhead", subHead(movement));

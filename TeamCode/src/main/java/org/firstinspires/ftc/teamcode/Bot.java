@@ -20,7 +20,7 @@ public class Bot extends AbstractBot {
     public boolean isRed(){return opmode.getClass().getName().contains("Red");}
 
     //Motors
-    public void setPowers(double LFspeed, double LBspeed, double RFspeed, double RBspeed) {driveMotors.setPowers(LFspeed, LBspeed, RFspeed, RBspeed);}
+    public void setVelocity(double LFspeed, double LBspeed, double RFspeed, double RBspeed) {driveMotors.setVel(LFspeed, LBspeed, RFspeed, RBspeed);}
     public double getPower(){return driveMotors.getPower();}
     public void setMotorPower(double power) {driveMotors.setMotorPower(power);}
     public void setMotorPowerStrafe(double power) {driveMotors.setMotorPowerStrafe(power);}
@@ -87,8 +87,8 @@ public class Bot extends AbstractBot {
     public void leftDropDown(){leftDropServo.servoClosed();}
     public void rightDropUp(){rightDropServo.servoOpen();}
     public void rightDropDown(){rightDropServo.servoClosed();}
-    public void gripperOpen(){gripperServo.servoOpen();}
-    public void gripperClosed(){gripperServo.servoClosed();}
+    public void gripperClosed(){gripperServo.servoOpen();}
+    public void gripperOpen(){gripperServo.servoClosed();}
     public void wristVertical(){wristServo.servoOpen();}
     public void wristHorizontal(){wristServo.servoClosed();}
     public void setWrist(double pos){wristServo.setServo(pos);}

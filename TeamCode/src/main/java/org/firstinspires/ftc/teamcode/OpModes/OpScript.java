@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Bot;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
+import org.firstinspires.ftc.teamcode.SelfDrivingAuto.AutoConfig;
+import org.firstinspires.ftc.teamcode.SelfDrivingAuto.Movement;
 
 /**
  * Abstract class which should be the inheritance class for every OpMode
@@ -64,6 +66,8 @@ public abstract class OpScript extends LinearOpMode {
             bot.addData("CameraHandler", bot.getSaturationHigh());
             bot.addData("test cam", location);
         }
+        bot.addData("is red? ", bot.isRed());
+        bot.addData("is red auto gonna run ", AutoConfig.isRedAuto);
         bot.addData("Angle: ", -bot.angleDEG());
         bot.addData("VoltageHandler", bot.getVoltage());
         bot.update();

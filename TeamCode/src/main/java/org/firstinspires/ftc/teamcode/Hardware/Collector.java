@@ -12,14 +12,14 @@ import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
  */
 public class Collector extends AbstractHardwareComponent {
     private final DcMotorEx collector;
-    private double defaultVelocity;
+    private double defaultVelocity; //speed for power. This is reversed
 
     public Collector(DcMotorEx collector){
         this.collector = collector;
         this.collector.setDirection(DcMotorSimple.Direction.FORWARD);
         this.collector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.collector.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        defaultVelocity = 0.25;
+        this.collector.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        defaultVelocity = -0.5;
     }
 
     public void setVelocity(double speed){
@@ -27,13 +27,13 @@ public class Collector extends AbstractHardwareComponent {
     }
 
     public void moveCollector(){
-        collector.setVelocity(Config.encoderRatio * defaultVelocity);
+        collector.setPower(defaultVelocity);
     }
     public void moveCollectorBack(){
-        collector.setVelocity(-Config.encoderRatio * .1);
+        collector.setPower(.4);
     }
 
     public void stopCollector(){
-        collector.setVelocity(0);
+        collector.setPower(0);
     }
 }

@@ -5,12 +5,12 @@ package org.firstinspires.ftc.teamcode;
  */
 public class Config {
     //Motor names
-    public static final String motorLF = "LF";//Right Odometer
-    public static final String motorLB = "LB";//Left Odometer
-    public static final String motorRF = "RF";//Middle Odometer
+    public static final String motorLF = "LF";// old Right Odometer
+    public static final String motorLB = "LB";// old Left Odometer
+    public static final String motorRF = "RF";// old Middle Odometer
     public static final String motorRB = "RB";
     public static final String odoLeft = "OdoLeft";
-    public static final String odoRight = "OdoRight";
+    public static final String odoRight = "collector";
     public static final String odoMiddle = "OdoMiddle";
     public static final String[] odos = {"OdoLeft", "OdoRight", "OdoMiddle"};
     public static final String slideArm = "slideArm";
@@ -60,16 +60,20 @@ public class Config {
 
     //Gripper Servos
     public static final String gripperServo = "gripperServo";
-    public static final String wristServo = "elevateServo";
+    public static final String wristServo = "wristServo";
     public static final String intakeServoForCollector = "intakeServo";
     public static final String airplaneLauncher = "airplaneLauncher";
     public static final double airplaneReady = .25;
     public static final double airplaneLaunch = 1;
     public static final double intakeUp = 0.02;
     public static final double intakeDown = .4;
-    public static final double gripperOpen = .85;
-    public static final double gripperClosed = .2;
-    public static final double WristVertical = .4;
-    public static final double WristHorizontal = .13;
-    public static final double WristCloseDoor = 0;
+    public static final double gripperOpen = .2;
+    public static final double gripperClosed = .5;
+    public static final double WristVertical = .6;
+    public static final double WristHorizontal = .35;
+    public static final double WristCloseDoor = 0.15;
+
+    //Auto Arm Positions
+    public static final int secondLinePos = 1500;
+    public static final int firstLinePos = 800;
 }

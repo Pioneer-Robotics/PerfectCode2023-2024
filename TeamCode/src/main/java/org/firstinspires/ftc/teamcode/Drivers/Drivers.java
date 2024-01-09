@@ -57,6 +57,13 @@ public class Drivers extends AbstractHardwareComponent {
     public void driver2(Gamepad gamepad) {
         intakePos.arithmetic(gamepad.dpad_right, gamepad.dpad_left);
 
+        if(gamepad.right_trigger > 0.074) {
+            bot.setHangSpeed(gamepad.right_trigger);
+        }else{
+            bot.setHangSpeed(0);
+        }
+
+
         //ensures pixel drop servos are up
         bot.rightDropUp();
         bot.leftDropUp();

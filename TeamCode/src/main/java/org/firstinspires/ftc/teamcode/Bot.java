@@ -46,7 +46,6 @@ public class Bot extends AbstractBot {
     public double subX(Movement movement){return selfDriving.subX(movement);}
     public double getPID(double error, double target, double speed){return AutoConfig.dropOffPixelMiddle.getCoefficients().PID(error, target, speed);}
 
-
     //Angle
     public double angleDEG(){return imu.getDegrees();}
     public double angleRAD(){return imu.getRadians();}
@@ -71,6 +70,7 @@ public class Bot extends AbstractBot {
 
     //Features
     public double getVoltage(){return voltageHandler.getVoltage(opmode.hardwareMap.voltageSensor);}
+    public void setHangSpeed(double speed){hangingMotor.setSpeed(speed);}
 
     //TeleOp
     public void teleOp(){drivers.teleOp(opmode.gamepad1, opmode.gamepad2);}

@@ -130,6 +130,7 @@ public class Drivers extends AbstractHardwareComponent {
     @DriverAnnotations.Coach(name = "Christian/Owen")
     public void coach(){
         //this is where we keep track of who is the coach
+        //
     }
 
     public void telemetry(){

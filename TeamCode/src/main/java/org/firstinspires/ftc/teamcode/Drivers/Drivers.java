@@ -59,7 +59,11 @@ public class Drivers extends AbstractHardwareComponent {
 
         if(gamepad.right_trigger > 0.074) {
             bot.setHangSpeed(gamepad.right_trigger);
-        }else{
+        }
+        else if(gamepad.left_trigger > 0.074){
+            bot.setHangSpeed(-gamepad.left_trigger);
+        }
+        else{
             bot.setHangSpeed(0);
         }
 

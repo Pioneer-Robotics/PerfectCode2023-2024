@@ -16,7 +16,6 @@ public class Collector extends AbstractHardwareComponent {
 
     public Collector(DcMotorEx collector){
         this.collector = collector;
-        this.collector.setDirection(DcMotorSimple.Direction.FORWARD);
         this.collector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.collector.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         defaultVelocity = -0.5;

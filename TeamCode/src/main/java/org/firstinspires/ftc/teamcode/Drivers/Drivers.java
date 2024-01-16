@@ -21,6 +21,7 @@ public class Drivers extends AbstractHardwareComponent {
     private final Toggle grabberToggle = new Toggle(true);
     private final Toggle intakeToggle = new Toggle(true);
     private final Toggle airplaneLaunch = new Toggle(false);
+    private final Toggle hangServo = new Toggle(false);
 
     //Counter
     private final Counter scalePower = new Counter(.3, .2, 0.8);
@@ -51,6 +52,20 @@ public class Drivers extends AbstractHardwareComponent {
         } else {
             bot.holdAirplane();
         }
+
+        if(gamepad.dpad_up){
+            hangServo.set(true);
+        }
+        else if(gamepad.dpad_down){
+            hangServo.set(false);
+        }
+
+        if(hangServo.getBool()){
+            bot.hangLaunch();
+        }
+        else{
+            bot.hangReady();
+        }
     }
 
     @DriverAnnotations.Driver2(name = "Henry")
@@ -76,9 +91,9 @@ public class Drivers extends AbstractHardwareComponent {
             grabberToggle.set(false);
         }
 
-        if (grabberToggle.getBool() && (bot.getSlideLevel() <= 99 || bot.getSlideLevel() >= 900)) {
+        if (grabberToggle.getBool() && (bot.getSlideLevel() >= -99 || bot.getSlideLevel() <= -900)) {
             bot.gripperClosed();
-        } else if((bot.getSlideLevel() <= 99 || bot.getSlideLevel() >= 900)){
+        } else if((bot.getSlideLevel() >= -99 || bot.getSlideLevel() <= -900)){
             bot.gripperOpen();
         }
 
@@ -86,12 +101,12 @@ public class Drivers extends AbstractHardwareComponent {
 //            bot.gripperClosed();
 //        }
 
-        if (gamepad.right_bumper && bot.getSlideLevelTarg() != 0 && (bot.getSlideLevel() <= 99 || bot.getSlideLevel() >= 900)) {
+        if (gamepad.right_bumper && bot.getSlideLevelTarg() != 0 && (bot.getSlideLevel() >= -99 || bot.getSlideLevel() <= -900)) {
             bot.wristVertical();
-        } else if(bot.getSlideLevelTarg() < 100){
+        } else if(bot.getSlideLevelTarg() > -100){
             bot.wristHorizontal();
         }
-        else if(bot.getSlideLevelTarg() > 100) {
+        else if(bot.getSlideLevelTarg() < -100) {
             bot.setWrist(Config.WristCloseDoor);
         }
 
@@ -103,9 +118,9 @@ public class Drivers extends AbstractHardwareComponent {
         }
 
         if (gamepad.x) {
-            bot.setSlideLevel(1200);
+            bot.setSlideLevel(Config.lowPosTele);
         } else if (gamepad.y) {
-            bot.setSlideLevel(2200);
+            bot.setSlideLevel(Config.highPosTele);
         } else if (gamepad.b) {
             bot.setSlideLevel(0);
             bot.wristHorizontal();

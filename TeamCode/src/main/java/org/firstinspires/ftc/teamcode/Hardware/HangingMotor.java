@@ -11,7 +11,7 @@ public class HangingMotor extends AbstractHardwareComponent {
 
     public HangingMotor(DcMotorEx hangingMotor){
         this.hangingMotor = hangingMotor;
-        this.hangingMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.hangingMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.hangingMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.hangingMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }

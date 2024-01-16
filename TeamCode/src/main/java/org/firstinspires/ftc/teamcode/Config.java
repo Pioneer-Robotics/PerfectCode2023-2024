@@ -11,8 +11,7 @@ public class Config {
     public static final String motorRB = "RB";
     public static final String odoLeft = "OdoLeft";
     public static final String odoRight = "collector";
-    public static final String odoMiddle = "OdoMiddle";
-    public static final String[] odos = {"OdoLeft", "OdoRight", "OdoMiddle"};
+    public static final String odoMiddle = "hang";
     public static final String slideArm = "slideArm";
     public static final String collectorMotor = "collector";
     public static final String hangingMotor = "hang";
@@ -64,17 +63,22 @@ public class Config {
     public static final String wristServo = "wristServo";
     public static final String intakeServoForCollector = "intakeServo";
     public static final String airplaneLauncher = "airplaneLauncher";
-    public static final double airplaneReady = .25;
+    public static final String hangServo = "hangServo";
+    public static final double hangReady = 0.05;
+    public static final double hangLaunch = 0.45;
+    public static final double airplaneReady = .175;
     public static final double airplaneLaunch = 1;
     public static final double intakeUp = 0.02;
     public static final double intakeDown = .4;
     public static final double gripperOpen = .2;
     public static final double gripperClosed = .5;
-    public static final double WristVertical = .6;
-    public static final double WristHorizontal = .35;
-    public static final double WristCloseDoor = 0.15;
+    public static final double WristVertical = .65;
+    public static final double WristHorizontal = .45;
+    public static final double WristCloseDoor = .15;
 
     //Auto Arm Positions
-    public static final int secondLinePos = 1500;
-    public static final int firstLinePos = 800;
+    public static final int secondLinePos = -1500;
+    public static final int firstLinePos = -900;
+    public static final int lowPosTele = -1200;
+    public static final int highPosTele = -2200;
 }

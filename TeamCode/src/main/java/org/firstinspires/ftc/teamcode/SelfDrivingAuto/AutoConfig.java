@@ -12,9 +12,13 @@ public class AutoConfig extends AbstractHardwareComponent {
         if(isAutoRed) {
             //flip the y position to go to the board
             isRedAuto = true;
-            double x = yPosForLeftSideOfBoard;
-            yPosForLeftSideOfBoard = yPosForRightSideOFBoard;
-            yPosForRightSideOFBoard = x;
+            yPosForLeftSideOfBoard = 52; // 1 and 4 on the board
+            yPosForRightSideOFBoard = 85; // 3 and 6 on the board
+        }
+        else{
+            yPosForLeftSideOfBoard = 52; // 1 and 4 on the board
+            yPosForRightSideOFBoard = 85; // 3 and 6 on the board
+            isRedAuto = false;
         }
 
         dropOffPixelMiddle = new Movement(0,65, robotTurn90, dropOffPixelMiddlePID, turnPID) {
@@ -64,7 +68,7 @@ public class AutoConfig extends AbstractHardwareComponent {
             }
         };
 
-        strafeToAvoidTeammate = new Movement(-85, 10, robotTurn90, strafeAvoidPID, smallAngleTurnPID) {
+        strafeToAvoidTeammate = new Movement(-80, 10, robotTurn90, strafeAvoidPID, smallAngleTurnPID) {
             @Override
             public void doWhileMoving() {
                 if(elapsedTime.seconds() > 0.3) {
@@ -81,14 +85,14 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static final double turningThresholdDEG = 1.5;
 
     //Movement and PID objects
-    public static double xPosForBoard = -90;
-    public static double yPosForLeftSideOfBoard = 52; // 1 and 4 on the board
-    public static double yPosForRightSideOFBoard = 85; // 3 and 6 on the board
+    public static double xPosForBoard = -88.75;
+    public static double yPosForLeftSideOfBoard; // 1 and 4 on the board
+    public static double yPosForRightSideOFBoard; // 3 and 6 on the board
     public static double robotTurn90 = -90; //turn to fast the board
 
     //Turn PID
     public static PIDCoefficients smallAngleTurnPID = new PIDCoefficients(0.25,0,0, 0);
-    public static PIDCoefficients turnPID = new PIDCoefficients(1.4,0.03,0,0);
+    public static PIDCoefficients turnPID = new PIDCoefficients(1.4,0.04,0,0);
 
     //middle board
     public static PIDCoefficients dropOffPixelMiddlePID = new PIDCoefficients(1.75,0.009,0, 0);
@@ -98,7 +102,7 @@ public class AutoConfig extends AbstractHardwareComponent {
 
     //left board
     public static PIDCoefficients dropOffPixelLeftPID = new PIDCoefficients(1.1,0.0085,0, 0);
-    public static PIDCoefficients goToBoardLeftPID = new PIDCoefficients(1.1, 0.010,0,0);
+    public static PIDCoefficients goToBoardLeftPID = new PIDCoefficients(1.1, 0.008,0,0);
     public static Movement dropOffPixelLeft;
     public static Movement goForwardForBoardLeft;
     public static Movement goToBoardLeft;
@@ -110,7 +114,7 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static Movement goToBoardRight;
 
     //strafe over for teammate
-    public static PIDCoefficients strafeAvoidPID = new PIDCoefficients(1,0.0075,0,0);
+    public static PIDCoefficients strafeAvoidPID = new PIDCoefficients(1,0,0,0);
     public static ElapsedTime elapsedTime = new ElapsedTime();
     public static Movement strafeToAvoidTeammate;
 }

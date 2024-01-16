@@ -68,6 +68,7 @@ public abstract class OpScript extends LinearOpMode {
         }
         bot.addData("is red? ", bot.isRed());
         bot.addData("is red auto gonna run ", AutoConfig.isRedAuto);
+        bot.addData("is red auto gonna run ", bot.opmode.getClass().getName().contains("Red"));
         bot.addData("Angle: ", -bot.angleDEG());
         bot.addData("VoltageHandler", bot.getVoltage());
         bot.update();

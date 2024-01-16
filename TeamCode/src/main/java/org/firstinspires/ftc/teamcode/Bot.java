@@ -97,6 +97,8 @@ public class Bot extends AbstractBot {
     public void intakeDown(){intakeServo.servoClosed();}
     public void launchAirplane(){airplaneLauncher.servoOpen();}
     public void holdAirplane(){airplaneLauncher.servoClosed();}
+    public void hangReady(){hangServo.servoOpen();}
+    public void hangLaunch(){hangServo.servoClosed();}
 
     //SelfDriving
 //    public void drive(Movement movement){selfDriving.drive(movement);}

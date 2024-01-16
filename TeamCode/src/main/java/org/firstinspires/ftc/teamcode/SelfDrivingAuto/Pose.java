@@ -84,13 +84,14 @@ public class Pose extends AbstractHardwareComponent {
         xDistanceCM = newXTicks * Config.goBuildaOdoTicksToCm;
 
         //solve for arc length in each odometer
-        double odoTicksToCM = Config.goBuildaOdoTicksToCm;
+        double odoTicksToCM     = Config.goBuildaOdoTicksToCm;
         double xRotation        = dTheta * (Config.x20FullRotationOdosInTicksDiv40pi * odoTicksToCM);
         double leftRotation     = dTheta * (Config.left20FullRotationOdosInTicksDiv40pi * odoTicksToCM);
         double rightRotation    = dTheta * (Config.right20FullRotationOdosInTicksDiv40pi * odoTicksToCM);
 
         //take out the distance traveled in rotation from total distance to only get translation
-        dX = xDistanceCM - xRotation;
+        dX = xDistanceCM + xRotation;
+        dX = -1 * dX;
         dLeft = leftDistanceCM - leftRotation;
         dRight = rightDistanceCM - rightRotation;
         double avgDY = (dLeft - dRight) / 2; //average the two
@@ -102,6 +103,16 @@ public class Pose extends AbstractHardwareComponent {
         telemetry.addData("ACTUAL ANGLE", Math.toDegrees(theta));
         telemetry.addData("x: ", x);
         telemetry.addData("y: ", y);
+        telemetry.addData("left distance", leftDistanceCM);
+        telemetry.addData("left rotation", leftRotation);
+        telemetry.addData("dLeft", dLeft);
+        telemetry.addData("right distance", rightDistanceCM);
+        telemetry.addData("right rotation", rightRotation);
+        telemetry.addData("dRight", dRight);
+        telemetry.addData("middle distance", xDistanceCM);
+        telemetry.addData("middle rotation", xRotation);
+        telemetry.addData("dX", dX);
+        telemetry.addData("avgDY", avgDY);
     }
 
     public double getXX(){return x;}

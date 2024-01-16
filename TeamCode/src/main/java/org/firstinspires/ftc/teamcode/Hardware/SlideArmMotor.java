@@ -13,7 +13,6 @@ public class SlideArmMotor extends AbstractHardwareComponent {
 
     public SlideArmMotor(DcMotorEx slideArm){
         this.slideArm = slideArm;
-        this.slideArm.setDirection(DcMotorSimple.Direction.REVERSE);
         this.slideArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.slideArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         defaultSpeed = .7;

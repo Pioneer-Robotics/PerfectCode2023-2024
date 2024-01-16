@@ -38,7 +38,7 @@ public abstract class AbstractBot {
     public BulkReader bulkReader;
     public Mecanum mecanum;
     public Drivers drivers;
-    public UniServo gripperServo, wristServo, intakeServo, leftDropServo, rightDropServo, airplaneLauncher;
+    public UniServo gripperServo, wristServo, intakeServo, leftDropServo, rightDropServo, airplaneLauncher, hangServo;
     public VoltageHandler voltageHandler;
     public SelfDriving selfDriving;
     public CameraHandler cameraHandler;
@@ -69,6 +69,7 @@ public abstract class AbstractBot {
         gripperServo        = new UniServo(opMode.hardwareMap.get(Servo.class, Config.gripperServo), Config.gripperClosed, Config.gripperOpen);
         intakeServo         = new UniServo(opMode.hardwareMap.get(Servo.class, Config.intakeServoForCollector), Config.intakeUp, Config.intakeDown);
         wristServo          = new UniServo(opMode.hardwareMap.get(Servo.class, Config.wristServo), Config.WristVertical, Config.WristHorizontal);
+        hangServo           = new UniServo(opMode.hardwareMap.get(Servo.class, Config.hangServo), Config.hangReady, Config.hangLaunch);
         commands            = new Commands();
         driveMotors         = new DriveMotors(opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF),

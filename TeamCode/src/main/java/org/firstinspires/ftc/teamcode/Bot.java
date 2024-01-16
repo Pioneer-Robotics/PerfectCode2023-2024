@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
@@ -100,8 +101,11 @@ public class Bot extends AbstractBot {
     public void hangReady(){hangServo.servoOpen();}
     public void hangLaunch(){hangServo.servoClosed();}
 
-    //SelfDriving
-//    public void drive(Movement movement){selfDriving.drive(movement);}
+    //LED
+    public void lightsOn(RevBlinkinLedDriver.BlinkinPattern pattern){led.lightsOn(pattern);}
+    public void lightsOff(){led.lightsOff();}
+    public void autoLights(){led.chooseLights();}
+    public void standardTeleLights(){led.teleLights();}
 
     //Slide Arm
     public void setSlideLevel(int level){slideArmMotor.setLevel(level);}

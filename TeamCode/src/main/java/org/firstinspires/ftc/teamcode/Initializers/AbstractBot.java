@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Initializers;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -8,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Drivers.Drivers;
 import org.firstinspires.ftc.teamcode.Drivers.Mecanum;
 import org.firstinspires.ftc.teamcode.Hardware.HangingMotor;
+import org.firstinspires.ftc.teamcode.Hardware.LED;
 import org.firstinspires.ftc.teamcode.Helpers.Timer;
 import org.firstinspires.ftc.teamcode.SelfDrivingAuto.AutoConfig;
 import org.firstinspires.ftc.teamcode.SelfDrivingAuto.Commands;
@@ -49,6 +51,7 @@ public abstract class AbstractBot {
     public Timer timer;
     public AutoConfig autoConfig;
     public HangingMotor hangingMotor;
+    public LED led;
 
     /**
      * Method used to create all instantiated objects
@@ -70,6 +73,7 @@ public abstract class AbstractBot {
         intakeServo         = new UniServo(opMode.hardwareMap.get(Servo.class, Config.intakeServoForCollector), Config.intakeUp, Config.intakeDown);
         wristServo          = new UniServo(opMode.hardwareMap.get(Servo.class, Config.wristServo), Config.WristVertical, Config.WristHorizontal);
         hangServo           = new UniServo(opMode.hardwareMap.get(Servo.class, Config.hangServo), Config.hangReady, Config.hangLaunch);
+        led                 = new LED(opMode.hardwareMap.get(RevBlinkinLedDriver.class, Config.LED), RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
         commands            = new Commands();
         driveMotors         = new DriveMotors(opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF),

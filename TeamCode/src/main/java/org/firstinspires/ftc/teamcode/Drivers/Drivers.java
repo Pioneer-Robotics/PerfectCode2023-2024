@@ -165,6 +165,7 @@ public class Drivers extends AbstractHardwareComponent {
         driver1(gamepad1);
         driver2(gamepad2);
         telemetry();
+        bot.standardTeleLights();
     }
 
     public String getWelcomeText() {

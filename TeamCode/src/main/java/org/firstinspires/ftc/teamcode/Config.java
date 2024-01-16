@@ -16,6 +16,9 @@ public class Config {
     public static final String collectorMotor = "collector";
     public static final String hangingMotor = "hang";
 
+    //LED
+    public static final String LED = "led";
+
     //Odometers
     public static final int odoTicksPerRotation = 2000;
     public static final double odoDiameterIn = 1.811;

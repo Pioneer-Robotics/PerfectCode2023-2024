@@ -106,6 +106,7 @@ public class Bot extends AbstractBot {
     public void lightsOff(){led.lightsOff();}
     public void autoLights(){led.chooseLights();}
     public void standardTeleLights(){led.teleLights();}
+    public void autoTimerLights(){led.autoTimer();}
 
     //Slide Arm
     public void setSlideLevel(int level){slideArmMotor.setLevel(level);}

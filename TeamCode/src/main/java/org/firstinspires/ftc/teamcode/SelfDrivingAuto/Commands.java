@@ -24,10 +24,10 @@ public class Commands extends AbstractHardwareComponent {
      * This is the method that will run our board side auto based on whichever alliance side and team marker location
      */
     public void boardSideAuto(){
+        bot.update(); //starts the lights
         int location = bot.getTeamMarkerLocation(); //get team marker location
         bot.gripperClosed();
         bot.intakeDown();
-        bot.autoLights();
 
         //run program based on marker location
         if(location == 1){
@@ -51,7 +51,7 @@ public class Commands extends AbstractHardwareComponent {
     }
 
     public void runBoardSideLeft(){
-          bot.drive(AutoConfig.dropOffPixelLeft);
+        bot.drive(AutoConfig.dropOffPixelLeft);
         dropPixelBasedOnAlliance();
         bot.drive(AutoConfig.goForwardForBoardLeft);
         bot.drive(AutoConfig.goToBoardLeft);

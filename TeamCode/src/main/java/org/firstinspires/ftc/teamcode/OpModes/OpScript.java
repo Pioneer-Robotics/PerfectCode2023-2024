@@ -20,7 +20,6 @@ public abstract class OpScript extends LinearOpMode {
     public static long cycleNumber;//how many cycles ran
     public int location;//team marker location 1-3
     public String welcomeText;//Welcome test for start of match.
-    public ElapsedTime autoTimer;
 
     public abstract void run();//method where you put wherever needs to be looped
 
@@ -33,12 +32,8 @@ public abstract class OpScript extends LinearOpMode {
         bot = Bot.getInstance(opScript);
         AbstractHardwareComponent.init(Bot.getInstance(), telemetry);
         welcomeText = bot.getWelcomeText();
-        autoTimer = new ElapsedTime();
-        autoTimer.reset();
         if(bot.isAuto()) {bot.openCamera();}
         while (!opScript.opModeIsActive() && !opScript.isStarted()  && !opScript.isStopRequested()) {opScript.initloop();}
-        setForTeleOp();
-
         while (opScript.opModeIsActive() && opScript.isStarted() && !opScript.isStopRequested()) {
             if(bot.isRunning()) {
                 opScript.run();
@@ -50,10 +45,6 @@ public abstract class OpScript extends LinearOpMode {
             opScript.telemetry.update();
         }
         opScript.stop();
-    }
-
-    public void setForTeleOp(){
-        bot.setSlideLevel(0);
     }
 
     /**
@@ -73,6 +64,7 @@ public abstract class OpScript extends LinearOpMode {
     }
 
     public void update() {
+        if(opScript.opModeIsActive()) {bot.autoLights();}
         bot.clearCache();
         opScript.telemetry.update();
     }

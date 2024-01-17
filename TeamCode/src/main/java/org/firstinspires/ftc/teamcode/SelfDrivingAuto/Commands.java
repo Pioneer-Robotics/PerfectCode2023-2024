@@ -27,8 +27,11 @@ public class Commands extends AbstractHardwareComponent {
             grabExtraPixelAndNearBoard();
         }
 
-        bot.drive(AutoConfig.goToBoardMiddle); //TODO change so that it goes to right position for board
+        //drive to the board and drop off pixel at the board.
+        placePixelAndStrafeOver();
         closeGripperAndWait();
+
+        //Strafe to avoid teammate
         AutoConfig.elapsedTime.reset();
         bot.drive(AutoConfig.strafeToAvoidTeammate);
     }
@@ -100,6 +103,14 @@ public class Commands extends AbstractHardwareComponent {
             bot.drive(AutoConfig.dropOffPixelMiddle);
         }
         dropPixelBasedOnAlliance(); //drop off pixel
+    }
+
+    public void placePixelAndStrafeOver(){
+        if(bot.getTeamMarkerLocation() == 1){
+            AutoConfig.goToBoard.setdY(AutoConfig.yPosForLeftSideOfBoard);
+        } else if(bot.getTeamMarkerLocation() == 3){
+            AutoConfig.goToBoard.setdY(AutoConfig.yPosForRightSideOFBoard);
+        }
     }
 
     public void grabExtraPixelAndNearBoard(){

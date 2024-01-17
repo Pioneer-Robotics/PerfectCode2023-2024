@@ -114,7 +114,7 @@ public class Drivers extends AbstractHardwareComponent {
         }
 
         collectorToggle.toggle(gamepad.dpad_down);
-        if(bot.getSlideLevelTarg() > 0){
+        if(bot.getSlideLevelTarg() < 0){
             collectorToggle.set(false);
         }
         if (gamepad.dpad_up) {

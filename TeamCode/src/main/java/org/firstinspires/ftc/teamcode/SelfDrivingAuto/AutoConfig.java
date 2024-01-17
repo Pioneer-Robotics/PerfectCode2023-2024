@@ -87,6 +87,14 @@ public class AutoConfig extends AbstractHardwareComponent {
             @Override
             public void doWhileMoving() {}
         };
+
+        goToBoard = new Movement(xPosForBoard,yPosForMiddleOfBoard, robotTurn90, goToBoardPID, smallAngleTurnPID) {
+            @Override
+            public void doWhileMoving() {
+                bot.setSlideLevel(Config.firstLinePos);
+                bot.wristVertical();
+            }
+        };
     }
 
     //Constants
@@ -99,8 +107,8 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static double xPosForBoard;
     public static double extraXPosChangeBasedOnAudience = -140;
     public static double yPosForLeftSideOfBoard = 52; // 1 and 4 on the board
-    public static double yPosForRightSideOFBoard = 85; // 3 and 6 on the board
-    public static double yPosForMiddleOfBoard = 67;
+    public static double yPosForMiddleOfBoard = 67;   // 2 and 5 on the board
+    public static double yPosForRightSideOFBoard = 80; // 3 and 6 on the board
     public static double robotTurn90 = -90; //turn to fast the board
 
     //Turn PID
@@ -137,4 +145,8 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static ElapsedTime elapsedTime = new ElapsedTime();
     public static Movement strafeToAvoidTeammate;
     public static double xPosStrafeToAvoidTeammate = -80;
+
+    //Place pixel and go to board
+    public static PIDCoefficients goToBoardPID = new PIDCoefficients(1.5,0.005,0,0);
+    public static Movement goToBoard;
 }

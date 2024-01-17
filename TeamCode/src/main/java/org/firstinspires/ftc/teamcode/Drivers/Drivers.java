@@ -162,10 +162,11 @@ public class Drivers extends AbstractHardwareComponent {
     }
 
     public void teleOp(Gamepad gamepad1, Gamepad gamepad2) {
+        bot.teleTimerLights();
         driver1(gamepad1);
         driver2(gamepad2);
         telemetry();
-        bot.standardTeleLights();
+        //bot.standardTeleLights();
     }
 
     public String getWelcomeText() {

@@ -84,4 +84,12 @@ public class Config {
     public static final int firstLinePos = -900;
     public static final int lowPosTele = -1200;
     public static final int highPosTele = -2200;
+
+    //Pixel Stack Intake Servo Positions
+    public static final double pixelStackIncrementPos = 0.04;
+    public static final double secondPixelPos = intakeUp + pixelStackIncrementPos;
+    public static final double thirdPixelPos = secondPixelPos + pixelStackIncrementPos;
+    public static final double fourthPixelPos = thirdPixelPos + pixelStackIncrementPos;
+    public static final double fifthPixelPos = fourthPixelPos + pixelStackIncrementPos;
+    public static final double[] pixelStackServoPosArr = {intakeDown, Config.secondPixelPos, Config.thirdPixelPos, Config.fourthPixelPos, Config.fifthPixelPos};
 }

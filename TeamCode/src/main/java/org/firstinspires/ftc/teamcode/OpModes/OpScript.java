@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -36,6 +37,7 @@ public abstract class OpScript extends LinearOpMode {
         while (!opScript.opModeIsActive() && !opScript.isStarted()  && !opScript.isStopRequested()) {opScript.initloop();}
         while (opScript.opModeIsActive() && opScript.isStarted() && !opScript.isStopRequested()) {
             if(bot.isRunning()) {
+                bot.autoLights();
                 opScript.run();
             }
             opScript.runAuto = false;
@@ -51,6 +53,7 @@ public abstract class OpScript extends LinearOpMode {
      * Used to loop the cameraHandler in auto and telemetry pre-run
      */
     public void initloop() {
+        bot.initLights();
         opScript.runAuto = true;
         bot.addLine(welcomeText);
         bot.addLine("Please remember to restart robot prior to running auto. Thanks!");

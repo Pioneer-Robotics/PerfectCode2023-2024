@@ -7,18 +7,17 @@ import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
 
 public class AutoConfig extends AbstractHardwareComponent {
     public static boolean isRedAuto = false;
+    public static boolean isAudience = false;
 
-    public AutoConfig(boolean isAutoRed){
-        if(isAutoRed) {
-            //flip the y position to go to the board
-            isRedAuto = true;
-            yPosForLeftSideOfBoard = 52; // 1 and 4 on the board
-            yPosForRightSideOFBoard = 85; // 3 and 6 on the board
-        }
-        else{
-            yPosForLeftSideOfBoard = 52; // 1 and 4 on the board
-            yPosForRightSideOFBoard = 85; // 3 and 6 on the board
-            isRedAuto = false;
+    public AutoConfig(boolean isAutoRed, boolean isAudience){
+        this.isRedAuto = isAutoRed;
+        this.isAudience = isAudience;
+
+        if(isAudience){
+            xPosForBoard =  boardSideXPos + extraXPosChangeBasedOnAudience;
+            xPosStrafeToAvoidTeammate += extraXPosChangeBasedOnAudience;
+        } else {
+            xPosForBoard = boardSideXPos;
         }
 
         dropOffPixelMiddle = new Movement(0,65, robotTurn90, dropOffPixelMiddlePID, turnPID) {
@@ -26,7 +25,7 @@ public class AutoConfig extends AbstractHardwareComponent {
             public void doWhileMoving() {}
         };
 
-        goToBoardMiddle = new Movement(xPosForBoard,67, robotTurn90, goToBoardMiddlePID, smallAngleTurnPID) {
+        goToBoardMiddle = new Movement(xPosForBoard,yPosForMiddleOfBoard, robotTurn90, goToBoardMiddlePID, smallAngleTurnPID) {
             @Override
             public void doWhileMoving() {
                 bot.setSlideLevel(Config.firstLinePos);
@@ -68,7 +67,7 @@ public class AutoConfig extends AbstractHardwareComponent {
             }
         };
 
-        strafeToAvoidTeammate = new Movement(-80, 10, robotTurn90, strafeAvoidPID, smallAngleTurnPID) {
+        strafeToAvoidTeammate = new Movement(xPosStrafeToAvoidTeammate, 10, robotTurn90, strafeAvoidPID, smallAngleTurnPID) {
             @Override
             public void doWhileMoving() {
                 if(elapsedTime.seconds() > 0.3) {
@@ -78,16 +77,30 @@ public class AutoConfig extends AbstractHardwareComponent {
                 }
             }
         };
+
+        collectExtraPixelFromStack = new Movement(20, 90, -90, collectPixelPID, turnPID) {
+            @Override
+            public void doWhileMoving() {bot.setIntakeServoPos(Config.fifthPixelPos);}
+        };
+
+        passTruseAndNearBoard = new Movement(-180, 90, -90, passTruseAndNearBoardPID, smallAngleTurnPID) {
+            @Override
+            public void doWhileMoving() {}
+        };
     }
+
     //Constants
     public static final double speed = 0.3;
     public static final double drivingThresholdCM = 1.5;
     public static final double turningThresholdDEG = 1.5;
 
     //Movement and PID objects
-    public static double xPosForBoard = -88.75;
-    public static double yPosForLeftSideOfBoard; // 1 and 4 on the board
-    public static double yPosForRightSideOFBoard; // 3 and 6 on the board
+    public static double boardSideXPos = -88.75;
+    public static double xPosForBoard;
+    public static double extraXPosChangeBasedOnAudience = -140;
+    public static double yPosForLeftSideOfBoard = 52; // 1 and 4 on the board
+    public static double yPosForRightSideOFBoard = 85; // 3 and 6 on the board
+    public static double yPosForMiddleOfBoard = 67;
     public static double robotTurn90 = -90; //turn to fast the board
 
     //Turn PID
@@ -113,8 +126,15 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static Movement dropOffPixelRight;
     public static Movement goToBoardRight;
 
+    //Audience Side
+    public static PIDCoefficients collectPixelPID           = new PIDCoefficients(1,0,0,0);
+    public static PIDCoefficients passTruseAndNearBoardPID     = new PIDCoefficients(1,0,0,0);
+    public static Movement collectExtraPixelFromStack;
+    public static Movement passTruseAndNearBoard;
+
     //strafe over for teammate
     public static PIDCoefficients strafeAvoidPID = new PIDCoefficients(1,0,0,0);
     public static ElapsedTime elapsedTime = new ElapsedTime();
     public static Movement strafeToAvoidTeammate;
+    public static double xPosStrafeToAvoidTeammate = -80;
 }

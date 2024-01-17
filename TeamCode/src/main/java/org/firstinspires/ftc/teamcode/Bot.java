@@ -19,6 +19,7 @@ public class Bot extends AbstractBot {
     public static Bot getInstance() {return OpScript.bot;}//gets itself
     public boolean isAuto() {return opmode.getClass().isAnnotationPresent(Autonomous.class);}//used to see if we are in auto or not
     public boolean isRed(){return opmode.getClass().getName().contains("Red");}
+    public boolean isAudienceSide(){return opmode.getClass().getName().contains("Audience");}
 
     //Motors
     public void setVelocity(double LFspeed, double LBspeed, double RFspeed, double RBspeed) {driveMotors.setVel(LFspeed, LBspeed, RFspeed, RBspeed);}
@@ -55,7 +56,7 @@ public class Bot extends AbstractBot {
     public void resetIMU() {imu.resetYaw();}
 
     //RedAuto
-    public void runAuto() {commands.boardSideAuto();}
+    public void runAuto() {commands.runAuto();}
     public boolean isRunning(){return !getInstance().isAuto() || opmode.runAuto;}
     public void openCamera(){cameraHandler.openCamera();}
     public int locationCamera(){return cameraHandler.locationCamera();}
@@ -96,6 +97,7 @@ public class Bot extends AbstractBot {
     public void intakeCounter(double pos){intakeServo.servoCounter(pos);}
     public void intakeUp(){intakeServo.servoOpen();}
     public void intakeDown(){intakeServo.servoClosed();}
+    public void setIntakeServoPos(double pos){intakeServo.setServo(pos);}
     public void launchAirplane(){airplaneLauncher.servoOpen();}
     public void holdAirplane(){airplaneLauncher.servoClosed();}
     public void hangReady(){hangServo.servoOpen();}
@@ -105,8 +107,9 @@ public class Bot extends AbstractBot {
     public void lightsOn(RevBlinkinLedDriver.BlinkinPattern pattern){led.lightsOn(pattern);}
     public void lightsOff(){led.lightsOff();}
     public void autoLights(){led.chooseLights();}
+    public void initLights(){led.chooseLightsForInit();}
     public void standardTeleLights(){led.teleLights();}
-    public void autoTimerLights(){led.autoTimer();}
+    public void teleTimerLights(){led.teleOpTimer();}
 
     //Slide Arm
     public void setSlideLevel(int level){slideArmMotor.setLevel(level);}

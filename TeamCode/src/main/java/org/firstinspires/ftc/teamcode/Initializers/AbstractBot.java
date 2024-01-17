@@ -63,7 +63,7 @@ public abstract class AbstractBot {
         imu                 = new BotIMU(opMode.hardwareMap.get(IMU.class, "imu"));
         imu.resetYaw();
         cameraHandler       = new CameraHandler(opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName()), opMode.hardwareMap.get(WebcamName.class, "Webcam 1"));
-        autoConfig          = new AutoConfig(opmode.getClass().getName().contains("Red"));
+        autoConfig          = new AutoConfig(opmode.getClass().getName().contains("Red"), opmode.getClass().getName().contains("Audience"));
         slideArmMotor       = new SlideArmMotor(opMode.hardwareMap.get(DcMotorEx.class, Config.slideArm));
         collector           = new Collector(opMode.hardwareMap.get(DcMotorEx.class, Config.collectorMotor));
         leftDropServo       = new UniServo(opMode.hardwareMap.get(Servo.class, Config.leftDropServo), Config.leftClosedPos, Config.leftOpenPos);
@@ -73,7 +73,7 @@ public abstract class AbstractBot {
         intakeServo         = new UniServo(opMode.hardwareMap.get(Servo.class, Config.intakeServoForCollector), Config.intakeUp, Config.intakeDown);
         wristServo          = new UniServo(opMode.hardwareMap.get(Servo.class, Config.wristServo), Config.WristVertical, Config.WristHorizontal);
         hangServo           = new UniServo(opMode.hardwareMap.get(Servo.class, Config.hangServo), Config.hangReady, Config.hangLaunch);
-        led                 = new LED(opMode.hardwareMap.get(RevBlinkinLedDriver.class, Config.LED), RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
+        led                 = new LED(opMode.hardwareMap.get(RevBlinkinLedDriver.class, Config.LED));
         commands            = new Commands();
         driveMotors         = new DriveMotors(opMode.hardwareMap.get(DcMotorEx.class, Config.motorLF),
                                             opMode.hardwareMap.get(DcMotorEx.class, Config.motorRF),

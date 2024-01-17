@@ -19,7 +19,8 @@ public class Drivers extends AbstractHardwareComponent {
     private final Toggle mecanumToggle = new Toggle(true);
     private final Toggle collectorToggle = new Toggle(false);
     private final Toggle grabberToggle = new Toggle(true);
-    private final Toggle intakeToggle = new Toggle(true);
+    private final Toggle intakeToggle = new Toggle(false);
+    private final Toggle intakeUpDown = new Toggle(true);
     private final Toggle airplaneLaunch = new Toggle(false);
     private final Toggle hangServo = new Toggle(false);
 
@@ -70,8 +71,6 @@ public class Drivers extends AbstractHardwareComponent {
 
     @DriverAnnotations.Driver2(name = "Henry")
     public void driver2(Gamepad gamepad) {
-        intakePos.arithmetic(gamepad.dpad_right, gamepad.dpad_left);
-
         if(gamepad.right_trigger > 0.074) {
             bot.setHangSpeed(gamepad.right_trigger);
         }
@@ -81,7 +80,6 @@ public class Drivers extends AbstractHardwareComponent {
         else{
             bot.setHangSpeed(0);
         }
-
 
         //ensures pixel drop servos are up
         bot.rightDropUp();
@@ -97,10 +95,6 @@ public class Drivers extends AbstractHardwareComponent {
             bot.gripperOpen();
         }
 
-//        if((bot.getSlideLevel() >= 300 && bot.getSlideLevel() <= 900) && bot.getSlideLevelTarg() > 100){
-//            bot.gripperClosed();
-//        }
-
         if (gamepad.right_bumper && bot.getSlideLevelTarg() != 0 && (bot.getSlideLevel() >= -99 || bot.getSlideLevel() <= -900)) {
             bot.wristVertical();
         } else if(bot.getSlideLevelTarg() > -100){
@@ -108,13 +102,6 @@ public class Drivers extends AbstractHardwareComponent {
         }
         else if(bot.getSlideLevelTarg() < -100) {
             bot.setWrist(Config.WristCloseDoor);
-        }
-
-        intakeToggle.toggle(gamepad.a);
-        if (intakeToggle.getBool()) {
-            bot.intakeCounter(intakePos.getNum());
-        } else {
-            bot.intakeDown();
         }
 
         if (gamepad.x) {
@@ -130,7 +117,6 @@ public class Drivers extends AbstractHardwareComponent {
         if(bot.getSlideLevelTarg() > 0){
             collectorToggle.set(false);
         }
-
         if (gamepad.dpad_up) {
             bot.moveCollectorBack();
         } else {
@@ -140,12 +126,30 @@ public class Drivers extends AbstractHardwareComponent {
                 bot.stopCollector();
             }
         }
+
+        intakeToggle.toggle(gamepad.a);
+        if (intakeToggle.getBool()) {
+            intakePos.arithmetic(gamepad.dpad_right, gamepad.dpad_left);
+            bot.intakeCounter(intakePos.getNum());
+        } else {
+            //TODO see if this is right
+            if(gamepad.dpad_right) {
+                intakeUpDown.set(true);
+            }
+            else if(gamepad.dpad_left){
+                intakeUpDown.set(false);
+            }
+            if(intakeUpDown.getBool()){
+                bot.intakeUp();
+            }else {
+                bot.intakeDown();
+            }
+        }
     }
 
     @DriverAnnotations.Coach(name = "Christian/Owen")
     public void coach(){
         //this is where we keep track of who is the coach
-        //
     }
 
     public void telemetry(){
@@ -166,11 +170,10 @@ public class Drivers extends AbstractHardwareComponent {
         driver1(gamepad1);
         driver2(gamepad2);
         telemetry();
-        //bot.standardTeleLights();
     }
 
     public String getWelcomeText() {
-        Class myClass = Drivers.class;
+        Class<Drivers> myClass = Drivers.class;
         StringBuilder text = new StringBuilder();
         String name1 = "";
         String name2 = "";

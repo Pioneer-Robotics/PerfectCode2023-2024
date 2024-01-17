@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.SelfDrivingAuto;
 
-import android.os.ParcelFileDescriptor;
-
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Config;
@@ -12,18 +10,17 @@ import org.firstinspires.ftc.teamcode.Initializers.AbstractHardwareComponent;
  * This class will contain our autonomous methods as well as gearShift
  */
 public class Commands extends AbstractHardwareComponent {
+
     /**
      * This is the method that will run for both autos auto based on whichever alliance side and team marker location
      */
     public void runAuto(){
-        int location = bot.getTeamMarkerLocation(); //see location
-
         //reset for auto
         bot.gripperClosed();
         bot.intakeDown();
 
         //dropping off pixel is standard for all
-        dropOffPixelAll(location);
+        dropOffPixelAll(bot.getTeamMarkerLocation());
 
         //collect pixel and near the board to place two pixels
         if(bot.isAudienceSide()){
@@ -35,6 +32,7 @@ public class Commands extends AbstractHardwareComponent {
         AutoConfig.elapsedTime.reset();
         bot.drive(AutoConfig.strafeToAvoidTeammate);
     }
+
     /**
      * Is used to "gear shift" between powers in teleOp
      * @param gamepad: usually gamepad1
@@ -69,9 +67,7 @@ public class Commands extends AbstractHardwareComponent {
 
     public void dropOffPixelAll(int location){
         if(location == 1){
-
             if(bot.isAudienceSide()){
-
                 if(bot.isRed()){
                     bot.drive(AutoConfig.dropOffPixelLeft);
                 } else{
@@ -84,9 +80,7 @@ public class Commands extends AbstractHardwareComponent {
                     bot.drive(AutoConfig.dropOffPixelLeft);
                 }
             }
-
         } else if(location == 3){
-
             if(bot.isAudienceSide()){
                 //audience
                 if(bot.isRed()){
@@ -94,7 +88,6 @@ public class Commands extends AbstractHardwareComponent {
                 } else {
                     bot.drive(AutoConfig.dropOffPixelLeft);
                 }
-
             } else{
                 //board side
                 if(bot.isRed()){
@@ -103,8 +96,6 @@ public class Commands extends AbstractHardwareComponent {
                     bot.drive(AutoConfig.dropOffPixelRight);
                 }
             }
-
-
         } else{
             bot.drive(AutoConfig.dropOffPixelMiddle);
         }
@@ -116,6 +107,7 @@ public class Commands extends AbstractHardwareComponent {
 
         bot.moveCollector();
         bot.timerSleep(2);
+        bot.stopCollector();
 
         bot.drive(AutoConfig.passTruseAndNearBoard);
     }

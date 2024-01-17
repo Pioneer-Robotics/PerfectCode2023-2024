@@ -71,10 +71,10 @@ public class Drivers extends AbstractHardwareComponent {
 
     @DriverAnnotations.Driver2(name = "Henry")
     public void driver2(Gamepad gamepad) {
-        if(gamepad.right_trigger > 0.074) {
+        if(gamepad.right_trigger > Config.triggerDeadzone) {
             bot.setHangSpeed(gamepad.right_trigger);
         }
-        else if(gamepad.left_trigger > 0.074){
+        else if(gamepad.left_trigger > Config.triggerDeadzone){
             bot.setHangSpeed(-gamepad.left_trigger);
         }
         else{
@@ -174,7 +174,6 @@ public class Drivers extends AbstractHardwareComponent {
 
     public String getWelcomeText() {
         Class<Drivers> myClass = Drivers.class;
-        StringBuilder text = new StringBuilder();
         String name1 = "";
         String name2 = "";
         String name3 = "";

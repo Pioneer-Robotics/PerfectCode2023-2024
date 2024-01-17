@@ -53,7 +53,13 @@ public abstract class OpScript extends LinearOpMode {
      * Used to loop the cameraHandler in auto and telemetry pre-run
      */
     public void initloop() {
-        bot.initLights();
+        if(bot.getVoltage() > 12) {
+            bot.initLights();
+        }
+        else{
+            bot.lightsOn(RevBlinkinLedDriver.BlinkinPattern.STROBE_RED);
+            bot.addLine("BATTERY LOW");
+        }
         opScript.runAuto = true;
         bot.addLine(welcomeText);
         bot.addLine("Please remember to restart robot prior to running auto. Thanks!");

@@ -26,18 +26,15 @@ public class Config {
     public static final double odoRadiusCM = 2.54;
     public static final double odoCircumferenceCM = odoDiameterCM * Math.PI;
     public static final double odoTicksToCm = (odoCircumferenceCM / odoTicksPerRotation);
-
     public static final double goBuildaOdoDiameter = 4.8;
     public static final double goBuildaOdoCircumferenceCM = goBuildaOdoDiameter * Math.PI;
     public static final double goBuildaOdoTicksToCm = goBuildaOdoCircumferenceCM / 2000;
-    public static final double odoXOffset = 16.65; //distance in cm from center of robot to odometers on left/right side
-    public static final double odoYOffset = 12.4; //distance in cm from center of robot to odometers on back side
 
     //ODO CALCULATIONS CONSTANTS
     public static final double yOdoDistanceFromCenterCM = 13.25; //distance in cm from center of robot to odometers on left/right side
     public static final double xOdoDistanceFromCenterCM = 7.45; //distance in cm from center of robot to odometers on back side
     public static final double yOdoAngleFromCenterRAD = Math.atan(13/8.5);
-    public static final double xOdoAngleFromCenterRAD = Math.atan(1/15);
+    public static final double xOdoAngleFromCenterRAD = Math.atan((double) 1 /15);
     public static final double newyOdoDistanceFromCenterCM = Math.sqrt( (13*13) + (9*9) );
     public static final double newxOdoDistanceFromCenterCM = Math.sqrt( (1) + (15.5*15.5) );
     public static final double xRotationOdosInTicksDiv20pi = 120593 / (20 * Math.PI);
@@ -52,6 +49,7 @@ public class Config {
 
     //Motor encoder
     public static final double encoderRatio = 2800d;
+    public static final double triggerDeadzone = 0.074;
 
     //Pixel Servos
     public static final String leftDropServo = "PixelDropLeft";

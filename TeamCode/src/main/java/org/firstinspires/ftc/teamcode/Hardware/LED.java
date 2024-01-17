@@ -15,7 +15,6 @@ public class LED extends AbstractHardwareComponent {
 
     public LED(RevBlinkinLedDriver light) {
         led = light;
-        chooseLightsForInit();
     }
 
     public void chooseLights(){

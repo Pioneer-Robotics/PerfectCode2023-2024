@@ -37,9 +37,6 @@ public abstract class Movement extends AbstractHardwareComponent {
             this.dX = this.dX * -1;
             this.dTheta = this.dTheta * -1;
         }
-        if(AutoConfig.isAudience){
-            this.dX = this.dX * -1;
-        }
         speed = 0.5;
     }
 

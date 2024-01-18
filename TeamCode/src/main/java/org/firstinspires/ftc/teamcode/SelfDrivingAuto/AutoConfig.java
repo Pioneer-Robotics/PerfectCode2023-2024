@@ -22,7 +22,9 @@ public class AutoConfig extends AbstractHardwareComponent {
 
         dropOffPixelMiddle = new Movement(0,65, robotTurn90, dropOffPixelMiddlePID, turnPID) {
             @Override
-            public void doWhileMoving() {}
+            public void doWhileMoving() {
+                bot.setSlideLevel(Config.firstLinePos);
+            }
         };
 
         goToBoardMiddle = new Movement(xPosForBoard,yPosForMiddleOfBoard, robotTurn90, goToBoardMiddlePID, smallAngleTurnPID) {
@@ -34,8 +36,10 @@ public class AutoConfig extends AbstractHardwareComponent {
         };
 
         dropOffPixelLeft = new Movement(-20,40, robotTurn90, dropOffPixelLeftPID, turnPID) {
-            @Override
-            public void doWhileMoving() {}
+            @Override // -40, 55 for potential new pixel left
+            public void doWhileMoving() {
+                bot.setSlideLevel(Config.firstLinePos);
+            }
         };
 
         goForwardForBoardLeft = new Movement(-70,dropOffPixelLeft.getdY(), robotTurn90, goToBoardLeftPID, smallAngleTurnPID) {
@@ -56,7 +60,9 @@ public class AutoConfig extends AbstractHardwareComponent {
 
         dropOffPixelRight = new Movement(5,67,0, dropOffPixelRightPID, smallAngleTurnPID) {
             @Override
-            public void doWhileMoving() {}
+            public void doWhileMoving() {
+                bot.setSlideLevel(Config.firstLinePos);
+            }
         };
 
         goToBoardRight = new Movement(xPosForBoard,yPosForRightSideOFBoard, robotTurn90, goToBoardRightPID, turnPID) {
@@ -78,17 +84,21 @@ public class AutoConfig extends AbstractHardwareComponent {
             }
         };
 
-        collectExtraPixelFromStack = new Movement(20, 90, -90, collectPixelPID, turnPID) {
+        collectExtraPixelFromStack = new Movement(48.5, 128.5, -90, collectPixelPID, turnPID) {
             @Override
-            public void doWhileMoving() {bot.setIntakeServoPos(Config.fifthPixelPos);}
+            public void doWhileMoving() {
+                //bot.setIntakeServoPos(Config.fifthPixelPos);
+                bot.wristHorizontal();
+                bot.setSlideLevel(0);
+            }
         };
 
-        passTruseAndNearBoard = new Movement(-180, 90, -90, passTruseAndNearBoardPID, smallAngleTurnPID) {
+        passTruseAndNearBoard = new Movement(-180, collectExtraPixelFromStack.getdY(), -90, passTruseAndNearBoardPID, smallAngleTurnPID) {
             @Override
             public void doWhileMoving() {}
         };
 
-        goToBoard = new Movement(xPosForBoard,yPosForMiddleOfBoard, robotTurn90, goToBoardPID, smallAngleTurnPID) {
+        goToBoard = new Movement(xPosForBoard,yPosForMiddleOfBoard, robotTurn90, goToBoardPID, turnPID) {
             @Override
             public void doWhileMoving() {
                 bot.setSlideLevel(Config.firstLinePos);
@@ -105,15 +115,15 @@ public class AutoConfig extends AbstractHardwareComponent {
     //Movement and PID objects
     public static double boardSideXPos = -88.75;
     public static double xPosForBoard;
-    public static double extraXPosChangeBasedOnAudience = -140;
+    public static double extraXPosChangeBasedOnAudience = -130;
     public static double yPosForLeftSideOfBoard = 52; // 1 and 4 on the board
     public static double yPosForMiddleOfBoard = 67;   // 2 and 5 on the board
-    public static double yPosForRightSideOFBoard = 80; // 3 and 6 on the board
+    public static double yPosForRightSideOFBoard = 75; // 3 and 6 on the board
     public static double robotTurn90 = -90; //turn to fast the board
 
     //Turn PID
-    public static PIDCoefficients smallAngleTurnPID = new PIDCoefficients(0.25,0,0, 0);
-    public static PIDCoefficients turnPID = new PIDCoefficients(1.4,0.04,0,0);
+    public static PIDCoefficients smallAngleTurnPID = new PIDCoefficients(0.225,0,0, 0);
+    public static PIDCoefficients turnPID = new PIDCoefficients(1.35,0.035,0,0);
 
     //middle board
     public static PIDCoefficients dropOffPixelMiddlePID = new PIDCoefficients(1.75,0.009,0, 0);
@@ -136,7 +146,7 @@ public class AutoConfig extends AbstractHardwareComponent {
 
     //Audience Side
     public static PIDCoefficients collectPixelPID           = new PIDCoefficients(1,0,0,0);
-    public static PIDCoefficients passTruseAndNearBoardPID     = new PIDCoefficients(1,0,0,0);
+    public static PIDCoefficients passTruseAndNearBoardPID     = new PIDCoefficients(2,0.01,0,0);
     public static Movement collectExtraPixelFromStack;
     public static Movement passTruseAndNearBoard;
 

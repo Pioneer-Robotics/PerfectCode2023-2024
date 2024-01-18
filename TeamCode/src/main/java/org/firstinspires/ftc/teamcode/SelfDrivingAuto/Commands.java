@@ -17,7 +17,9 @@ public class Commands extends AbstractHardwareComponent {
     public void runAuto(){
         //reset for auto
         bot.gripperClosed();
+        bot.wristHorizontal();
         bot.intakeDown();
+        bot.setSlideLevel(0);
 
         //dropping off pixel is standard for all
         dropOffPixelAll(bot.getTeamMarkerLocation());
@@ -84,6 +86,11 @@ public class Commands extends AbstractHardwareComponent {
                 }
             }
         } else if(location == 3){
+            Movement left = AutoConfig.dropOffPixelLeft;
+            Movement right = AutoConfig.dropOffPixelRight;
+            left.setPosition(left.getdX() * -1, left.getdY(), left.getdTheta() * - 1);
+            right.setPosition(right.getdX() * -1, right.getdY(), right.getdTheta() * - 1);
+
             if(bot.isAudienceSide()){
                 //audience
                 if(bot.isRed()){
@@ -107,18 +114,30 @@ public class Commands extends AbstractHardwareComponent {
 
     public void placePixelAndStrafeOver(){
         if(bot.getTeamMarkerLocation() == 1){
-            AutoConfig.goToBoard.setdY(AutoConfig.yPosForLeftSideOfBoard);
+            if(bot.isRed()) {
+                AutoConfig.goToBoard.setdY(AutoConfig.yPosForRightSideOFBoard);
+            } else{
+                AutoConfig.goToBoard.setdY(AutoConfig.yPosForLeftSideOfBoard);
+            }
         } else if(bot.getTeamMarkerLocation() == 3){
-            AutoConfig.goToBoard.setdY(AutoConfig.yPosForRightSideOFBoard);
+            if(bot.isRed()){
+                AutoConfig.goToBoard.setdY(AutoConfig.yPosForLeftSideOfBoard);
+            } else{
+                AutoConfig.goToBoard.setdY(AutoConfig.yPosForRightSideOFBoard);
+            }
         }
+        bot.drive(AutoConfig.goToBoard);
     }
 
     public void grabExtraPixelAndNearBoard(){
         bot.drive(AutoConfig.collectExtraPixelFromStack);
 
+        bot.setIntakeServoPos(Config.fifthPixelPos);
+        bot.gripperOpen();
         bot.moveCollector();
         bot.timerSleep(2);
         bot.stopCollector();
+        bot.gripperClosed();
 
         bot.drive(AutoConfig.passTruseAndNearBoard);
     }

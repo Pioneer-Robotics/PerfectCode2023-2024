@@ -88,6 +88,6 @@ public class Config {
     public static final double secondPixelPos = intakeUp + pixelStackIncrementPos;
     public static final double thirdPixelPos = secondPixelPos + pixelStackIncrementPos;
     public static final double fourthPixelPos = thirdPixelPos + pixelStackIncrementPos;
-    public static final double fifthPixelPos = fourthPixelPos + pixelStackIncrementPos;
+    public static final double fifthPixelPos = fourthPixelPos + 0.01;
     public static final double[] pixelStackServoPosArr = {intakeDown, Config.secondPixelPos, Config.thirdPixelPos, Config.fourthPixelPos, Config.fifthPixelPos};
 }

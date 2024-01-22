@@ -20,7 +20,7 @@ public class AutoConfig extends AbstractHardwareComponent {
             xPosForBoard = boardSideXPos;
         }
 
-        dropOffPixelMiddle = new Movement(0,65, robotTurn90, dropOffPixelMiddlePID, turnPID) {
+        dropOffPixelMiddle = new Movement(0,yPosToDropOffPurplePixel, robotTurn90, dropOffPixelMiddlePID, turn90PID) {
             @Override
             public void doWhileMoving() {
                 bot.setSlideLevel(Config.firstLinePos);
@@ -35,13 +35,14 @@ public class AutoConfig extends AbstractHardwareComponent {
             }
         };
 
-        dropOffPixelLeft = new Movement(-20,40, robotTurn90, dropOffPixelLeftPID, turnPID) {
+        dropOffPixelLeft = new Movement(-48,yPosToDropOffPurplePixel, 0, dropOffPixelLeftPID, turn90PID) {
             @Override // -40, 55 for potential new pixel left
             public void doWhileMoving() {
                 bot.setSlideLevel(Config.firstLinePos);
             }
         };
 
+        //when fixed, will not use
         goForwardForBoardLeft = new Movement(-70,dropOffPixelLeft.getdY(), robotTurn90, goToBoardLeftPID, smallAngleTurnPID) {
             @Override
             public void doWhileMoving() {
@@ -58,14 +59,14 @@ public class AutoConfig extends AbstractHardwareComponent {
             }
         };
 
-        dropOffPixelRight = new Movement(5,67,0, dropOffPixelRightPID, smallAngleTurnPID) {
+        dropOffPixelRight = new Movement(5,yPosToDropOffPurplePixel,0, dropOffPixelRightPID, smallAngleTurnPID) {
             @Override
             public void doWhileMoving() {
                 bot.setSlideLevel(Config.firstLinePos);
             }
         };
 
-        goToBoardRight = new Movement(xPosForBoard,yPosForRightSideOFBoard, robotTurn90, goToBoardRightPID, turnPID) {
+        goToBoardRight = new Movement(xPosForBoard,yPosForRightSideOFBoard, robotTurn90, goToBoardRightPID, turn90PID) {
             @Override
             public void doWhileMoving() {
                 bot.setSlideLevel(Config.firstLinePos);
@@ -84,12 +85,27 @@ public class AutoConfig extends AbstractHardwareComponent {
             }
         };
 
-        collectExtraPixelFromStack = new Movement(48.5, 128.5, -90, collectPixelPID, turnPID) {
+        inPositionForPixel = new Movement(48, yPosToDropOffPurplePixel,0, inPositionForPixelPID, turn90PID) {
             @Override
             public void doWhileMoving() {
-                //bot.setIntakeServoPos(Config.fifthPixelPos);
                 bot.wristHorizontal();
                 bot.setSlideLevel(0);
+            }
+        };
+
+        collectExtraPixelFromStack = new Movement(48, 129, -90, collectPixelPID, turn90PID) {
+            @Override
+            public void doWhileMoving() {
+                bot.gripperOpen();
+                bot.wristHorizontal();
+                bot.setSlideLevel(0);
+            }
+        };
+
+        goForwardToPixel = new Movement(50.5, 129, -90, goForwardToPixelPID, smallAngleTurnPID ) {
+            @Override
+            public void doWhileMoving() {
+                bot.setIntakeServoPos(Config.fifthPixelPos);
             }
         };
 
@@ -98,7 +114,7 @@ public class AutoConfig extends AbstractHardwareComponent {
             public void doWhileMoving() {}
         };
 
-        goToBoard = new Movement(xPosForBoard,yPosForMiddleOfBoard, robotTurn90, goToBoardPID, turnPID) {
+        goToBoard = new Movement(xPosForBoard,yPosForMiddleOfBoard, robotTurn90, goToBoardPID, turn90PID) {
             @Override
             public void doWhileMoving() {
                 bot.setSlideLevel(Config.firstLinePos);
@@ -109,37 +125,39 @@ public class AutoConfig extends AbstractHardwareComponent {
 
     //Constants
     public static final double speed = 0.3;
-    public static final double drivingThresholdCM = 1.5;
-    public static final double turningThresholdDEG = 1.5;
+    public static final double drivingThresholdCM = 1.25;
+    public static final double turningThresholdDEG = 1.25;
 
     //Movement and PID objects
-    public static double boardSideXPos = -88.75;
+    public static double boardSideXPos = -89;
     public static double xPosForBoard;
-    public static double extraXPosChangeBasedOnAudience = -130;
+    public static double extraXPosChangeBasedOnAudience = -132;
     public static double yPosForLeftSideOfBoard = 52; // 1 and 4 on the board
-    public static double yPosForMiddleOfBoard = 67;   // 2 and 5 on the board
-    public static double yPosForRightSideOFBoard = 75; // 3 and 6 on the board
+    public static double yPosForMiddleOfBoard = 65;   // 2 and 5 on the board
+    public static double yPosForRightSideOFBoard = 80; // 3 and 6 on the board
     public static double robotTurn90 = -90; //turn to fast the board
+    public static double yPosToDropOffPurplePixel = 67;
+    public static double xPosForLeftSide = 50;
 
     //Turn PID
-    public static PIDCoefficients smallAngleTurnPID = new PIDCoefficients(0.225,0,0, 0);
-    public static PIDCoefficients turnPID = new PIDCoefficients(1.35,0.035,0,0);
+    public static PIDCoefficients smallAngleTurnPID = new PIDCoefficients(0.15,0,0, 0);
+    public static PIDCoefficients turn90PID = new PIDCoefficients(1.35,0.035,0,0);
 
     //middle board
-    public static PIDCoefficients dropOffPixelMiddlePID = new PIDCoefficients(1.75,0.009,0, 0);
+    public static PIDCoefficients dropOffPixelMiddlePID = new PIDCoefficients(1.5,0.002,0, 0);
     public static PIDCoefficients goToBoardMiddlePID = new PIDCoefficients(2.3, 0.015,0,0);
     public static Movement dropOffPixelMiddle;
     public static Movement goToBoardMiddle;
 
     //left board
-    public static PIDCoefficients dropOffPixelLeftPID = new PIDCoefficients(1.1,0.0085,0, 0);
+    public static PIDCoefficients dropOffPixelLeftPID = new PIDCoefficients(0.8,0.002,0, 0);
     public static PIDCoefficients goToBoardLeftPID = new PIDCoefficients(1.1, 0.008,0,0);
     public static Movement dropOffPixelLeft;
     public static Movement goForwardForBoardLeft;
     public static Movement goToBoardLeft;
 
     //right board
-    public static PIDCoefficients dropOffPixelRightPID = new PIDCoefficients(0.75,0.013,0,0);
+    public static PIDCoefficients dropOffPixelRightPID = new PIDCoefficients(0.65,0.01,0,0);
     public static PIDCoefficients goToBoardRightPID = new PIDCoefficients(2.25, 0.0185,0,0);
     public static Movement dropOffPixelRight;
     public static Movement goToBoardRight;
@@ -147,8 +165,12 @@ public class AutoConfig extends AbstractHardwareComponent {
     //Audience Side
     public static PIDCoefficients collectPixelPID           = new PIDCoefficients(1,0,0,0);
     public static PIDCoefficients passTruseAndNearBoardPID     = new PIDCoefficients(2,0.01,0,0);
+    public static PIDCoefficients inPositionForPixelPID = new PIDCoefficients(1,0.005,0,0);
+    public static PIDCoefficients goForwardToPixelPID = new PIDCoefficients(0.6,0,0,0);
     public static Movement collectExtraPixelFromStack;
     public static Movement passTruseAndNearBoard;
+    public static Movement inPositionForPixel;
+    public static Movement goForwardToPixel;
 
     //strafe over for teammate
     public static PIDCoefficients strafeAvoidPID = new PIDCoefficients(1,0,0,0);
@@ -157,6 +179,7 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static double xPosStrafeToAvoidTeammate = -80;
 
     //Place pixel and go to board
-    public static PIDCoefficients goToBoardPID = new PIDCoefficients(1.5,0.005,0,0);
+    public static PIDCoefficients goToBoardPID = new PIDCoefficients(1.25,0.004,0,0);
     public static Movement goToBoard;
+    public static PIDCoefficients reversedBlueLeftPID = new PIDCoefficients(1,0,0.01,0);
 }

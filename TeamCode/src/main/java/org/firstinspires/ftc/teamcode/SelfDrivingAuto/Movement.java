@@ -49,6 +49,8 @@ public abstract class Movement extends AbstractHardwareComponent {
         setdY(dY);
         setdTheta(dTheta);
     }
+    public void setTurnPID(PIDCoefficients pid){this.pidTheta = pid;}
+    public void setDrivePID(PIDCoefficients pid){this.pidXY = pid;}
     //getters
     public PIDCoefficients getCoefficients() {return coefficients;}
     public PIDCoefficients getPidXY(){return pidXY;}

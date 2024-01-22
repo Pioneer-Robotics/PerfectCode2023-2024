@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.SelfDrivingAuto.Movement;
 public class AutoTest extends OpScript {
     @Override
     public void run() {
-        bot.drive(new Movement(0,50,5, AutoConfig.dropOffPixelMiddlePID, AutoConfig.smallAngleTurnPID) {
+        bot.drive(new Movement(50,60,0, AutoConfig.reversedBlueLeftPID, AutoConfig.smallAngleTurnPID) {
             @Override
             public void doWhileMoving() {
 

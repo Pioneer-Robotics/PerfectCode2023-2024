@@ -30,7 +30,7 @@ public class Commands extends AbstractHardwareComponent {
         }
 
         //drive to the board and drop off pixel at the board.
-        placePixelAndStrafeOver();
+        dropPixelOnBoardAndStrafeOver();
         closeGripperAndWait();
 
         //Strafe to avoid teammate
@@ -71,6 +71,16 @@ public class Commands extends AbstractHardwareComponent {
     }
 
     public void dropOffPixelAll(int location){
+
+        if(bot.isAudienceSide()){
+            Movement left = AutoConfig.dropOffPixelLeft;
+            Movement middle = AutoConfig.dropOffPixelMiddle;
+            Movement right = AutoConfig.dropOffPixelRight;
+            middle.setPosition(middle.getdX() * -1, middle.getdY(), middle.getdTheta());
+            left.setPosition(left.getdX() * -1, left.getdY(), left.getdTheta() * - 1);
+            right.setPosition(right.getdX() * -1, right.getdY(), right.getdTheta() * - 1);
+        }
+
         if(location == 1){
             if(bot.isAudienceSide()){
                 if(bot.isRed()){
@@ -86,33 +96,36 @@ public class Commands extends AbstractHardwareComponent {
                 }
             }
         } else if(location == 3){
-            Movement left = AutoConfig.dropOffPixelLeft;
-            Movement right = AutoConfig.dropOffPixelRight;
-            left.setPosition(left.getdX() * -1, left.getdY(), left.getdTheta() * - 1);
-            right.setPosition(right.getdX() * -1, right.getdY(), right.getdTheta() * - 1);
-
             if(bot.isAudienceSide()){
                 //audience
                 if(bot.isRed()){
                     bot.drive(AutoConfig.dropOffPixelRight);
                 } else {
+                    AutoConfig.dropOffPixelLeft.setDrivePID(AutoConfig.reversedBlueLeftPID);
                     bot.drive(AutoConfig.dropOffPixelLeft);
                 }
             } else{
                 //board side
                 if(bot.isRed()){
+                    AutoConfig.dropOffPixelLeft.setDrivePID(AutoConfig.reversedBlueLeftPID);
                     bot.drive(AutoConfig.dropOffPixelLeft);
                 } else {
                     bot.drive(AutoConfig.dropOffPixelRight);
                 }
             }
         } else{
+            if(bot.isAudienceSide()){
+                AutoConfig.dropOffPixelMiddle.setdTheta(AutoConfig.dropOffPixelMiddle.getdTheta() * -1);
+            }
             bot.drive(AutoConfig.dropOffPixelMiddle);
         }
         dropPixelBasedOnAlliance(); //drop off pixel
     }
 
-    public void placePixelAndStrafeOver(){
+    public void dropPixelOnBoardAndStrafeOver(){
+        if(bot.isAudienceSide()){
+            AutoConfig.goToBoard.setTurnPID(AutoConfig.smallAngleTurnPID);
+        }
         if(bot.getTeamMarkerLocation() == 1){
             if(bot.isRed()) {
                 AutoConfig.goToBoard.setdY(AutoConfig.yPosForRightSideOFBoard);
@@ -125,13 +138,24 @@ public class Commands extends AbstractHardwareComponent {
             } else{
                 AutoConfig.goToBoard.setdY(AutoConfig.yPosForRightSideOFBoard);
             }
+        } else{
+            AutoConfig.goToBoard.setTurnPID(AutoConfig.smallAngleTurnPID);
+            AutoConfig.inPositionForPixel.setTurnPID(AutoConfig.smallAngleTurnPID);
         }
         bot.drive(AutoConfig.goToBoard);
     }
 
     public void grabExtraPixelAndNearBoard(){
-        bot.drive(AutoConfig.collectExtraPixelFromStack);
+        if(bot.isAudienceSide()){
+            AutoConfig.goToBoard.setDrivePID(new PIDCoefficients(1.5,0,0.01,0));
+        }
+        bot.drive(AutoConfig.inPositionForPixel); // go up and turn 90 to prepare to pick up pixel
 
+        bot.drive(AutoConfig.collectExtraPixelFromStack); // collect etra pixel
+
+        bot.drive(AutoConfig.goForwardToPixel);
+
+        //collect pixel
         bot.setIntakeServoPos(Config.fifthPixelPos);
         bot.gripperOpen();
         bot.moveCollector();

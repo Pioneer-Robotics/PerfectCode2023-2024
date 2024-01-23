@@ -27,35 +27,10 @@ public class AutoConfig extends AbstractHardwareComponent {
             }
         };
 
-        goToBoardMiddle = new Movement(xPosForBoard,yPosForMiddleOfBoard, robotTurn90, goToBoardMiddlePID, smallAngleTurnPID) {
-            @Override
-            public void doWhileMoving() {
-                bot.setSlideLevel(Config.firstLinePos);
-                bot.wristVertical();
-            }
-        };
-
         dropOffPixelLeft = new Movement(-48,yPosToDropOffPurplePixel, 0, dropOffPixelLeftPID, turn90PID) {
             @Override // -40, 55 for potential new pixel left
             public void doWhileMoving() {
                 bot.setSlideLevel(Config.firstLinePos);
-            }
-        };
-
-        //when fixed, will not use
-        goForwardForBoardLeft = new Movement(-70,dropOffPixelLeft.getdY(), robotTurn90, goToBoardLeftPID, smallAngleTurnPID) {
-            @Override
-            public void doWhileMoving() {
-                bot.setSlideLevel(Config.firstLinePos);
-                bot.wristVertical();
-            }
-        };
-
-        goToBoardLeft = new Movement(xPosForBoard,yPosForLeftSideOfBoard, robotTurn90, goToBoardLeftPID, smallAngleTurnPID) {
-            @Override
-            public void doWhileMoving() {
-                bot.setSlideLevel(Config.firstLinePos);
-                bot.wristVertical();
             }
         };
 
@@ -66,22 +41,11 @@ public class AutoConfig extends AbstractHardwareComponent {
             }
         };
 
-        goToBoardRight = new Movement(xPosForBoard,yPosForRightSideOFBoard, robotTurn90, goToBoardRightPID, turn90PID) {
+        goToBoard = new Movement(xPosForBoard,yPosForMiddleOfBoard, robotTurn90, goToBoardPID, turn90PID) {
             @Override
             public void doWhileMoving() {
                 bot.setSlideLevel(Config.firstLinePos);
                 bot.wristVertical();
-            }
-        };
-
-        strafeToAvoidTeammate = new Movement(xPosStrafeToAvoidTeammate, 10, robotTurn90, strafeAvoidPID, smallAngleTurnPID) {
-            @Override
-            public void doWhileMoving() {
-                if(elapsedTime.seconds() > 0.3) {
-                    bot.setSlideLevel(0);
-                    bot.wristHorizontal();
-                    bot.intakeUp();
-                }
             }
         };
 
@@ -114,11 +78,14 @@ public class AutoConfig extends AbstractHardwareComponent {
             public void doWhileMoving() {}
         };
 
-        goToBoard = new Movement(xPosForBoard,yPosForMiddleOfBoard, robotTurn90, goToBoardPID, turn90PID) {
+        strafeToAvoidTeammate = new Movement(xPosStrafeToAvoidTeammate, 10, robotTurn90, strafeAvoidPID, smallAngleTurnPID) {
             @Override
             public void doWhileMoving() {
-                bot.setSlideLevel(Config.firstLinePos);
-                bot.wristVertical();
+                if(elapsedTime.seconds() > 0.3) {
+                    bot.setSlideLevel(0);
+                    bot.wristHorizontal();
+                    bot.intakeUp();
+                }
             }
         };
     }
@@ -147,20 +114,16 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static PIDCoefficients dropOffPixelMiddlePID = new PIDCoefficients(1.5,0.002,0, 0);
     public static PIDCoefficients goToBoardMiddlePID = new PIDCoefficients(2.3, 0.015,0,0);
     public static Movement dropOffPixelMiddle;
-    public static Movement goToBoardMiddle;
 
     //left board
     public static PIDCoefficients dropOffPixelLeftPID = new PIDCoefficients(0.8,0.002,0, 0);
     public static PIDCoefficients goToBoardLeftPID = new PIDCoefficients(1.1, 0.008,0,0);
     public static Movement dropOffPixelLeft;
-    public static Movement goForwardForBoardLeft;
-    public static Movement goToBoardLeft;
 
     //right board
     public static PIDCoefficients dropOffPixelRightPID = new PIDCoefficients(0.65,0.01,0,0);
     public static PIDCoefficients goToBoardRightPID = new PIDCoefficients(2.25, 0.0185,0,0);
     public static Movement dropOffPixelRight;
-    public static Movement goToBoardRight;
 
     //Audience Side
     public static PIDCoefficients collectPixelPID           = new PIDCoefficients(1,0,0,0);

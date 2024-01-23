@@ -64,8 +64,10 @@ public abstract class OpScript extends LinearOpMode {
         bot.addLine(welcomeText);
         bot.addLine("Please remember to restart robot prior to running auto. Thanks!");
         if(bot.isAuto()){
-            location = bot.locationCamera2();
-            bot.addData("CameraHandler", bot.getSaturationHigh());
+//            location = bot.locationCamera2();
+//            bot.addData("CameraHandler", bot.getSaturationHigh());
+            location = bot.getMarkerLocation();
+            bot.addData("CameraHandler", bot.getMarkerLocation());
         }
         bot.addData("Angle: ", -bot.angleDEG());
         bot.addData("VoltageHandler", bot.getVoltage());

@@ -7,18 +7,19 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-public class CameraHandler extends AbstractHardwareComponent {
+public class CameraHandler {
     int cameraMonitorViewId;
     OpenCvCamera camera;
     WebcamName webcamName;
-    OpenCVPipeline openCVPipeline;
+    ColorDetectionPipeline openCVPipeline;
 
-    public CameraHandler(int camera, WebcamName name){
+    public CameraHandler(int camera, WebcamName name, boolean isRed){
         cameraMonitorViewId = camera;
         this.camera = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         webcamName = name;
         this.camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
-        openCVPipeline = new OpenCVPipeline(30, 30, 386, 660);
+        //openCVPipeline = new OpenCVPipeline(30, 30, 386, 660);
+        openCVPipeline = new ColorDetectionPipeline(isRed);
     }
 
     public void openCamera(){
@@ -30,7 +31,7 @@ public class CameraHandler extends AbstractHardwareComponent {
             }
             @Override
             public void onError(int errorCode) {
-                bot.addLine("CameraHandler Failed.");
+                //bot.addLine("CameraHandler Failed.");
             }
         });
     }
@@ -44,7 +45,7 @@ public class CameraHandler extends AbstractHardwareComponent {
             }
             @Override
             public void onError(int errorCode) {
-                bot.addLine("CameraHandler Failed.");
+                //bot.addLine("CameraHandler Failed.");
             }
         });
         String satHigh = getSaturationHigh();

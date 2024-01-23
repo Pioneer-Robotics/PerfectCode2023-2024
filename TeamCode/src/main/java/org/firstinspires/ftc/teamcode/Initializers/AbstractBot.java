@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Initializers;
 
+import android.annotation.SuppressLint;
+
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -62,7 +64,10 @@ public abstract class AbstractBot {
         bulkReader          = new BulkReader(opMode.hardwareMap);
         imu                 = new BotIMU(opMode.hardwareMap.get(IMU.class, "imu"));
         imu.resetYaw();
-        cameraHandler       = new CameraHandler(opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName()), opMode.hardwareMap.get(WebcamName.class, "Webcam 1"));
+        cameraHandler       = new CameraHandler(opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id",
+                                                opMode.hardwareMap.appContext.getPackageName()),
+                                                opMode.hardwareMap.get(WebcamName.class, "Webcam 1"),
+                                                opmode.getClass().getName().contains("Red"));
         autoConfig          = new AutoConfig(opmode.getClass().getName().contains("Red"), opmode.getClass().getName().contains("Audience"));
         slideArmMotor       = new SlideArmMotor(opMode.hardwareMap.get(DcMotorEx.class, Config.slideArm));
         collector           = new Collector(opMode.hardwareMap.get(DcMotorEx.class, Config.collectorMotor));

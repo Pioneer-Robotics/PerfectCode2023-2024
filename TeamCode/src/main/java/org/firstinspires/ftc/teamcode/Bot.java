@@ -4,6 +4,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.teamcode.Hardware.ColorDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
 import org.firstinspires.ftc.teamcode.Initializers.AbstractBot;
 import org.firstinspires.ftc.teamcode.OpModes.OpScript;
@@ -73,6 +74,7 @@ public class Bot extends AbstractBot {
     //Features
     public double getVoltage(){return voltageHandler.getVoltage(opmode.hardwareMap.voltageSensor);}
     public void setHangSpeed(double speed){hangingMotor.setSpeed(speed);}
+    public int getMarkerLocation(){return ColorDetectionPipeline.markerLocation;}
 
     //TeleOp
     public void teleOp(){drivers.teleOp(opmode.gamepad1, opmode.gamepad2);}

@@ -35,6 +35,9 @@ public class Commands extends AbstractHardwareComponent {
 
         //Strafe to avoid teammate
         AutoConfig.elapsedTime.reset();
+        if(bot.isAudienceSide()) {
+            AutoConfig.strafeToAvoidTeammate.setdY(AutoConfig.strafeToAvoidTeammate.getdY() + 50);
+        }
         bot.drive(AutoConfig.strafeToAvoidTeammate);
     }
 
@@ -86,10 +89,12 @@ public class Commands extends AbstractHardwareComponent {
                 if(bot.isRed()){
                     bot.drive(AutoConfig.dropOffPixelLeft);
                 } else{
+                    AutoConfig.inPositionForPixel.setTurnPID(AutoConfig.smallAngleTurnPID);
                     bot.drive(AutoConfig.dropOffPixelRight);
                 }
             } else{
                 if (bot.isRed()) {
+                    AutoConfig.inPositionForPixel.setTurnPID(AutoConfig.smallAngleTurnPID);
                     bot.drive(AutoConfig.dropOffPixelRight);
                 } else{
                     bot.drive(AutoConfig.dropOffPixelLeft);
@@ -141,6 +146,9 @@ public class Commands extends AbstractHardwareComponent {
         } else{
             AutoConfig.goToBoard.setTurnPID(AutoConfig.smallAngleTurnPID);
             AutoConfig.inPositionForPixel.setTurnPID(AutoConfig.smallAngleTurnPID);
+            if(bot.isAudienceSide()){
+                AutoConfig.goToBoard.setdY(AutoConfig.goToBoard.getdY() + 3);
+            }
         }
         bot.drive(AutoConfig.goToBoard);
     }
@@ -159,7 +167,7 @@ public class Commands extends AbstractHardwareComponent {
         bot.setIntakeServoPos(Config.fifthPixelPos);
         bot.gripperOpen();
         bot.moveCollector();
-        bot.timerSleep(2);
+        bot.timerSleep(4);
         bot.stopCollector();
         bot.gripperClosed();
 

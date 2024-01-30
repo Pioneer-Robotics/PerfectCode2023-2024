@@ -18,7 +18,7 @@ public class Drivers extends AbstractHardwareComponent {
     //Toggles
     private final Toggle mecanumToggle = new Toggle(true);
     private final Toggle collectorToggle = new Toggle(false);
-    private final Toggle grabberToggle = new Toggle(true);
+    private final Toggle grabberToggle = new Toggle(false);
     private final Toggle intakeToggle = new Toggle(false);
     private final Toggle intakeUpDown = new Toggle(true);
     private final Toggle airplaneLaunch = new Toggle(false);
@@ -48,7 +48,7 @@ public class Drivers extends AbstractHardwareComponent {
         }
 
         airplaneLaunch.toggle(gamepad.a);
-        if (airplaneLaunch.getBool()) {
+        if (airplaneLaunch.getBool() && gamepad.left_trigger > 0.5) {
             bot.launchAirplane();
         } else {
             bot.holdAirplane();
@@ -85,32 +85,48 @@ public class Drivers extends AbstractHardwareComponent {
         bot.rightDropUp();
         bot.leftDropUp();
         grabberToggle.toggle(gamepad.left_bumper);
-        if(bot.getSlideLevelTarg() == 0){
-            grabberToggle.set(false);
-        }
+//        if(bot.getSlideLevelTarg() == 0){
+//            grabberToggle.set(false);
+//        }
 
-        if (grabberToggle.getBool() && (bot.getSlideLevel() >= -99 || bot.getSlideLevel() <= -900)) {
-            bot.gripperClosed();
-        } else if((bot.getSlideLevel() >= -99 || bot.getSlideLevel() <= -900)){
-            bot.gripperOpen();
-        }
+//        if (grabberToggle.getBool() && (bot.getSlideLevel() >= -99 || bot.getSlideLevel() <= -900)) {
+//            bot.gripperClosed();
+//        } else if((bot.getSlideLevel() >= -99 || bot.getSlideLevel() <= -900)){
+//            bot.gripperOpen();
+//        }
 
-        if (gamepad.right_bumper && bot.getSlideLevelTarg() != 0 && (bot.getSlideLevel() >= -99 || bot.getSlideLevel() <= -900)) {
+
+//        if (gamepad.right_bumper && bot.getSlideLevelTarg() != 0 && (bot.getSlideLevel() >= -99 || bot.getSlideLevel() <= -900)) {
+//            bot.wristVertical();
+//        } else if(bot.getSlideLevelTarg() > -100){
+//            bot.wristHorizontal();
+//        }
+        if(bot.getSlideLevelTarg() < 0){
             bot.wristVertical();
-        } else if(bot.getSlideLevelTarg() > -100){
+        }
+        else{
             bot.wristHorizontal();
         }
-        else if(bot.getSlideLevelTarg() < -100) {
-            bot.setWrist(Config.WristCloseDoor);
-        }
+//        else if(bot.getSlideLevelTarg() < -100) {
+//            bot.setWrist(Config.WristCloseDoor);
+//        }
 
         if (gamepad.x) {
             bot.setSlideLevel(Config.lowPosTele);
+            grabberToggle.set(true);
         } else if (gamepad.y) {
             bot.setSlideLevel(Config.highPosTele);
+            grabberToggle.set(true);
         } else if (gamepad.b) {
-            bot.setSlideLevel(0);
+            bot.setSlideLevel(5);
             bot.wristHorizontal();
+            grabberToggle.set(false);
+        }
+
+        if (grabberToggle.getBool()) {
+            bot.gripperClosed();
+        } else {
+            bot.gripperOpen();
         }
 
         collectorToggle.toggle(gamepad.dpad_down);

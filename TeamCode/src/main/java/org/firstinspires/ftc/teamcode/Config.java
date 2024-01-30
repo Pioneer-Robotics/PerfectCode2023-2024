@@ -57,7 +57,7 @@ public class Config {
     public static final double leftOpenPos = 0.6;
     public static final double rightOpenPos = .6;
     public static final double leftClosedPos = 0;
-    public static final double rightClosedPos = 0.1;
+    public static final double rightClosedPos = 0;
 
     //Gripper Servos
     public static final String gripperServo = "gripperServo";
@@ -73,15 +73,15 @@ public class Config {
     public static final double intakeDown = .4;
     public static final double gripperOpen = .2;
     public static final double gripperClosed = .5;
-    public static final double WristVertical = .65;
-    public static final double WristHorizontal = .45;
+    public static final double WristVertical = .725;
+    public static final double WristHorizontal = .5;
     public static final double WristCloseDoor = .15;
 
     //Auto Arm Positions
-    public static final int secondLinePos = -1500;
-    public static final int firstLinePos = -900;
-    public static final int lowPosTele = -1200;
-    public static final int highPosTele = -2200;
+    public static final int secondLinePos = -2300;
+    public static final int firstLinePos = -1500;
+    public static final int lowPosTele = -1500;
+    public static final int highPosTele = -2500;
 
     //Pixel Stack Intake Servo Positions
     public static final double pixelStackIncrementPos = 0.04;

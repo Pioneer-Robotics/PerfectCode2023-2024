@@ -14,12 +14,14 @@ import java.util.List;
 
 public class ColorDetectionPipeline extends OpenCvPipeline {
 
-    Scalar lowerBlue = new Scalar(93, 118, 67); // Adjust as needed for light blue
-    Scalar upperBlue = new Scalar(180, 177, 107); // Adjust as needed for dark blue
-    Scalar lowerRed = new Scalar(0, 82, 117); // Adjust as needed for light blue
-    Scalar upperRed = new Scalar(51, 216, 193); // Adjust as needed for dark blue
+    Scalar lowerBlue = new Scalar(40.45, 108.54, 26.61); // Adjust as needed for light blue
+    Scalar upperBlue = new Scalar(130.85, 189.44, 132.09); // Adjust as needed for dark blue
+    Scalar lowerRed = new Scalar(0, 108, 76); // Adjust as needed for light blue
+    Scalar upperRed = new Scalar(180, 241, 178); // Adjust as needed for dark blue
 
     public static int markerLocation = -1;
+
+    double minContourArea = 4000.0;
 
     public static String confidence = "";
 
@@ -68,8 +70,6 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
 
         Imgproc.dilate(morphOutput, morphOutput, dilateElement);
         Imgproc.dilate(morphOutput, morphOutput, dilateElement);
-
-        double minContourArea = 5000.0;
 
         //Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_CCOMP, Imgproc.CHAIN_APPROX_SIMPLE);
         Imgproc.findContours(morphOutput, contours, new Mat(), Imgproc.RETR_CCOMP, Imgproc.CHAIN_APPROX_SIMPLE);

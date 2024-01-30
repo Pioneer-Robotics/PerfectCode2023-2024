@@ -17,6 +17,7 @@ public class CameraHandler {
         cameraMonitorViewId = camera;
         this.camera = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         webcamName = name;
+
         this.camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
         //openCVPipeline = new OpenCVPipeline(30, 30, 386, 660);
         openCVPipeline = new ColorDetectionPipeline(isRed);

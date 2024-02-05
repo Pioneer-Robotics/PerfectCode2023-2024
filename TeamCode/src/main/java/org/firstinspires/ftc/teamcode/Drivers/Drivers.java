@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.Drivers;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Annotations.DriverAnnotations;
 import org.firstinspires.ftc.teamcode.Config;
@@ -23,10 +26,16 @@ public class Drivers extends AbstractHardwareComponent {
     private final Toggle intakeUpDown = new Toggle(true);
     private final Toggle airplaneLaunch = new Toggle(false);
     private final Toggle hangServo = new Toggle(false);
+    private final Toggle deEnergize = new Toggle(false);
+    private final Toggle insideResetMode = new Toggle(false);
+    private final Toggle leftPPP = new Toggle(false);
+    private final Toggle rightPPP = new Toggle(false);
+    private final Toggle wristDown = new Toggle(false);
 
     //Counter
     private final Counter scalePower = new Counter(.3, .2, 0.8);
     private final Counter intakePos = new Counter(0, 0, 4);
+    double planC = 0;
 
     @DriverAnnotations.Driver1(name = "Seth")
     public void driver1(Gamepad gamepad) {
@@ -67,24 +76,35 @@ public class Drivers extends AbstractHardwareComponent {
         else{
             bot.hangReady();
         }
+
+        leftPPP.toggle(gamepad.dpad_left);
+        if(leftPPP.getBool()){
+            bot.leftDropUp();
+        }
+        else{
+            bot.leftDropDown();
+        }
+
+        rightPPP.toggle(gamepad.dpad_right);
+        if(rightPPP.getBool()){
+            bot.rightDropUp();
+        }
+        else{
+            bot.rightDropDown();
+        }
     }
 
     @DriverAnnotations.Driver2(name = "Henry")
     public void driver2(Gamepad gamepad) {
-        if(gamepad.right_trigger > Config.triggerDeadzone) {
-            bot.setHangSpeed(gamepad.right_trigger);
-        }
-        else if(gamepad.left_trigger > Config.triggerDeadzone){
-            bot.setHangSpeed(-gamepad.left_trigger);
-        }
-        else{
-            bot.setHangSpeed(0);
-        }
+            if (gamepad.right_trigger > Config.triggerDeadzone) {
+                bot.setHangSpeed(gamepad.right_trigger);
+            } else if (gamepad.left_trigger > Config.triggerDeadzone) {
+                bot.setHangSpeed(-gamepad.left_trigger);
+            } else {
+                bot.setHangSpeed(0);
+            }
 
-        //ensures pixel drop servos are up
-        bot.rightDropUp();
-        bot.leftDropUp();
-        grabberToggle.toggle(gamepad.left_bumper);
+            grabberToggle.toggle(gamepad.left_bumper);
 //        if(bot.getSlideLevelTarg() == 0){
 //            grabberToggle.set(false);
 //        }
@@ -101,66 +121,84 @@ public class Drivers extends AbstractHardwareComponent {
 //        } else if(bot.getSlideLevelTarg() > -100){
 //            bot.wristHorizontal();
 //        }
-        if(bot.getSlideLevelTarg() < 0){
-            bot.wristVertical();
-        }
-        else{
-            bot.wristHorizontal();
-        }
 //        else if(bot.getSlideLevelTarg() < -100) {
 //            bot.setWrist(Config.WristCloseDoor);
 //        }
-
-        if (gamepad.x) {
-            bot.setSlideLevel(Config.lowPosTele);
-            grabberToggle.set(true);
-        } else if (gamepad.y) {
-            bot.setSlideLevel(Config.highPosTele);
-            grabberToggle.set(true);
-        } else if (gamepad.b) {
-            bot.setSlideLevel(5);
-            bot.wristHorizontal();
-            grabberToggle.set(false);
+        insideResetMode.toggle(gamepad.start);
+        if(insideResetMode.getBool()){
+            bot.runResetMode(gamepad);
+            wristDown.toggle(gamepad.right_bumper);
+            if(wristDown.getBool()){
+                bot.wristVertical();
+            }
+            else{
+                bot.wristHorizontal();
+            }
         }
-
-        if (grabberToggle.getBool()) {
-            bot.gripperClosed();
-        } else {
-            bot.gripperOpen();
-        }
-
-        collectorToggle.toggle(gamepad.dpad_down);
-        if(bot.getSlideLevelTarg() < 0){
-            collectorToggle.set(false);
-        }
-        if (gamepad.dpad_up) {
-            bot.moveCollectorBack();
-        } else {
-            if (collectorToggle.getBool()) {
-                bot.moveCollector();
+        else {
+            if (bot.getSlideLevelTarg() < 0) {
+                bot.wristVertical();
             } else {
-                bot.stopCollector();
+                bot.wristHorizontal();
+            }
+
+            if (gamepad.x) {
+                bot.setSlideLevel(Config.lowPosTele);
+                grabberToggle.set(true);
+            } else if (gamepad.y) {
+                bot.setSlideLevel(Config.highPosTele);
+                grabberToggle.set(true);
+            } else if (gamepad.b) {
+                bot.setSlideLevel(5);
+                bot.wristHorizontal();
+                grabberToggle.set(false);
             }
         }
 
-        intakeToggle.toggle(gamepad.a);
-        if (intakeToggle.getBool()) {
-            intakePos.arithmetic(gamepad.dpad_right, gamepad.dpad_left);
-            bot.intakeCounter(intakePos.getNum());
-        } else {
-            //TODO see if this is right
-            if(gamepad.dpad_right) {
-                intakeUpDown.set(true);
+            if (grabberToggle.getBool()) {
+                bot.gripperClosed();
+            } else {
+                bot.gripperOpen();
             }
-            else if(gamepad.dpad_left){
-                intakeUpDown.set(false);
+
+            collectorToggle.toggle(gamepad.dpad_down);
+            if (bot.getSlideLevelTarg() < 0) {
+                collectorToggle.set(false);
             }
-            if(intakeUpDown.getBool()){
-                bot.intakeUp();
-            }else {
-                bot.intakeDown();
+            if (gamepad.dpad_up) {
+                bot.moveCollectorBack();
+            } else {
+                if (collectorToggle.getBool()) {
+                    bot.moveCollector();
+                } else {
+                    bot.stopCollector();
+                }
             }
-        }
+
+            intakeToggle.toggle(gamepad.a);
+            if (intakeToggle.getBool()) {
+                intakePos.arithmetic(gamepad.dpad_right, gamepad.dpad_left);
+                bot.intakeCounter(intakePos.getNum());
+            } else {
+                //TODO see if this is right
+                if (gamepad.dpad_right) {
+                    intakeUpDown.set(true);
+                } else if (gamepad.dpad_left) {
+                    intakeUpDown.set(false);
+                }
+                if (intakeUpDown.getBool()) {
+                    bot.intakeUp();
+                } else {
+                    bot.intakeDown();
+                }
+            }
+
+//            deEnergize.toggle(gamepad.left_stick_button);
+//            if (deEnergize.getBool()) {
+//                bot.deEnergize();
+//            } else {
+//                bot.energize();
+//            }
     }
 
     @DriverAnnotations.Coach(name = "Christian/Owen")
@@ -179,6 +217,7 @@ public class Drivers extends AbstractHardwareComponent {
         telemetry.addData("left", bot.getRawOdos()[0].getCurrentPosition());
         telemetry.addData("right", -bot.getRawOdos()[1].getCurrentPosition());
         telemetry.addData("middle", bot.getRawOdos()[2].getCurrentPosition());
+        //add telemetry for isBusy
     }
 
     public void teleOp(Gamepad gamepad1, Gamepad gamepad2) {

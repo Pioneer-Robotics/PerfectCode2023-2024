@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Hardware.ColorDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Helpers.Counter;
@@ -80,6 +81,9 @@ public class Bot extends AbstractBot {
     public void teleOp(){drivers.teleOp(opmode.gamepad1, opmode.gamepad2);}
     public void example(){drivers.example();}
     public String getWelcomeText(){return drivers.getWelcomeText();}
+    public void deEnergize(){slideArmMotor.shutOffWhateverWeCan();}
+    public void energize(){slideArmMotor.turnOnWhateverWeCan();}
+    public void runResetMode(Gamepad gamepad){slideArmMotor.runReset(gamepad);}
 
     //Driving movements
     public void autoFieldCentricDriving(double x, double y, double rx){mecanum.autoFieldCentricDriving(x, y, rx);}

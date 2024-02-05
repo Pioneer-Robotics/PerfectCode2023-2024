@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.SelfDrivingAuto;
 
+import android.os.ParcelFileDescriptor;
+
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Config;
@@ -120,6 +122,7 @@ public class Commands extends AbstractHardwareComponent {
             }
         } else{
             if(bot.isAudienceSide()){
+                AutoConfig.inPositionForPixel.setTurnPID(AutoConfig.turn90PID);
                 AutoConfig.dropOffPixelMiddle.setdTheta(AutoConfig.dropOffPixelMiddle.getdTheta() * -1);
             }
             bot.drive(AutoConfig.dropOffPixelMiddle);
@@ -161,15 +164,18 @@ public class Commands extends AbstractHardwareComponent {
 
         bot.drive(AutoConfig.collectExtraPixelFromStack); // collect etra pixel
 
+        bot.drive(AutoConfig.backUpSoWeDontHitPixelStack);
+
         bot.drive(AutoConfig.goForwardToPixel);
 
         //collect pixel
         bot.setIntakeServoPos(Config.fifthPixelPos);
         bot.gripperOpen();
         bot.moveCollector();
-        bot.timerSleep(4);
+        bot.timerSleep(2);
         bot.stopCollector();
         bot.gripperClosed();
+        bot.stopCollector();
 
         bot.drive(AutoConfig.passTruseAndNearBoard);
     }

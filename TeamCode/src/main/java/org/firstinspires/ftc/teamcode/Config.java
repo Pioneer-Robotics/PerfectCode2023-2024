@@ -54,8 +54,8 @@ public class Config {
     //Pixel Servos
     public static final String leftDropServo = "PixelDropLeft";
     public static final String rightDropServo = "PixelDropRight";
-    public static final double leftOpenPos = 0.6;
-    public static final double rightOpenPos = .6;
+    public static final double leftOpenPos = 1;
+    public static final double rightOpenPos = 1;
     public static final double leftClosedPos = 0;
     public static final double rightClosedPos = 0;
 
@@ -73,8 +73,8 @@ public class Config {
     public static final double intakeDown = .4;
     public static final double gripperOpen = .2;
     public static final double gripperClosed = .5;
-    public static final double WristVertical = .725;
-    public static final double WristHorizontal = .5;
+    public static final double WristVertical = .885;
+    public static final double WristHorizontal = .6;
     public static final double WristCloseDoor = .15;
 
     //Auto Arm Positions
@@ -82,6 +82,7 @@ public class Config {
     public static final int firstLinePos = -1500;
     public static final int lowPosTele = -1500;
     public static final int highPosTele = -2500;
+    //
 
     //Pixel Stack Intake Servo Positions
     public static final double pixelStackIncrementPos = 0.04;

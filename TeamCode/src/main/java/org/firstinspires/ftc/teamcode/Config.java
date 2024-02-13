@@ -82,6 +82,7 @@ public class Config {
     public static final int firstLinePos = -1350;
     public static final int lowPosTele = -1500;
     public static final int highPosTele = -2500;
+    public static final int endgameHeight = -2000;
     //
 
     //Pixel Stack Intake Servo Positions

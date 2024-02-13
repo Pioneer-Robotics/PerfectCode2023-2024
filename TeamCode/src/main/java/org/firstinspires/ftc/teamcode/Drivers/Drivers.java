@@ -128,7 +128,7 @@ public class Drivers extends AbstractHardwareComponent {
 //        else if(bot.getSlideLevelTarg() < -100) {
 //            bot.setWrist(Config.WristCloseDoor);
 //        }
-        insideResetMode.toggle(gamepad.start);
+        insideResetMode.toggle(gamepad.guide);
         if(insideResetMode.getBool()){
             bot.runResetMode(gamepad);
             wristDown.toggle(gamepad.right_bumper);
@@ -147,31 +147,19 @@ public class Drivers extends AbstractHardwareComponent {
             }
 
             if (gamepad.x) {
-                if(bot.getSlideLevelTarg() != Config.lowPosTele) {
-                    if(!bot.isEnergized()) {
-                        bot.energize();
-                    }
-                    bot.setSlideLevel(Config.lowPosTele);
-                }
+                bot.setSlideLevel(Config.lowPosTele);
                 grabberToggle.set(true);
             } else if (gamepad.y) {
-                if(bot.getSlideLevelTarg() != Config.highPosTele) {
-                    if(!bot.isEnergized()) {
-                        bot.energize();
-                    }
-                    bot.setSlideLevel(Config.highPosTele);
-                }
+                bot.setSlideLevel(Config.highPosTele);
                 grabberToggle.set(true);
             } else if (gamepad.b) {
-                if(bot.getSlideLevelTarg() != 5) {
-                    bot.setSlideLevel(5);
-                }
+                bot.setSlideLevel(5);
                 bot.wristHorizontal();
                 grabberToggle.set(false);
             }
-
-            if(bot.getSlideLevel() < 10 && bot.getSlideLevel() > -25 && !bot.isBusy()) {
-                bot.deEnergize();
+            else if(gamepad.back){
+                bot.setSlideLevel(Config.endgameHeight);
+                bot.wristVertical();
             }
         }
 

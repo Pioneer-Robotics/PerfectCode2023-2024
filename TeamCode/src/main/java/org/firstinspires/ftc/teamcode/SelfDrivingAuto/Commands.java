@@ -181,8 +181,6 @@ public class Commands extends AbstractHardwareComponent {
         bot.drive(AutoConfig.passTruseAndNearBoard);
 
         placeWhitePixel();
-
-        AutoConfig.goToBoard.setDrivePID(new PIDCoefficients(1,0,0,0));
     }
 
     public void closeGripperAndWait(){
@@ -238,6 +236,8 @@ public class Commands extends AbstractHardwareComponent {
         bot.timerSleep(1);
         bot.gripperClosed();
         bot.timerSleep(1);
+
+        AutoConfig.goToBoard.setDrivePID(new PIDCoefficients(1,0,0,0));
     }
 
     public void audienceNewTwoPlusThreeAuto(){
@@ -261,7 +261,9 @@ public class Commands extends AbstractHardwareComponent {
         bot.stopCollector();
         bot.gripperClosed();
 
-        //PLACE PIXEL LIKE IN 2+1
+        placeWhitePixel();
+        placePixelOnBoard();
+        closeGripperAndWait();
 
         bot.drive(AutoConfig.passTruseAndNearBoard);
 
@@ -276,6 +278,8 @@ public class Commands extends AbstractHardwareComponent {
 
         bot.drive(AutoConfig.passTruseAndNearBoard);
 
-        //PLACE PIXEL AGAIN
+        placeWhitePixel();
+        placePixelOnBoard();
+        closeGripperAndWait();
     }
 }

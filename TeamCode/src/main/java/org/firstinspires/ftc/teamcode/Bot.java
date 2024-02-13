@@ -124,10 +124,14 @@ public class Bot extends AbstractBot {
     public double getSlideLevel() {
         return slideArmMotor.getSlideLevel();
     }
-
+    public boolean isEnergized(){return slideArmMotor.isEnergized();}
+    public boolean isBusy(){return slideArmMotor.isBusy();}
     public double getSlideLevelTarg() {
         return slideArmMotor.getTarg();
     }
+    public double getSlideTolerance(){return slideArmMotor.getCurrentTolerance();}
+    public void resetSlideEncoders(){slideArmMotor.resetArmEncoders();}
+    public double getSlideArmVelocity(){return slideArmMotor.getVelocity();}
 
     //Collector Arm
     public void moveCollectorBack(){collector.moveCollectorBack();}

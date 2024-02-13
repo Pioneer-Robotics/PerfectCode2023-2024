@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.SelfDrivingAuto;
 
 
+import com.qualcomm.robotcore.util.Range;
+
+import java.util.Arrays;
+
 /**
  * PID class that initializes PIDF coefficients and does PID calculations
  */
@@ -11,6 +15,7 @@ public class PIDCoefficients {
     private double P, I, D, F;//PIDF constants
     private double errorSum, dError, lastError, lastTime;//variables for I and D
     private double kP, kI, kD, kF;//each variable shows the values each one produces
+    private static double[] sumArray = new double[500];
 
     /**
      * Constructor to set PIDF coefficients. Implement inside Movement or getPID
@@ -44,6 +49,28 @@ public class PIDCoefficients {
         kI = I * errorSum;
         kD = D * dError;
 
+        if(target < 10){
+            speed = 0.1;
+        }
+
+        return Range.clip((kP + kI + kD) * speed, -speed, speed);
+    }
+
+    public double newPID(double error, double target, double speed){
+        dError = error - lastError;
+        lastError = error / target; // Update previous error
+
+        //error sum
+        double[] copyArr = Arrays.copyOf(sumArray, 500);
+        sumArray[0] = error/target;
+        for(int i = 1; i < sumArray.length; i++){
+            sumArray[i] = copyArr[i-1];
+        }
+
+        kP = P * (error / target);
+        kI = I * sumElementsInArray(sumArray);
+        kD = D * dError;
+
         return (kP + kI + kD) * speed;
     }
 
@@ -67,6 +94,7 @@ public class PIDCoefficients {
     public void resetForPID(){
         dError = 0d;
         errorSum = 0d;
+        Arrays.fill(sumArray, 0d);
     }
 
     //getters
@@ -87,4 +115,13 @@ public class PIDCoefficients {
     public void setF(double F){this.F = F;}
 
     public static class ConfigPIDCoefficients{}
+
+    public double sumElementsInArray(double[] arr){
+        double x = 0d;
+        for(double ele: arr){
+            x += ele;
+        }
+        return x;
+    }
+
 }

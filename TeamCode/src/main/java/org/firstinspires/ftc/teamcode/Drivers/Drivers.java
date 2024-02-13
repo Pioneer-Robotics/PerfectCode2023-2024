@@ -28,8 +28,8 @@ public class Drivers extends AbstractHardwareComponent {
     private final Toggle hangServo = new Toggle(false);
     private final Toggle deEnergize = new Toggle(false);
     private final Toggle insideResetMode = new Toggle(false);
-    private final Toggle leftPPP = new Toggle(false);
-    private final Toggle rightPPP = new Toggle(false);
+    private final Toggle leftPPP = new Toggle(true);
+    private final Toggle rightPPP = new Toggle(true);
     private final Toggle wristDown = new Toggle(false);
 
     //Counter
@@ -105,6 +105,10 @@ public class Drivers extends AbstractHardwareComponent {
             }
 
             grabberToggle.toggle(gamepad.left_bumper);
+
+            if(gamepad.left_stick_button){
+                bot.slideVelocity(0);
+            }
 //        if(bot.getSlideLevelTarg() == 0){
 //            grabberToggle.set(false);
 //        }
@@ -143,15 +147,31 @@ public class Drivers extends AbstractHardwareComponent {
             }
 
             if (gamepad.x) {
-                bot.setSlideLevel(Config.lowPosTele);
+                if(bot.getSlideLevelTarg() != Config.lowPosTele) {
+                    if(!bot.isEnergized()) {
+                        bot.energize();
+                    }
+                    bot.setSlideLevel(Config.lowPosTele);
+                }
                 grabberToggle.set(true);
             } else if (gamepad.y) {
-                bot.setSlideLevel(Config.highPosTele);
+                if(bot.getSlideLevelTarg() != Config.highPosTele) {
+                    if(!bot.isEnergized()) {
+                        bot.energize();
+                    }
+                    bot.setSlideLevel(Config.highPosTele);
+                }
                 grabberToggle.set(true);
             } else if (gamepad.b) {
-                bot.setSlideLevel(5);
+                if(bot.getSlideLevelTarg() != 5) {
+                    bot.setSlideLevel(5);
+                }
                 bot.wristHorizontal();
                 grabberToggle.set(false);
+            }
+
+            if(bot.getSlideLevel() < 10 && bot.getSlideLevel() > -25 && !bot.isBusy()) {
+                bot.deEnergize();
             }
         }
 
@@ -208,6 +228,11 @@ public class Drivers extends AbstractHardwareComponent {
 
     public void telemetry(){
         bot.updateOdos();
+        telemetry.addData("slide velocity: ", bot.getSlideArmVelocity());
+        telemetry.addData("tolerance: ", bot.getSlideTolerance());
+        telemetry.addData("is busy:", bot.isBusy());
+        telemetry.addData("is energized:", bot.isEnergized());
+        telemetry.addData("slide pos: ", bot.getSlideLevel());
         telemetry.addData("Scale Power", scalePower.getNum());
         telemetry.addData("Coordinate Lock Mecanum:", mecanumToggle.getBool());
         telemetry.addData("Angle:", -bot.angleDEG());

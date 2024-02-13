@@ -16,6 +16,7 @@ public class SlideArmMotor extends AbstractHardwareComponent {
     public SlideArmMotor(DcMotorEx slideArm){
         this.slideArm = slideArm;
         this.slideArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.slideArm.setTargetPositionTolerance(5);
         this.slideArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         defaultSpeed = .7;
     }
@@ -46,6 +47,7 @@ public class SlideArmMotor extends AbstractHardwareComponent {
 
     public void runReset(Gamepad gamepad){
         if(gamepad.y){
+            // this is the mode we are using to just control the power. This when we are not using RUN_TO_POSITION
             this.slideArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             this.slideArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
@@ -67,4 +69,14 @@ public class SlideArmMotor extends AbstractHardwareComponent {
     public double getTarg() {
         return slideArm.getTargetPosition();
     }
+
+    public double getCurrentTolerance(){return slideArm.getTargetPositionTolerance();}
+
+    public boolean isEnergized(){return slideArm.isMotorEnabled();}
+
+    public boolean isBusy(){return slideArm.isBusy();}
+
+    public void resetArmEncoders(){slideArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
+
+    public double getVelocity(){return Math.abs(slideArm.getVelocity() / Config.encoderRatio);}
 }

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.SelfDrivingAuto;
 
+
 import android.os.ParcelFileDescriptor;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -32,13 +33,13 @@ public class Commands extends AbstractHardwareComponent {
         }
 
         //drive to the board and drop off pixel at the board.
-        dropPixelOnBoardAndStrafeOver();
+        placePixelOnBoard();
         closeGripperAndWait();
 
         //Strafe to avoid teammate
         AutoConfig.elapsedTime.reset();
         if(bot.isAudienceSide()) {
-            AutoConfig.strafeToAvoidTeammate.setdY(AutoConfig.strafeToAvoidTeammate.getdY() + 50);
+            AutoConfig.strafeToAvoidTeammate.setdY(AutoConfig.strafeToAvoidTeammate.getdY() + 80);
         }
         bot.drive(AutoConfig.strafeToAvoidTeammate);
     }
@@ -130,7 +131,7 @@ public class Commands extends AbstractHardwareComponent {
         dropPixelBasedOnAlliance(); //drop off pixel
     }
 
-    public void dropPixelOnBoardAndStrafeOver(){
+    public void placePixelOnBoard(){
         if(bot.isAudienceSide()){
             AutoConfig.goToBoard.setTurnPID(AutoConfig.smallAngleTurnPID);
         }
@@ -158,7 +159,7 @@ public class Commands extends AbstractHardwareComponent {
 
     public void grabExtraPixelAndNearBoard(){
         if(bot.isAudienceSide()){
-            AutoConfig.goToBoard.setDrivePID(new PIDCoefficients(1.5,0,0.01,0));
+            AutoConfig.goToBoard.setDrivePID(new PIDCoefficients(1.35,0,0,0));
         }
         bot.drive(AutoConfig.inPositionForPixel); // go up and turn 90 to prepare to pick up pixel
 
@@ -178,6 +179,17 @@ public class Commands extends AbstractHardwareComponent {
         bot.stopCollector();
 
         bot.drive(AutoConfig.passTruseAndNearBoard);
+
+        AutoConfig.goToBoard.setdY(AutoConfig.yPosForRightSideOFBoard);
+        AutoConfig.goToBoard.setTurnPID(AutoConfig.smallAngleTurnPID);
+        bot.drive(AutoConfig.goToBoard);
+
+        bot.gripperOpen();
+        bot.timerSleep(1);
+        bot.gripperClosed();
+        bot.timerSleep(1);
+
+        AutoConfig.goToBoard.setDrivePID(new PIDCoefficients(1,0,0,0));
     }
 
     public void closeGripperAndWait(){
@@ -185,5 +197,25 @@ public class Commands extends AbstractHardwareComponent {
         bot.timerSleep(2);
         bot.setSlideLevel(Config.secondLinePos);
         bot.timerSleep(2);
+    }
+
+    public void plusTwoExtra(){
+        bot.drive(AutoConfig.backToNormal);
+
+        bot.drive(AutoConfig.pixelpixel);
+
+        bot.setIntakeServoPos(Config.fifthPixelPos);
+        bot.gripperOpen();
+        bot.moveCollector();
+        bot.timerSleep(2);
+        bot.stopCollector();
+        bot.gripperClosed();
+        bot.stopCollector();
+
+        bot.drive(AutoConfig.backToNormal);
+
+        AutoConfig.goToBoard.setDrivePID(AutoConfig.testPId);
+        placePixelOnBoard();
+        closeGripperAndWait();
     }
 }

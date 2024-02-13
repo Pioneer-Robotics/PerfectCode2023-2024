@@ -167,4 +167,25 @@ public class AutoConfig extends AbstractHardwareComponent {
             bot.moveCollector();
         }
     };
+
+    //NEW 2+3 audience
+    public static PIDCoefficients uniPID = new PIDCoefficients(1.25,0,0,0);
+    public static Movement audPixelLeft = new Movement(0, 65, 0, uniPID, smallAngleTurnPID) {
+        @Override
+        public void doWhileMoving() {
+
+        }
+    };
+    public static Movement audPixelMiddle = new Movement(0,129, -90, uniPID, turn90PID) {
+        @Override
+        public void doWhileMoving() {
+        }
+    };
+
+    public static Movement audPixelRight = new Movement(30, 129, -90, uniPID, turn90PID) {
+        @Override
+        public void doWhileMoving() {
+
+        }
+    };
 }

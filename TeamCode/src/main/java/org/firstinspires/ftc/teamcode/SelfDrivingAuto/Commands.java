@@ -180,14 +180,7 @@ public class Commands extends AbstractHardwareComponent {
 
         bot.drive(AutoConfig.passTruseAndNearBoard);
 
-        AutoConfig.goToBoard.setdY(AutoConfig.yPosForRightSideOFBoard);
-        AutoConfig.goToBoard.setTurnPID(AutoConfig.smallAngleTurnPID);
-        bot.drive(AutoConfig.goToBoard);
-
-        bot.gripperOpen();
-        bot.timerSleep(1);
-        bot.gripperClosed();
-        bot.timerSleep(1);
+        placeWhitePixel();
 
         AutoConfig.goToBoard.setDrivePID(new PIDCoefficients(1,0,0,0));
     }
@@ -217,5 +210,72 @@ public class Commands extends AbstractHardwareComponent {
         AutoConfig.goToBoard.setDrivePID(AutoConfig.testPId);
         placePixelOnBoard();
         closeGripperAndWait();
+    }
+
+    public void placeWhitePixel(){
+        double yPosToPlaceWhitePixel;
+        if(!bot.isRed()){
+            //blue
+            if(bot.getTeamMarkerLocation() != 3){
+                yPosToPlaceWhitePixel = AutoConfig.yPosForRightSideOFBoard;
+            } else{
+                yPosToPlaceWhitePixel = AutoConfig.yPosForMiddleOfBoard;
+            }
+        } else{
+            //red
+            if(bot.getTeamMarkerLocation() != 1){
+                yPosToPlaceWhitePixel = AutoConfig.yPosForRightSideOFBoard;
+            } else{
+                yPosToPlaceWhitePixel = AutoConfig.yPosForMiddleOfBoard;
+            }
+        }
+
+        AutoConfig.goToBoard.setdY(yPosToPlaceWhitePixel);
+        AutoConfig.goToBoard.setTurnPID(AutoConfig.smallAngleTurnPID);
+        bot.drive(AutoConfig.goToBoard);
+
+        bot.gripperOpen();
+        bot.timerSleep(1);
+        bot.gripperClosed();
+        bot.timerSleep(1);
+    }
+
+    public void audienceNewTwoPlusThreeAuto(){
+        Movement choosePixelMovement;
+        if(bot.getTeamMarkerLocation() == 1){
+            AutoConfig.goForwardToPixel.setTurnPID(AutoConfig.turn90PID);
+            choosePixelMovement = AutoConfig.audPixelLeft;
+        } else if(bot.getTeamMarkerLocation() == 2){
+            choosePixelMovement = AutoConfig.audPixelMiddle;
+        } else{
+            choosePixelMovement = AutoConfig.audPixelRight;
+        }
+        bot.drive(choosePixelMovement);
+
+        bot.drive(AutoConfig.goForwardToPixel);
+
+        bot.setIntakeServoPos(Config.fifthPixelPos);
+        bot.gripperOpen();
+        bot.moveCollector();
+        bot.timerSleep(2);
+        bot.stopCollector();
+        bot.gripperClosed();
+
+        //PLACE PIXEL LIKE IN 2+1
+
+        bot.drive(AutoConfig.passTruseAndNearBoard);
+
+        bot.drive(AutoConfig.goForwardToPixel);
+
+        bot.setIntakeServoPos(Config.fifthPixelPos);
+        bot.gripperOpen();
+        bot.moveCollector();
+        bot.timerSleep(2);
+        bot.stopCollector();
+        bot.gripperClosed();
+
+        bot.drive(AutoConfig.passTruseAndNearBoard);
+
+        //PLACE PIXEL AGAIN
     }
 }

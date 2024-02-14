@@ -33,6 +33,8 @@ public class Commands extends AbstractHardwareComponent {
         }
 
         //drive to the board and drop off pixel at the board.
+        bot.setSlideLevel(Config.firstLinePos - 125);
+        bot.timerSleep(1);
         placePixelOnBoard();
         closeGripperAndWait();
 
@@ -151,7 +153,7 @@ public class Commands extends AbstractHardwareComponent {
             AutoConfig.goToBoard.setTurnPID(AutoConfig.smallAngleTurnPID);
             AutoConfig.inPositionForPixel.setTurnPID(AutoConfig.smallAngleTurnPID);
             if(bot.isAudienceSide()){
-                AutoConfig.goToBoard.setdY(AutoConfig.goToBoard.getdY() + 3);
+                AutoConfig.goToBoard.setdY(AutoConfig.yPosForMiddleOfBoard + 3);
             }
         }
         bot.drive(AutoConfig.goToBoard);
@@ -237,7 +239,7 @@ public class Commands extends AbstractHardwareComponent {
         bot.gripperClosed();
         bot.timerSleep(1);
 
-        AutoConfig.goToBoard.setDrivePID(new PIDCoefficients(1,0,0,0));
+        AutoConfig.goToBoard.setDrivePID(new PIDCoefficients(0.75,0,0,0));
     }
 
     public void audienceNewTwoPlusThreeAuto(){
@@ -251,7 +253,9 @@ public class Commands extends AbstractHardwareComponent {
             choosePixelMovement = AutoConfig.audPixelRight;
         }
         bot.drive(choosePixelMovement);
+        dropPixelBasedOnAlliance();
 
+        AutoConfig.goForwardToPixel.setDrivePID(AutoConfig.uniPID);
         bot.drive(AutoConfig.goForwardToPixel);
 
         bot.setIntakeServoPos(Config.fifthPixelPos);
@@ -261,9 +265,15 @@ public class Commands extends AbstractHardwareComponent {
         bot.stopCollector();
         bot.gripperClosed();
 
+        bot.drive(AutoConfig.passTruseAndNearBoard);
+
         placeWhitePixel();
+        AutoConfig.goToBoard.setDrivePID(new PIDCoefficients(1,0,0,0));
         placePixelOnBoard();
         closeGripperAndWait();
+
+        bot.setSlideLevel(-5);
+        bot.wristHorizontal();
 
         bot.drive(AutoConfig.passTruseAndNearBoard);
 

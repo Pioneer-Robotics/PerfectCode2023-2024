@@ -59,6 +59,7 @@ public class Bot extends AbstractBot {
 
     //RedAuto
     public void runAuto() {commands.runAuto();}
+    public void twoPlusThree(){commands.audienceNewTwoPlusThreeAuto();}
     public boolean isRunning(){return !getInstance().isAuto() || opmode.runAuto;}
     public void openCamera(){cameraHandler.openCamera();}
     public int locationCamera(){return cameraHandler.locationCamera();}

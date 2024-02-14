@@ -80,8 +80,8 @@ public class Config {
     //Auto Arm Positions
     public static final int secondLinePos = -2300;
     public static final int firstLinePos = -1350;
-    public static final int lowPosTele = -1500;
-    public static final int highPosTele = -2500;
+    public static final int lowPosTele = -1800;
+    public static final int highPosTele = -2900;
     public static final int endgameHeight = -2000;
     //
 
@@ -90,6 +90,6 @@ public class Config {
     public static final double secondPixelPos = intakeUp + pixelStackIncrementPos;
     public static final double thirdPixelPos = secondPixelPos + pixelStackIncrementPos;
     public static final double fourthPixelPos = thirdPixelPos + pixelStackIncrementPos;
-    public static final double fifthPixelPos = fourthPixelPos + 0.01;
+    public static final double fifthPixelPos = fourthPixelPos + 0.02;
     public static final double[] pixelStackServoPosArr = {intakeDown, Config.secondPixelPos, Config.thirdPixelPos, Config.fourthPixelPos, Config.fifthPixelPos};
 }

@@ -5,9 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.OpModes.OpScript;
 
 @Autonomous
-public class AutoTest extends OpScript {
+public class AutoTestAudience extends OpScript {
     @Override
-    public void run() {}
+    public void run() {
+        bot.twoPlusThree();
+    }
 
     @Override
     public void runOpMode() throws InterruptedException {

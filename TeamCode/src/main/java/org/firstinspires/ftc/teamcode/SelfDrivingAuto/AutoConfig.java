@@ -146,7 +146,7 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static double xPosStrafeToAvoidTeammate = -80;
 
     //Place pixel and go to board
-    public static PIDCoefficients goToBoardPID = new PIDCoefficients(1,0.005,0.01,0);
+    public static PIDCoefficients goToBoardPID = new PIDCoefficients(1,0.0015,0,0);
     public static Movement goToBoard;
     public static PIDCoefficients reversedBlueLeftPID = new PIDCoefficients(1,0,0.01,0);
 

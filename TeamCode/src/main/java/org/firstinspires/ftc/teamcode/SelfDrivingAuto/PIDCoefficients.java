@@ -50,7 +50,7 @@ public class PIDCoefficients {
         kD = D * dError;
 
         if(target < 10){
-            speed = 0.1;
+            speed = 0.15;
         }
 
         return Range.clip((kP + kI + kD) * speed, -speed, speed);

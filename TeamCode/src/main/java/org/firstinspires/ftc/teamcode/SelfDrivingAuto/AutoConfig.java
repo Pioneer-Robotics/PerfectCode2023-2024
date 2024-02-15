@@ -27,7 +27,7 @@ public class AutoConfig extends AbstractHardwareComponent {
             }
         };
 
-        dropOffPixelLeft = new Movement(-53.5,yPosToDropOffPurplePixel, 0, dropOffPixelLeftPID, turn90PID) {
+        dropOffPixelLeft = new Movement(-54.5,yPosToDropOffPurplePixel, 0, dropOffPixelLeftPID, turn90PID) {
             @Override // -40, 55 for potential new pixel left
             public void doWhileMoving() {
             }
@@ -48,13 +48,13 @@ public class AutoConfig extends AbstractHardwareComponent {
             }
         };
 
-        inPositionForPixel = new Movement(53.5, yPosToDropOffPurplePixel,0, inPositionForPixelPID, smallAngleTurnPID) {
+        inPositionForPixel = new Movement(54.5, yPosToDropOffPurplePixel,0, inPositionForPixelPID, smallAngleTurnPID) {
             @Override
             public void doWhileMoving() {
             }
         };
 
-        collectExtraPixelFromStack = new Movement(53.5, 129, 0, collectPixelPID, smallAngleTurnPID) {
+        collectExtraPixelFromStack = new Movement(54.5, 129, 0, collectPixelPID, smallAngleTurnPID) {
             @Override
             public void doWhileMoving() {
                 bot.gripperOpen();
@@ -96,7 +96,7 @@ public class AutoConfig extends AbstractHardwareComponent {
     }
 
     //Constants
-    public static final double speed = 0.425;
+    public static double speed = 0.425;
     public static final double drivingThresholdCM = 1.25;
     public static final double turningThresholdDEG = 1.25;
 
@@ -107,7 +107,7 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static double extraXPosChangeBasedOnAudience = -120;
     public static double yPosForLeftSideOfBoard = 52; // 1 and 4 on the board
     public static double yPosForMiddleOfBoard = 67; // 2 and 5 on the board
-    public static double yPosForRightSideOFBoard = 84; // 3 and 6 on the board
+    public static double yPosForRightSideOFBoard = 85; // 3 and 6 on the board
     public static double robotTurn90 = -90; //turn to fast the board
     public static double yPosToDropOffPurplePixel = 65;
     public static double xPosForLeftSide = 50;
@@ -117,7 +117,7 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static PIDCoefficients turn90PID = new PIDCoefficients(1.35,0.035,0,0);
 
     //middle board
-    public static PIDCoefficients dropOffPixelMiddlePID = new PIDCoefficients(1,0,0.02, 0);
+    public static PIDCoefficients dropOffPixelMiddlePID = new PIDCoefficients(1,0,0.01, 0);
     public static Movement dropOffPixelMiddle;
 
     //left board

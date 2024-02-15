@@ -30,11 +30,11 @@ public class Commands extends AbstractHardwareComponent {
         //collect pixel and near the board to place two pixels
         if(bot.isAudienceSide()){
             grabExtraPixelAndNearBoard();
+            bot.setSlideLevel(Config.firstLinePos - 125);
+            bot.timerSleep(1);
         }
 
         //drive to the board and drop off pixel at the board.
-        bot.setSlideLevel(Config.firstLinePos - 125);
-        bot.timerSleep(1);
         placePixelOnBoard();
         closeGripperAndWait();
 
@@ -180,9 +180,11 @@ public class Commands extends AbstractHardwareComponent {
         bot.gripperClosed();
         bot.stopCollector();
 
+        AutoConfig.speed = 0.5;
         bot.drive(AutoConfig.passTruseAndNearBoard);
-
+        AutoConfig.speed = 0.425;
         placeWhitePixel();
+        AutoConfig.speed = 0.3;
     }
 
     public void closeGripperAndWait(){

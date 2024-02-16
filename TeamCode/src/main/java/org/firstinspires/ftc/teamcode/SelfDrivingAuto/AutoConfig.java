@@ -10,6 +10,7 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static boolean isAudience = false;
 
     public AutoConfig(boolean isAutoRed, boolean isAudience){
+        Config.firstLinePos = -1350;
         isRedAuto = isAutoRed;
         this.isAudience = isAudience;
 
@@ -48,13 +49,13 @@ public class AutoConfig extends AbstractHardwareComponent {
             }
         };
 
-        inPositionForPixel = new Movement(54.5, yPosToDropOffPurplePixel,0, inPositionForPixelPID, smallAngleTurnPID) {
+        inPositionForPixel = new Movement(55.5, yPosToDropOffPurplePixel,0, inPositionForPixelPID, smallAngleTurnPID) {
             @Override
             public void doWhileMoving() {
             }
         };
 
-        collectExtraPixelFromStack = new Movement(54.5, 129, 0, collectPixelPID, smallAngleTurnPID) {
+        collectExtraPixelFromStack = new Movement(55.5, 129, 0, collectPixelPID, smallAngleTurnPID) {
             @Override
             public void doWhileMoving() {
                 bot.gripperOpen();
@@ -105,7 +106,7 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static double strafeXPos = -84;
     public static double xPosForBoard;
     public static double extraXPosChangeBasedOnAudience = -120;
-    public static double yPosForLeftSideOfBoard = 52; // 1 and 4 on the board
+    public static double yPosForLeftSideOfBoard = 55; // 1 and 4 on the board
     public static double yPosForMiddleOfBoard = 67; // 2 and 5 on the board
     public static double yPosForRightSideOFBoard = 85; // 3 and 6 on the board
     public static double robotTurn90 = -90; //turn to fast the board
@@ -130,7 +131,7 @@ public class AutoConfig extends AbstractHardwareComponent {
 
     //Audience Side
     public static PIDCoefficients collectPixelPID           = new PIDCoefficients(0.75,0.005,0,0);
-    public static PIDCoefficients passTruseAndNearBoardPID     = new PIDCoefficients(2.5,0.011,0,0);
+    public static PIDCoefficients passTruseAndNearBoardPID     = new PIDCoefficients(2,0.005,0,0);
     public static PIDCoefficients inPositionForPixelPID = new PIDCoefficients(1,0,0,0);
     public static PIDCoefficients goForwardToPixelPID = new PIDCoefficients(0.6,0,0,0);
     public static Movement collectExtraPixelFromStack;

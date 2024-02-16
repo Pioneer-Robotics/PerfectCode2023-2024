@@ -19,6 +19,7 @@ public class Commands extends AbstractHardwareComponent {
      */
     public void runAuto(){
         //reset for auto
+        AutoConfig.speed = 0.425;
         bot.gripperClosed();
         bot.wristHorizontal();
         bot.intakeDown();
@@ -31,6 +32,7 @@ public class Commands extends AbstractHardwareComponent {
         if(bot.isAudienceSide()){
             grabExtraPixelAndNearBoard();
             bot.setSlideLevel(Config.firstLinePos - 125);
+            Config.firstLinePos = Config.firstLinePos - 125;
             bot.timerSleep(1);
         }
 
@@ -43,6 +45,7 @@ public class Commands extends AbstractHardwareComponent {
         if(bot.isAudienceSide()) {
             AutoConfig.strafeToAvoidTeammate.setdY(AutoConfig.strafeToAvoidTeammate.getdY() + 80);
         }
+        AutoConfig.speed = 0.425;
         bot.drive(AutoConfig.strafeToAvoidTeammate);
     }
 
@@ -189,9 +192,9 @@ public class Commands extends AbstractHardwareComponent {
 
     public void closeGripperAndWait(){
         bot.gripperOpen();
-        bot.timerSleep(2);
+        bot.timerSleep(1);
         bot.setSlideLevel(Config.secondLinePos);
-        bot.timerSleep(2);
+        bot.timerSleep(1);
     }
 
     public void plusTwoExtra(){
@@ -219,9 +222,9 @@ public class Commands extends AbstractHardwareComponent {
         if(!bot.isRed()){
             //blue
             if(bot.getTeamMarkerLocation() != 3){
-                yPosToPlaceWhitePixel = AutoConfig.yPosForRightSideOFBoard;
+                yPosToPlaceWhitePixel = AutoConfig.yPosForRightSideOFBoard + 5;
             } else{
-                yPosToPlaceWhitePixel = AutoConfig.yPosForMiddleOfBoard;
+                yPosToPlaceWhitePixel = AutoConfig.yPosForMiddleOfBoard + 5;
             }
         } else{
             //red

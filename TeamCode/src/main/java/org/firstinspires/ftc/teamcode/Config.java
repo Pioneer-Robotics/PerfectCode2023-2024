@@ -79,7 +79,7 @@ public class Config {
 
     //Auto Arm Positions
     public static final int secondLinePos = -2300;
-    public static final int firstLinePos = -1350;
+    public static int firstLinePos = -1350;
     public static final int lowPosTele = -1800;
     public static final int highPosTele = -2900;
     public static final int endgameHeight = -2000;

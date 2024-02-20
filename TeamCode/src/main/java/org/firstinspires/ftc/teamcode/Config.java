@@ -73,8 +73,8 @@ public class Config {
     public static final double intakeDown = .4;
     public static final double gripperOpen = .2;
     public static final double gripperClosed = .5;
-    public static final double WristVertical = .885;
-    public static final double WristHorizontal = .6;
+    public static final double WristVertical = .53;
+    public static final double WristHorizontal = .885;
     public static final double WristCloseDoor = .15;
 
     //Auto Arm Positions

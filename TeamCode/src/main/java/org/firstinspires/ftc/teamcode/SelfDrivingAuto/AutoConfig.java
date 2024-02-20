@@ -28,7 +28,7 @@ public class AutoConfig extends AbstractHardwareComponent {
             }
         };
 
-        dropOffPixelLeft = new Movement(-54.5,yPosToDropOffPurplePixel, 0, dropOffPixelLeftPID, turn90PID) {
+        dropOffPixelLeft = new Movement(-55.5,yPosToDropOffPurplePixel, 0, dropOffPixelLeftPID, turn90PID) {
             @Override // -40, 55 for potential new pixel left
             public void doWhileMoving() {
             }
@@ -69,7 +69,7 @@ public class AutoConfig extends AbstractHardwareComponent {
             }
         };
 
-        goForwardToPixel = new Movement(56.5, 129, -90, goForwardToPixelPID, smallAngleTurnPID ) {
+        goForwardToPixel = new Movement(58.5, 129, -90, goForwardToPixelPID, smallAngleTurnPID ) {
             @Override
             public void doWhileMoving() {
                 bot.gripperOpen();
@@ -102,15 +102,15 @@ public class AutoConfig extends AbstractHardwareComponent {
     public static final double turningThresholdDEG = 1.25;
 
     //Movement and PID objects
-    public static double boardSideXPos = -97;
+    public static double boardSideXPos = -99.5;
     public static double strafeXPos = -84;
     public static double xPosForBoard;
     public static double extraXPosChangeBasedOnAudience = -120;
-    public static double yPosForLeftSideOfBoard = 55; // 1 and 4 on the board
-    public static double yPosForMiddleOfBoard = 67; // 2 and 5 on the board
-    public static double yPosForRightSideOFBoard = 85; // 3 and 6 on the board
+    public static double yPosForLeftSideOfBoard = 53; // 1 and 4 on the board
+    public static double yPosForMiddleOfBoard = 65; // 2 and 5 on the board  
+    public static double yPosForRightSideOFBoard = 83; // 3 and 6 on the board
     public static double robotTurn90 = -90; //turn to fast the board
-    public static double yPosToDropOffPurplePixel = 65;
+    public static double yPosToDropOffPurplePixel = 67;
     public static double xPosForLeftSide = 50;
 
     //Turn PID

@@ -222,9 +222,9 @@ public class Commands extends AbstractHardwareComponent {
         if(!bot.isRed()){
             //blue
             if(bot.getTeamMarkerLocation() != 3){
-                yPosToPlaceWhitePixel = AutoConfig.yPosForRightSideOFBoard + 5;
+                yPosToPlaceWhitePixel = AutoConfig.yPosForRightSideOFBoard + 1;
             } else{
-                yPosToPlaceWhitePixel = AutoConfig.yPosForMiddleOfBoard + 5;
+                yPosToPlaceWhitePixel = AutoConfig.yPosForMiddleOfBoard + 1;
             }
         } else{
             //red
